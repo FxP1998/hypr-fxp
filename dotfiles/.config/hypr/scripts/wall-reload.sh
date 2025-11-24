@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WALL_DIR="$HOME/.config/hypr-fxp/themes/RosePine-Main/wallpapers"
+WALL_DIR="$HOME/.config/hypr-fxp/themes/Catppuccin-Mocha/wallpapers"
 WALL=$(find "$WALL_DIR" -type f | shuf -n 1) || { echo "No wallpaper found in $WALL_DIR"; exit 1; }
 
 # Ensure swww-daemon is running (start it if not)
@@ -36,10 +36,5 @@ fi
 
 # 7) Reload mako
 makoctl reload
-
-# 10) Kill swayosd-server and restart it
-killall swayosd-server
-sleep 0.1
-swayosd-server &
 
 exit 0

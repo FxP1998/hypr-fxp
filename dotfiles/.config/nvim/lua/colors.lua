@@ -1,137 +1,144 @@
--- Rosé Pine Main - Color Scheme for Neovim
+-- Catppuccin Mocha Enhanced - Color Scheme for Neovim
 vim.cmd('set background=dark')
 vim.cmd('set termguicolors')
 
--- Rosé Pine Main Base Colors
-vim.api.nvim_set_hl(0, 'Normal', { bg = '#191724', fg = '#e0def4' })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1f1d2e', fg = '#e0def4' })
-vim.api.nvim_set_hl(0, 'Comment', { fg = '#6e6a86', italic = true })
-vim.api.nvim_set_hl(0, 'Constant', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'String', { fg = '#9ccfd8' })
-vim.api.nvim_set_hl(0, 'Character', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Number', { fg = '#ebbcba' })
-vim.api.nvim_set_hl(0, 'Boolean', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'Float', { fg = '#ebbcba' })
+-- Catppuccin Mocha Base Colors
+vim.api.nvim_set_hl(0, 'Normal', { bg = '#1e1e2e', fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#313244', fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, 'Comment', { fg = '#6c7086', italic = true })
+vim.api.nvim_set_hl(0, 'Constant', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'String', { fg = '#a6e3a1' })
+vim.api.nvim_set_hl(0, 'Character', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Number', { fg = '#fab387' })
+vim.api.nvim_set_hl(0, 'Boolean', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'Float', { fg = '#fab387' })
 
 -- Identifiers
-vim.api.nvim_set_hl(0, 'Identifier', { fg = '#31748f' })
-vim.api.nvim_set_hl(0, 'Function', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Variable', { fg = '#e0def4' })
+vim.api.nvim_set_hl(0, 'Identifier', { fg = '#89b4fa' })
+vim.api.nvim_set_hl(0, 'Function', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Variable', { fg = '#cdd6f4' })
 
 -- Statements
-vim.api.nvim_set_hl(0, 'Statement', { fg = '#f6c177' })
-vim.api.nvim_set_hl(0, 'Conditional', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'Repeat', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'Label', { fg = '#ea9a97' })
-vim.api.nvim_set_hl(0, 'Operator', { fg = '#ebbcba' })
-vim.api.nvim_set_hl(0, 'Keyword', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'Exception', { fg = '#eb6f92' })
+vim.api.nvim_set_hl(0, 'Statement', { fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, 'Conditional', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'Repeat', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'Label', { fg = '#fab387' })
+vim.api.nvim_set_hl(0, 'Operator', { fg = '#94e2d5' })
+vim.api.nvim_set_hl(0, 'Keyword', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'Exception', { fg = '#f38ba8' })
 
 -- Preprocessor
-vim.api.nvim_set_hl(0, 'PreProc', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Include', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Define', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Macro', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'PreCondit', { fg = '#c4a7e7' })
+vim.api.nvim_set_hl(0, 'PreProc', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Include', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Define', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Macro', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'PreCondit', { fg = '#cba6f7' })
 
 -- Types
-vim.api.nvim_set_hl(0, 'Type', { fg = '#f6c177' })
-vim.api.nvim_set_hl(0, 'StorageClass', { fg = '#ea9a97' })
-vim.api.nvim_set_hl(0, 'Structure', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'Typedef', { fg = '#c4a7e7' })
+vim.api.nvim_set_hl(0, 'Type', { fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, 'StorageClass', { fg = '#fab387' })
+vim.api.nvim_set_hl(0, 'Structure', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'Typedef', { fg = '#cba6f7' })
 
 -- Special
-vim.api.nvim_set_hl(0, 'Special', { fg = '#ebbcba' })
-vim.api.nvim_set_hl(0, 'SpecialChar', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'Tag', { fg = '#31748f' })
-vim.api.nvim_set_hl(0, 'Delimiter', { fg = '#908caa' })
-vim.api.nvim_set_hl(0, 'SpecialComment', { fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'Debug', { fg = '#eb6f92' })
+vim.api.nvim_set_hl(0, 'Special', { fg = '#f5c2e7' })
+vim.api.nvim_set_hl(0, 'SpecialChar', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'Tag', { fg = '#89b4fa' })
+vim.api.nvim_set_hl(0, 'Delimiter', { fg = '#bac2de' })
+vim.api.nvim_set_hl(0, 'SpecialComment', { fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'Debug', { fg = '#f38ba8' })
 
 -- UI Elements
-vim.api.nvim_set_hl(0, 'LineNr', { fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#e0def4', bold = true })
-vim.api.nvim_set_hl(0, 'CursorLine', { bg = '#1f1d2e' })
-vim.api.nvim_set_hl(0, 'CursorColumn', { bg = '#1f1d2e' })
-vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#1f1d2e' })
-vim.api.nvim_set_hl(0, 'SignColumn', { bg = '#191724', fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'FoldColumn', { bg = '#191724', fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'Folded', { bg = '#1f1d2e', fg = '#6e6a86' })
+vim.api.nvim_set_hl(0, 'LineNr', { fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#cdd6f4', bold = true })
+vim.api.nvim_set_hl(0, 'CursorLine', { bg = '#313244' })
+vim.api.nvim_set_hl(0, 'CursorColumn', { bg = '#313244' })
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#313244' })
+vim.api.nvim_set_hl(0, 'SignColumn', { bg = '#1e1e2e', fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'FoldColumn', { bg = '#1e1e2e', fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'Folded', { bg = '#313244', fg = '#6c7086' })
 
 -- Cursor settings - HIGH VISIBILITY
-vim.api.nvim_set_hl(0, 'Cursor', { bg = '#e0def4', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'iCursor', { bg = '#e0def4', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'CursorIM', { bg = '#e0def4', fg = '#191724' })
+vim.api.nvim_set_hl(0, 'Cursor', { bg = '#f5e0dc', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'iCursor', { bg = '#f5e0dc', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'CursorIM', { bg = '#f5e0dc', fg = '#1e1e2e' })
 
 -- Visual Mode
-vim.api.nvim_set_hl(0, 'Visual', { bg = '#403d52' })
-vim.api.nvim_set_hl(0, 'VisualNOS', { bg = '#403d52' })
+vim.api.nvim_set_hl(0, 'Visual', { bg = '#585b70' })
+vim.api.nvim_set_hl(0, 'VisualNOS', { bg = '#585b70' })
 
 -- Search
-vim.api.nvim_set_hl(0, 'Search', { bg = '#f6c177', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'IncSearch', { bg = '#ea9a97', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'MatchParen', { bg = '#c4a7e7', fg = '#191724', bold = true })
+vim.api.nvim_set_hl(0, 'Search', { bg = '#f9e2af', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'IncSearch', { bg = '#fab387', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'MatchParen', { bg = '#cba6f7', fg = '#1e1e2e', bold = true })
 
 -- Status Line
-vim.api.nvim_set_hl(0, 'StatusLine', { bg = '#1f1d2e', fg = '#e0def4' })
-vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = '#191724', fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'WildMenu', { bg = '#c4a7e7', fg = '#191724' })
+vim.api.nvim_set_hl(0, 'StatusLine', { bg = '#313244', fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = '#1e1e2e', fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'WildMenu', { bg = '#cba6f7', fg = '#1e1e2e' })
 
 -- Tab Line
-vim.api.nvim_set_hl(0, 'TabLine', { bg = '#1f1d2e', fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'TabLineSel', { bg = '#c4a7e7', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'TabLineFill', { bg = '#191724', fg = '#6e6a86' })
+vim.api.nvim_set_hl(0, 'TabLine', { bg = '#313244', fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'TabLineSel', { bg = '#cba6f7', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'TabLineFill', { bg = '#1e1e2e', fg = '#6c7086' })
 
 -- Pmenu (Completion)
-vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#1f1d2e', fg = '#e0def4' })
-vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#c4a7e7', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = '#1f1d2e' })
-vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#26233a' })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#313244', fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#cba6f7', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = '#313244' })
+vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#45475a' })
 
 -- Errors and Warnings
-vim.api.nvim_set_hl(0, 'Error', { bg = '#eb6f92', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'ErrorMsg', { bg = '#eb6f92', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'WarningMsg', { bg = '#f6c177', fg = '#191724' })
-vim.api.nvim_set_hl(0, 'MoreMsg', { fg = '#9ccfd8' })
-vim.api.nvim_set_hl(0, 'ModeMsg', { fg = '#e0def4' })
-vim.api.nvim_set_hl(0, 'Question', { fg = '#f6c177' })
+vim.api.nvim_set_hl(0, 'Error', { bg = '#f38ba8', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'ErrorMsg', { bg = '#f38ba8', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'WarningMsg', { bg = '#f9e2af', fg = '#1e1e2e' })
+vim.api.nvim_set_hl(0, 'MoreMsg', { fg = '#a6e3a1' })
+vim.api.nvim_set_hl(0, 'ModeMsg', { fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, 'Question', { fg = '#f9e2af' })
 
 -- Diffs
-vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#1f1d2e', fg = '#9ccfd8' })
-vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#1f1d2e', fg = '#f6c177' })
-vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#1f1d2e', fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'DiffText', { bg = '#1f1d2e', fg = '#ebbcba' })
+vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#313244', fg = '#a6e3a1' })
+vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#313244', fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#313244', fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'DiffText', { bg = '#313244', fg = '#fab387' })
 
 -- Spelling
-vim.api.nvim_set_hl(0, 'SpellBad', { undercurl = true, sp = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'SpellCap', { undercurl = true, sp = '#f6c177' })
-vim.api.nvim_set_hl(0, 'SpellRare', { undercurl = true, sp = '#c4a7e7' })
-vim.api.nvim_set_hl(0, 'SpellLocal', { undercurl = true, sp = '#9ccfd8' })
+vim.api.nvim_set_hl(0, 'SpellBad', { undercurl = true, sp = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'SpellCap', { undercurl = true, sp = '#f9e2af' })
+vim.api.nvim_set_hl(0, 'SpellRare', { undercurl = true, sp = '#cba6f7' })
+vim.api.nvim_set_hl(0, 'SpellLocal', { undercurl = true, sp = '#94e2d5' })
 
 -- Special Syntax
-vim.api.nvim_set_hl(0, 'Title', { fg = '#31748f', bold = true })
-vim.api.nvim_set_hl(0, 'Todo', { bg = '#f6c177', fg = '#191724', bold = true })
-vim.api.nvim_set_hl(0, 'Underlined', { fg = '#c4a7e7', underline = true })
-vim.api.nvim_set_hl(0, 'SpecialKey', { fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'NonText', { fg = '#6e6a86' })
-vim.api.nvim_set_hl(0, 'Directory', { fg = '#31748f' })
-vim.api.nvim_set_hl(0, 'Conceal', { fg = '#6e6a86' })
+vim.api.nvim_set_hl(0, 'Title', { fg = '#89b4fa', bold = true })
+vim.api.nvim_set_hl(0, 'Todo', { bg = '#f9e2af', fg = '#1e1e2e', bold = true })
+vim.api.nvim_set_hl(0, 'Underlined', { fg = '#cba6f7', underline = true })
+vim.api.nvim_set_hl(0, 'SpecialKey', { fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'NonText', { fg = '#6c7086' })
+vim.api.nvim_set_hl(0, 'Directory', { fg = '#89b4fa' })
+vim.api.nvim_set_hl(0, 'Conceal', { fg = '#6c7086' })
 
 -- LSP and Diagnostics
-vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = '#eb6f92' })
-vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = '#f6c177' })
-vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = '#31748f' })
-vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = '#9ccfd8' })
-vim.api.nvim_set_hl(0, 'LspReferenceText', { bg = '#403d52' })
-vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#403d52' })
-vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#403d52' })
+vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = '#f38ba8' })
+vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = '#89b4fa' })
+vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = '#94e2d5' })
+vim.api.nvim_set_hl(0, 'LspReferenceText', { bg = '#585b70' })
+vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#585b70' })
+vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#585b70' })
 
 -- Treesitter
-vim.api.nvim_set_hl(0, '@function', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, '@function.call', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, '@parameter', { fg = '#e0def4' })
-vim.api.nvim_set_hl(0, '@field', { fg = '#f6c177' })
-vim.api.nvim_set_hl(0, '@property', { fg = '#f6c177' })
-vim.api.nvim_set_hl(0, '@constructor', { fg = '#ea9a97' })
-vim.api.nvim_set_hl(0, '@tag', { fg = '#c4a7e7' })
-vim.api.nvim_set_hl(0, '@tag.delimiter', { fg = '#908caa' })
+vim.api.nvim_set_hl(0, '@function', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, '@function.call', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, '@parameter', { fg = '#cdd6f4' })
+vim.api.nvim_set_hl(0, '@field', { fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, '@property', { fg = '#f9e2af' })
+vim.api.nvim_set_hl(0, '@constructor', { fg = '#fab387' })
+vim.api.nvim_set_hl(0, '@tag', { fg = '#cba6f7' })
+vim.api.nvim_set_hl(0, '@tag.delimiter', { fg = '#bac2de' })
+
+-- Additional Catppuccin Mocha colors available:
+-- Rosewater: #f5e0dc, Flamingo: #f2cdcd, Pink: #f5c2e7,
+-- Mauve: #cba6f7, Maroon: #eba0ac, Peach: #fab387,
+-- Green: #a6e3a1, Teal: #94e2d5, Sky: #89dceb,
+-- Sapphire: #74c7ec, Blue: #89b4fa, Lavender: #b4befe,
+-- Surface0: #45475a, Surface1: #585b70, Surface2: #6c7086

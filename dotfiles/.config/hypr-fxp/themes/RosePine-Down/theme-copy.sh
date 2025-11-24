@@ -37,3 +37,6 @@ sleep 0.2
 killall swayosd-server
 sleep 0.1
 swayosd-server &
+
+# Reload gtk-3.0 apps
+~/.config/hypr-fxp/scripts/gtk-reload.sh
