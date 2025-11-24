@@ -1,101 +1,124 @@
-<h1 align="center">Hi 👋, I'm FxP</h1>
-<h3 align="center">A normal man from INDIA, who loves to use Arch Linux recently shifted from Windows (F*** you Windows). Currently trying to configure my own Hyperland setup for low-end devices because I have only 2Ghz of processor so that others can also use those who have a potato device like mine :)</h3>
-
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=fxp1998&label=Profile%20views&color=0e75b6&style=flat" alt="fxp1998" /> </p>
-
-- 🔭 I’m currently working on [hypr-fxp](https://github.com/FxP1998/hypr-fxp)
-
-- 📫 How to reach me **mdhassanimam2306.others@gmail.com**
-
-- ⚡ Fun fact **I am new to this Linux world and I am dumb also I a Mechanical Engineer who did it accidently. Anyway, I love to use computers to do configuration and tweak my system as much as possible.**
+# 🌈✨ **Hypr-FxP — A Colorful & Clean Ricing Showcase** ✨🌈
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" alt="animated line">
+  <img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-1.png" width="600" />
 </p>
 
-## 📸 Screenshots
+<h1 align="center">👋 Hi, I'm **FxP**</h1>
 
-### 🎨 Theme Showcase
+<p align="center">
+  <strong>A simple guy from India who loves tweaking minimal Arch Linux setups — especially on low-end hardware!</strong><br>
+  I moved from Windows to Linux (best decision ever) and now I customize everything I touch.
+</p>
 
-#### Catppuccin Theme
-**Latte (Light)**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-5.png)
+---
 
-**Mocha (Dark)**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-4.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-5.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-7.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-8.png)
+## 🎯 **What is Hypr-FxP?**
+A **fully themed, low‑end‑friendly Hyprland ricing setup** designed to run smoothly even on potato devices.
 
-#### Gruvbox Theme
-**Dark Variant**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-3.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-5.png)
+✨ Includes:
+- Custom Hyprland configs
+- Beautiful GTK themes
+- Neovim + Vim setups
+- Waybar themes (Catppuccin, Gruvbox, Rose Pine)
+- Rofi launcher, Mako notifications & more
 
-**Light Variant**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-4.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-5.png)
+---
 
-#### Rose Pine Theme
-**Main Variant**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-3.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-4.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-8.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-9.png)
+## 🚀 **Current Project**
+👉 Working on improving and polishing **[Hypr-FxP](https://github.com/FxP1998/hypr-fxp)** to make it more modular, minimal, and stunning.
 
-**Dawn Variant**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-7.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-8.png)
+---
 
-#### Waybar
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-Waybar.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-Waybar-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-Waybar-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-Waybar-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-Waybar-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-1.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-Waybar.png)
+# 🎨 **Theme Screenshots**
 
+## 🌺 **Catppuccin Theme**
+### ☀️ *Latte (Light)*
+![Latte 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-1.png)
+![Latte 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-2.png)
+![Latte 5](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-5.png)
 
-### ⚙️ Components
+### 🌑 *Mocha (Dark)*
+![Mocha 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-1.png)
+![Mocha 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-2.png)
+![Mocha 4](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-4.png)
+![Mocha 5](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-5.png)
+![Mocha 7](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-7.png)
+![Mocha 8](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-8.png)
 
-#### Applications & Utilities
-**Rofi Application Launcher**
+---
+
+## 🟫 **Gruvbox Theme**
+### 🌚 *Dark*
+![Gruvbox Dark 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-1.png)
+![Gruvbox Dark 3](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-3.png)
+![Gruvbox Dark 5](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-5.png)
+
+### 🌞 *Light*
+![Gruvbox Light 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-1.png)
+![Gruvbox Light 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-2.png)
+![Gruvbox Light 4](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-4.png)
+![Gruvbox Light 5](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-5.png)
+
+---
+
+## 🌹 **Rose Pine**
+### 🌑 *Main*
+![RPM 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-1.png)
+![RPM 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-2.png)
+![RPM 3](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-3.png)
+![RPM 4](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-4.png)
+![RPM 8](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-8.png)
+![RPM 9](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-9.png)
+
+### 🌅 *Dawn*
+![RPD 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-1.png)
+![RPD 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-2.png)
+![RPD 7](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-7.png)
+![RPD 8](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-8.png)
+
+---
+
+# 🧊 **Waybar Themes**
+![Waybar Latte](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Latte-Waybar.png)
+![Waybar Mocha 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-Waybar-1.png)
+![Waybar Mocha 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-Waybar-2.png)
+![Waybar Gruvbox Dark 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-Waybar-1.png)
+![Waybar Gruvbox Dark 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-Waybar-2.png)
+![Waybar Gruvbox Light 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-1.png)
+![Waybar Gruvbox Light 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-2.png)
+![Waybar Rose Pine Main](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-Waybar.png)
+
+---
+
+# 🛠️ **Components**
+
+## 🚀 Rofi Launcher
 ![Rofi](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Rofi.png)
 
-**Mako Notifications**
-<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-1.png" width="400" alt="Mako Notification 1"/>
-<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-2.png" width="400" alt="Mako Notification 2"/>
-<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-3.png" width="400" alt="Mako Notification 3"/>
-<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-4.png" width="400" alt="Mako Notification 4"/>
+## 🔔 Mako Notifications
+<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-1.png" width="400" />
+<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-2.png" width="400" />
+<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-3.png" width="400" />
+<img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Mako-Notification-4.png" width="400" />
 
-#### Editor Setup
-**Neovim Configuration**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/nvim.png)
+---
 
-**Vim Configuration**
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/vim.png)
+## 📝 **Editor Setups**
+### Neovim
+![NVIM](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/nvim.png)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" alt="animated line">
-</p>
+### Vim
+![VIM](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/vim.png)
 
-<h3 align="left">Connect with me:</h3>
+---
+
+# 📡 **Connect With Me**
 <p align="left">
-<a href="https://www.youtube.com/c/mdishere_yt" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="mdishere_yt" height="30" width="40" /></a>
+<a href="https://www.youtube.com/c/mdishere_yt" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" height="30" width="40" /></a>
 </p>
 
-<p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=fxp1998&show_icons=true&locale=en" alt="fxp1998" /></p>
+---
+
+<p align="center">🌟 Thank you for checking out Hypr‑FxP! 🌟</p>
 
