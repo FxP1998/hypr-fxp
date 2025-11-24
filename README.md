@@ -72,10 +72,10 @@ A **fully themed, low‑end‑friendly Hyprland ricing setup** designed to run s
 ![RPM 9](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-9.png)
 
 ### 🌅 *Dawn*
-![RPD 1](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-1.png)
-![RPD 2](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-2.png)
-![RPD 7](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-7.png)
-![RPD 8](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-8.png)
+![RPD 1](https://github.com/FxP1998/hypr-fxp/blob/main/screenshots/RosePine-Down-1.png)
+![RPD 2](https://github.com/FxP1998/hypr-fxp/blob/main/screenshots/RosePine-Dawn-2.png)
+![RPD 7](https://github.com/FxP1998/hypr-fxp/blob/main/screenshots/RosePine-Dawn-7.png)
+![RPD 8](https://github.com/FxP1998/hypr-fxp/blob/main/screenshots/RosePine-Dawn-8.png)
 
 ---
 
