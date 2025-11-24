@@ -1,0 +1,244 @@
+
+/* Main GTK-3 Styles */
+
+* {
+    font-family: "Noto Sans", "DejaVu Sans", sans-serif;
+    -GtkToolButton-icon-spacing: 4;
+    -GtkTextView-error-underline-color: @theme_selected_bg_color;
+    -GtkToolItemGroup-expander-size: 11;
+    -GtkWidget-text-handle-width: 20;
+    -GtkWidget-text-handle-height: 24;
+    -GtkDialog-button-spacing: 4;
+    -GtkDialog-action-area-border: 0;
+}
+
+/***************
+ * Base states *
+ ***************/
+
+.background {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+/* Text selection */
+*:selected,
+*:selected:focus {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/***********
+ * Buttons *
+ ***********/
+
+button {
+    border-radius: 4px;
+    border: 1px solid @borders;
+    background-image: linear-gradient(to bottom,
+                      shade(@theme_bg_color, 1.1),
+                      shade(@theme_bg_color, 0.9));
+    color: @theme_fg_color;
+    padding: 6px 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background-image: linear-gradient(to bottom,
+                      shade(@theme_selected_bg_color, 1.1),
+                      shade(@theme_selected_bg_color, 0.9));
+    border-color: shade(@theme_selected_bg_color, 0.8);
+}
+
+button:active,
+button:checked {
+    background-image: linear-gradient(to bottom,
+                      shade(@theme_selected_bg_color, 0.9),
+                      shade(@theme_selected_bg_color, 1.1));
+}
+
+button:disabled {
+    background-image: none;
+    background-color: shade(@theme_bg_color, 0.9);
+    color: shade(@theme_fg_color, 0.7);
+}
+
+/**********
+ * Entries *
+ **********/
+
+entry {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid @borders;
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+    caret-color: @theme_fg_color;
+}
+
+entry:focus {
+    border-color: @theme_selected_bg_color;
+}
+
+entry:disabled {
+    background-color: shade(@theme_bg_color, 0.95);
+    color: shade(@theme_fg_color, 0.7);
+}
+
+/*********
+ * Labels *
+ *********/
+
+label {
+    color: @theme_fg_color;
+}
+
+label:disabled {
+    color: shade(@theme_fg_color, 0.7);
+}
+
+/************
+ * Notebooks *
+ ************/
+
+notebook {
+    background-color: @theme_bg_color;
+}
+
+notebook tab {
+    padding: 6px 12px;
+    background-color: shade(@theme_bg_color, 0.9);
+    border: 1px solid @borders;
+    border-bottom: none;
+}
+
+notebook tab:checked {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+notebook tab:hover {
+    background-color: shade(@theme_selected_bg_color, 0.9);
+}
+
+/*************
+ * Scrollbars *
+ *************/
+
+scrollbar {
+    background-color: @theme_bg_color;
+}
+
+scrollbar slider {
+    background-color: shade(@theme_bg_color, 0.7);
+    border-radius: 6px;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+scrollbar slider:hover {
+    background-color: shade(@theme_selected_bg_color, 0.8);
+}
+
+scrollbar slider:active {
+    background-color: @theme_selected_bg_color;
+}
+
+/**************
+ * Progressbars *
+ **************/
+
+progressbar {
+    background-color: shade(@theme_bg_color, 0.9);
+    border-radius: 3px;
+}
+
+progressbar progress {
+    background-color: @theme_selected_bg_color;
+    border-radius: 3px;
+}
+
+progressbar trough {
+    background-color: shade(@theme_bg_color, 0.8);
+    border-radius: 3px;
+}
+
+/***********
+ * TreeView *
+ ***********/
+
+treeview {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+}
+
+treeview:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+treeview:hover {
+    background-color: shade(@theme_selected_bg_color, 0.1);
+}
+
+/********
+ * Menus *
+ ********/
+
+menu {
+    background-color: @theme_bg_color;
+    border: 1px solid @borders;
+}
+
+menuitem {
+    padding: 6px 12px;
+}
+
+menuitem:hover {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/************
+ * Tooltips *
+ ************/
+
+tooltip {
+    background-color: @theme_tooltip_bg_color;
+    color: @theme_tooltip_fg_color;
+    border: 1px solid @borders;
+    border-radius: 4px;
+    padding: 6px 8px;
+}
+
+/**********
+ * Frames *
+ **********/
+
+frame {
+    border: 1px solid @borders;
+}
+
+/**********
+ * Paneds *
+ **********/
+
+paned > separator {
+    background-color: @borders;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/************
+ * List boxes *
+ ************/
+
+list {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+}
+
+list row:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}

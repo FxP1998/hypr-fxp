@@ -1,0 +1,21 @@
+/* Import your color scheme file */
+@import "~/.config/rofi/colors-rofi-dark.rasi"
+
+configuration {
+    /* Enable showing icons */
+    show-icons: true;
+
+    /* Optional: Specify an icon theme if the default is not working */
+    /* icon-theme: "Papirus"; */
+
+    /* Optional: Ensure you are using a font that supports icons (like a Nerd Font) */
+    font: "MapleMono NF 12";
+}
+
+/* You may need additional styling in your imported file or here
+   to define exactly *where* the icon appears relative to the text. */
+element-text {
+    /* Adjust padding to make space for the icon */
+    padding: 0px 5px 0px 0px;
+}
+

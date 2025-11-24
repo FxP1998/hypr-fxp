@@ -1,0 +1,18 @@
+
+/* Pywal GTK-3 Theme - Generated from Pywal */
+@define-color theme_bg_color #0f1222;
+@define-color theme_fg_color #c3c3c7;
+@define-color theme_base_color #0f1222;
+@define-color theme_text_color #c3c3c7;
+@define-color theme_selected_bg_color #6B6691;
+@define-color theme_selected_fg_color #0f1222;
+@define-color theme_tooltip_bg_color #0f1222;
+@define-color theme_tooltip_fg_color #c3c3c7;
+@define-color theme_dark_bg_color #0f1222;
+@define-color theme_dark_fg_color #c3c3c7;
+
+@define-color borders shade(@theme_bg_color, 0.8);
+@define-color unfocused_borders shade(@theme_bg_color, 0.9);
+
+/* Import main CSS */
+@import url("gtk-main.css");

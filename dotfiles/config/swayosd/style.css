@@ -1,0 +1,22 @@
+@import "./colors-waybar.css";
+
+window#osd {
+  background: @background;
+  border: 2px solid @color3;
+}
+
+progressbar trough {
+    background: @background;
+    border-radius: 25px;
+    min-height: 8px;
+}
+
+progressbar progress {
+    background: @color3;
+    border-radius: 25px;
+    min-height: 8px;
+}
+
+image {
+    color: @color3;
+}

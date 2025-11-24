@@ -1,0 +1,81 @@
+[global]
+    # ========== WINDOW SETTINGS ==========
+    width = 300
+    height = (0, 300)
+    offset = (30, 50)
+    origin = top-right
+    scale = 0
+    notification_limit = 5
+
+    # ========== PROGRESS BAR ==========
+    progress_bar = true
+    progress_bar_height = 4
+    progress_bar_frame_width = 0
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+
+    # ========== SEPARATORS ==========
+    separator_height = 1
+    padding = 12
+    horizontal_padding = 12
+    separator_color = frame
+
+    # ========== FONT ==========
+    font = Monospace 10
+    line_height = 0
+
+    # ========== FORMATTING ==========
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    show_age_threshold = 60
+    word_wrap = yes
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    # ========== FRAME & CORNERS ==========
+    frame_width = 2
+    corner_radius = 12
+
+    # ========== ICONS ==========
+    icon_position = left
+    max_icon_size = 48
+
+    # ========== BEHAVIOR ==========
+    browser = xdg-open
+    always_run_script = true
+    history_length = 20
+
+    # ========== LAYER ==========
+    layer = overlay
+
+    # ========== MARKUP ==========
+    markup = yes
+
+    # ========== MOUSE CONTROLS ==========
+    mouse_left_click = do_action
+    mouse_middle_click = close_all
+    mouse_right_click = close_current
+
+[urgency_low]
+    # Rosé Pine Colors - Low urgency
+    background = "#191724"
+    foreground = "#e0def4"
+    frame_color = "#403d52"
+    timeout = 5
+
+[urgency_normal]
+    # Rosé Pine Colors - Normal urgency
+    background = "#191724"
+    foreground = "#e0def4"
+    frame_color = "#eb6f92"
+    timeout = 10
+
+[urgency_critical]
+    # Rosé Pine Colors - Critical urgency
+    background = "#191724"
+    foreground = "#eb6f92"
+    frame_color = "#eb6f92"
+    timeout = 0

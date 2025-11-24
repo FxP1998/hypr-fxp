@@ -1,0 +1,24 @@
+/* Import your color scheme file */
+@import "~/.config/rofi/colors-rofi-dark.rasi"
+
+configuration {
+    /* Display */
+    modi: "window,drun,run,ssh,combi,filebrowser,";
+    terminal: "kitty";
+    window-format: "{w}  {i}  {c}  {t}";
+
+    /* Behavior */
+    case-sensitive: false;
+    cycle: false;
+    sorting-method: "fzf";
+    matching: "normal";
+    scroll-method: 1;
+
+    /* Icons */
+    icon-theme: "BeautySolar";
+    show-icons: true;
+    
+    /* Font Settings */
+    font: "MapleMono NF 12";
+}
+

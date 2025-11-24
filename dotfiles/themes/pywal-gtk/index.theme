@@ -1,0 +1,19 @@
+
+[Desktop Entry]
+Name=Pywal GTK
+Comment=GTK3 theme generated from Pywal colors
+Type=X-GTN-Theme
+
+[X-GNOME-Metatheme]
+Name=Pywal GTK
+Comment=GTK3 theme generated from Pywal colors
+Encoding=UTF-8
+
+[X-Settings]
+Gtk/FontName=Noto Sans 10
+Gtk/EnableAnimations=1
+Gtk/ToolbarStyle=3
+Gtk/ToolbarIconSize=3
+Gtk/ButtonImages=1
+Gtk/MenuImages=1
+Gtk/CursorThemeSize=24

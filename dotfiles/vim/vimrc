@@ -1,0 +1,44 @@
+" Main Vim Configuration
+source ~/.vim/colors.vim
+
+" Basic Settings
+set number
+set numberwidth=4
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set nowrap
+set smartcase
+set noswapfile
+set nobackup
+set incsearch
+set termguicolors
+set scrolloff=8
+set cursorline
+
+" Mouse Support
+set mouse=a
+
+
+" wl-clipboard for Wayland
+vnoremap <leader>y :w !wl-copy<CR><CR>
+nnoremap <leader>p :r !wl-paste<CR>
+vnoremap <leader>Y :w !wl-copy --primary<CR><CR>
+nnoremap <leader>P :r !wl-paste --primary<CR>
+
+" Optional convenience mappings
+vnoremap <C-c> :w !wl-copy<CR><CR>
+nnoremap <C-v> :r !wl-paste<CR>
+
+" Key mappings
+let mapleader = " "
+nnoremap <leader>pv :Ex<CR>
+nnoremap <silent> <C-d> <C-d>zz
+nnoremap <silent> <C-u> <C-u>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Simple status line
+set statusline=%f\ %y\ %m\ %=\ %l:%c\ %P
+set laststatus=2

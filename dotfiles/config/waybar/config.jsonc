@@ -1,0 +1,260 @@
+// THIS WAYBAR CONFIGURATION (config.jsonc) IS CREATED BY "M. H. IMAM (https://github.com/FXP1998)"
+// ALL DOTFILES ARE AVAILABLE IN: https://github.com/FxP1998/FxP-Hyprland
+
+{
+
+    // WAYBAR POSITIONS CONFIGURATION
+    "layer": "top",
+    "position": "left", 
+    "width": 50,
+    "margin-top": 5,
+    "margin-bottom": 5,
+    "margin-left": 5,
+    "margin-right": 0,
+    
+    
+    
+    
+    
+    // MODULE POSITIONS
+    "modules-left": [
+        "clock", 
+        "group/misc", 
+        "custom/screen-recording", 
+        "custom/updates"
+    ],
+    
+    
+    
+    // MODULES
+    "clock": {
+        "format": "{:%I\n%M\n%p}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "left",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "tz_up",
+            "on-scroll-down": "tz_down"
+        }
+    },
+
+    "group/misc": {
+        "orientation": "vertical",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/separator",
+            "custom/separator",
+            "tray"
+        ]
+    },
+
+    "custom/separator": {
+        "format": "━━━",
+        "tooltip": false
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10,
+        "tooltip": false
+    },
+
+    "custom/screen-recording": {
+        "format": "<span foreground='red'> 󰑊 </span>",
+        "return-type": "json",
+        "exec-if": "pgrep wf-recorder",
+        "exec": "echo '{\"class\": \"recording-active\"}'",
+        "interval": 1,
+        "tooltip": false 
+    },
+
+    "custom/updates": {
+        "format": "{}",
+        "exec": "~/.config/hypr/scripts/system.update.module-waybar.sh",
+        "return-type": "json", 
+        "interval": 3600,
+        "tooltip": true,  // Change this to true
+        "on-click": "kitty -T 'System Update' sudo pacman -Syu"
+    },
+    
+    
+    
+    
+    
+    // MODULE POSITIONS
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    
+    
+    
+    // MODULES
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "active": "",
+            "default": ""
+        },
+        "persistent-workspaces": {
+            "*": 5,
+            "HDMI-A-1": 3
+        }
+    },
+    
+    
+    
+    
+    
+    // MODULE POSITIONS
+    "modules-right": [
+        "custom/separator",
+        "group/volume",
+        "group/brightness",
+        // "network",
+        "battery"
+    ],
+    
+    
+    
+    // MODULES
+    "group/volume": {
+        "orientation": "vertical",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "pulseaudio",
+            "pulseaudio/slider"
+        ]
+    },
+
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100,
+        "orientation": "vertical",
+        "width": 8,
+        "reverse": false
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "headphone": ["", "", ""],
+            "speaker": ["", "", ""],
+            "default": ["", "", ""]
+        },
+        "scroll-step": 5,
+        "on-click": "swayosd-client --output-volume mute-toggle", 
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "swayosd-client --output-volume raise",
+        "on-scroll-down": "swayosd-client --output-volume lower",
+        "ignored-sinks": ["Easy Effects Sink"],
+        "tooltip-format": " 󰕾 {volume}% ",
+        "tooltip": true
+    },
+
+    "group/brightness": {
+        "orientation": "vertical",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "backlight",
+            "backlight/slider"
+        ]
+    },
+
+    "backlight/slider": {
+        "min": 5,
+        "max": 100,
+        "orientation": "vertical",
+        "width": 8,
+        "reverse": false
+    },
+
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": ["󰃞", "󰃟", "󰃠"]
+        },
+        "interval": 2,
+        "on-scroll-up": "swayosd-client --brightness raise",
+        "on-scroll-down": "swayosd-client --brightness lower"
+    },
+
+
+    //    // MODULES ON RIGHT
+    //    "network": {
+    //        "interface": "wlo1",
+    //        "format": "{icon}",
+    //        "format-wifi": "{icon}",
+    //        "format-ethernet": "{icon}",
+    //        "format-disconnected": "󰤭",
+    //        "format-icons": {
+    //            "wifi": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    //            "ethernet": "󰈀",
+    //            "enp0s20f0u2": "󰀂",
+    //            "disconnected": "󰤭"
+    //        },
+    //        "tooltip": true,
+    //        "tooltip-format": " {ifname}\nIP: {ipaddr} ",
+    //        "tooltip-format-wifi": "  {essid} ({signalStrength}%) ",
+    //        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr} ",
+    //        "tooltip-format-disconnected": " No connection 󰤭  ",
+    //        "on-click": "~/.config/fxp-hyprland/scripts/custom/waybar/nmtui-floating/nmtui_fxp-hyprland.sh",
+    //        "on-click-right": "nm-connection-editor"
+    //    },
+
+    "battery": {
+        "format": "{icon}",
+        "format-full": "󱈏",
+        "format-charging": " \n{capacity}%",
+        "format-charging-full": " 󱈏\n{capacity}%",
+        "format-discharging": "{icon}",
+        "format-icons": ["", "", "", "", ""],
+        "states": {
+            "critical": 15,
+            "warning": 30
+        },
+        "tooltip-format": "   {capacity}% "
+    }
+
+    //    "bluetooth": {
+    //        "format": "",
+    //        "format-on": "",
+    //        "format-connected": "",
+    //        "format-connected-battery": "",
+    //        "tooltip": true,
+    //        "tooltip-format": "  Bluetooth Disabled \n Click to enable ",
+    //        "tooltip-format-on": "  Bluetooth Active \n No devices connected ",
+    //        "tooltip-format-connected": "  Connected to {device_alias} ",
+    //        "tooltip-format-connected-battery": "  Connected to {device_alias} \n Battery: {device_battery_percentage}% ",
+    //        "tooltip-format-enumerate-connected": " {device_alias} ({device_address}) ",
+    //        "tooltip-format-enumerate-connected-battery": " {device_alias} - Battery: {device_battery_percentage}% ",
+    //        "on-click": "blueman-manager",
+    //        "interval": 5
+    //    },
+}
