@@ -1,7 +1,7 @@
 # 🌈✨ **Hypr-FxP — A Colorful & Clean Ricing Showcase** ✨🌈
 
 <p align="center">
-  <img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-1.png" width="600" />
+  <img src="https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Catppuccin-Mocha-5.png" width="600" />
 </p>
 
 <h1 align="center">👋 Hi, I'm **FxP**</h1>
