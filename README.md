@@ -9,7 +9,7 @@
 
 - ⚡ Fun fact **I am new to this Linux world and I am dumb also I a Mechanical Engineer who did it accidently. Anyway, I love to use computers to do configuration and tweak my system as much as possible.**
 
-=======================================================================================================================
+======================================================================================
 
 ## 📸 Screenshots
 
@@ -64,7 +64,6 @@
 ![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Dark-Waybar-2.png)
 ![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-1.png)
 ![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/Gruvbox-Light-Waybar-2.png)
-![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Dawn-Waybar.png)
 ![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/RosePine-Main-Waybar.png)
 
 
@@ -87,7 +86,7 @@
 **Vim Configuration**
 ![Alt Text](https://github.com/FxP1998/hypr-fxp/raw/main/screenshots/vim.png)
 
-=======================================================================================================================
+======================================================================================
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
