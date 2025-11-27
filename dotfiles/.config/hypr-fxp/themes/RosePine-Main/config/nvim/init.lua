@@ -1,62 +1,37 @@
--- Source colors
-require('colors')
+vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
+vim.g.mapleader = " "
 
--- Basic Settings
-vim.opt.number = true
-vim.opt.relativenumber = false
-vim.opt.numberwidth = 5
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.wrap = false
-vim.opt.smartcase = true
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.incsearch = true
-vim.opt.termguicolors = true
-vim.opt.scrolloff = 8
-vim.opt.cursorline = true
-vim.opt.showcmd = true
-vim.opt.wildmenu = true
-vim.opt.wildmode = 'longest:list,full'
+-- bootstrap lazy and all plugins
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
--- Mouse Support
-vim.opt.mouse = 'a'
+if not vim.uv.fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+end
 
--- Key mappings
-vim.g.mapleader = ' '
+vim.opt.rtp:prepend(lazypath)
 
--- Better navigation
-vim.keymap.set('n', '<C-d>', '<C-d>zz')
-vim.keymap.set('n', '<C-u>', '<C-u>zz')
-vim.keymap.set('n', 'n', 'nzzzv')
-vim.keymap.set('n', 'N', 'Nzzzv')
+local lazy_config = require "configs.lazy"
 
--- File explorer
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
+-- load plugins
+require("lazy").setup({
+  {
+    "NvChad/NvChad",
+    lazy = false,
+    branch = "v2.5",
+    import = "nvchad.plugins",
+  },
 
--- Quick save and quit
-vim.keymap.set('n', '<leader>w', vim.cmd.w)
-vim.keymap.set('n', '<leader>q', vim.cmd.q)
-vim.keymap.set('n', '<leader>wq', vim.cmd.wq)
+  { import = "plugins" },
+}, lazy_config)
 
--- Buffer navigation
-vim.keymap.set('n', '<leader>bn', vim.cmd.bnext)
-vim.keymap.set('n', '<leader>bp', vim.cmd.bprevious)
-vim.keymap.set('n', '<leader>bd', vim.cmd.bdelete)
+-- load theme
+dofile(vim.g.base46_cache .. "defaults")
+dofile(vim.g.base46_cache .. "statusline")
 
--- Split navigation
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
+require "options"
+require "autocmds"
 
--- Search
-vim.opt.hlsearch = true
-vim.keymap.set('n', '<leader>h', vim.cmd.nohlsearch)
-
--- wl-clipboard integration
-vim.keymap.set('v', '<leader>y', '"+y')
-vim.keymap.set('n', '<leader>p', '"+p')
-vim.keymap.set('v', '<leader>p', '"+p')
+vim.schedule(function()
+  require "mappings"
+end)
