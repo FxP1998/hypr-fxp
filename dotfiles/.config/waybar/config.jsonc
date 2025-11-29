@@ -18,7 +18,7 @@
     
     // MODULE POSITIONS
     "modules-left": [
-        "clock", 
+        "clock",
         "group/misc", 
         "custom/screen-recording", 
         "custom/updates"
@@ -131,7 +131,8 @@
         "group/volume",
         "group/brightness",
         // "network",
-        "battery"
+        "battery",
+        "custom/launcher"
     ],
     
     
@@ -202,7 +203,8 @@
         },
         "interval": 2,
         "on-scroll-up": "swayosd-client --brightness raise",
-        "on-scroll-down": "swayosd-client --brightness lower"
+        "on-scroll-down": "swayosd-client --brightness lower",
+        "tooltip": false
     },
 
 
@@ -239,8 +241,8 @@
             "critical": 15,
             "warning": 30
         },
-        "tooltip-format": "   {capacity}% "
-    }
+        "tooltip-format": " 󱈏 {capacity}% "
+    },
 
     //    "bluetooth": {
     //        "format": "",
@@ -257,4 +259,11 @@
     //        "on-click": "blueman-manager",
     //        "interval": 5
     //    },
+    "custom/launcher": {
+        "format": "󰵆",
+        "on-click": "~/.config/hypr-fxp/scripts/rofi-launcher.sh",
+        "tooltip": true,
+        "tooltip-format": " ROFI LAUNCHER "
+    }
+
 }

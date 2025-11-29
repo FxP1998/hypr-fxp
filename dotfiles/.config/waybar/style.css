@@ -30,6 +30,7 @@ window#waybar {
 #clock,
 #custom-updates,
 #custom-screen-recording,
+#custom-launcher,
 #tray,
 #pulseaudio,
 #backlight,
@@ -116,10 +117,12 @@ window#waybar {
     color: @color16;
 }
 
-
-
 #battery {
-    padding: 8px 0px 20px 0px;
+  color: @color4;
+}
+
+#custom-launcher {
+    padding: 0px 0px 20px 0px;
     transition: color 0.3s ease-in-out;
     color: @color4;
 }
@@ -209,6 +212,16 @@ window#waybar {
 
 #group-volume,
 #group-misc {
-    min-width: 00px;
+    min-width: 0px;
     padding: 0px 0px;
+}
+
+
+
+tooltip {
+  background: @background;
+  border: 1px solid @color3;
+}
+tooltip label {
+  color: @color4;
 }

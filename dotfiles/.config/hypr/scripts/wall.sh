@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WALL_DIR="$HOME/.config/hypr-fxp/themes/Catppuccin-Mocha/wallpapers/default"
+WALL_DIR="$HOME/.config/hypr-fxp/themes/Catppuccin-Latte/wallpapers/default"
 WALL=$(find "$WALL_DIR" -type f | shuf -n 1) || { echo "No wallpaper found in $WALL_DIR"; exit 1; }
 
 # Ensure swww-daemon is running (start it if not)
@@ -41,6 +41,6 @@ makoctl reload
 sleep 0.2
 
 # 9) Notify theme
-notify-send "Catppuccin Mocha" "Theme Applied "
+notify-send "Catppuccin Latte" "Theme Applied "
 
 exit 0

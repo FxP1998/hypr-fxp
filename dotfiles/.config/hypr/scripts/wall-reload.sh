@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WALL_DIR="$HOME/.config/hypr-fxp/themes/Catppuccin-Mocha/wallpapers"
+WALL_DIR="$HOME/.config/hypr-fxp/themes/Catppuccin-Latte/wallpapers"
 WALL=$(find "$WALL_DIR" -type f | shuf -n 1) || { echo "No wallpaper found in $WALL_DIR"; exit 1; }
 
 # Ensure swww-daemon is running (start it if not)
@@ -20,7 +20,7 @@ sleep 2
 wal -i "$WALL"
 
 # 4) Sleep 0.5 Seconds
-sleep 1
+sleep 0.5
 
 # 5) Reload Hyprland
 hyprctl reload
