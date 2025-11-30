@@ -26,11 +26,11 @@ if [[ -d "$THEME_DIR/config/.vim" ]]; then
   # Use 2>/dev/null to suppress errors if source is empty
 fi
 
-# if [[ -d "$THEME_DIR/config/nvim" ]]; then
-#     mkdir -p "$HOME/.config/nvim"
-#     cp -r "$THEME_DIR/config/nvim"/* "$HOME/.config/nvim/" 2>/dev/null
-#     echo "Copied: nvim config"
-# fi
+if [[ -f "$THEME_DIR/scripts/wall-boot.sh" ]]; then
+  mkdir -p "$HOME/.config/hypr/scripts"
+  cp "$THEME_DIR/scripts/wall-boot.sh" "$HOME/.config/hypr/scripts/wall-boot.sh"
+  echo "Copied: wall-boot.sh"
+fi
 
 if [[ -d "$THEME_DIR/config/gtk-3.0" ]]; then
   mkdir -p "$HOME/.config/gtk-3.0"
