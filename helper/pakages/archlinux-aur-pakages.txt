@@ -1,0 +1,5 @@
+auto-gpufreq-git
+python-pywal16
+python-pywalfox
+python2
+scenefx0.4
