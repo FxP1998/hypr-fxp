@@ -73,6 +73,50 @@ log_step() { echo -e "${BRIGHT_BLUE}${ARROW}${RESET} ${BOLD}$1${RESET}"; }
 log_install() { echo -e "${BRIGHT_GREEN}${STAR}${RESET} ${BOLD}$1${RESET}"; }
 log_skip() { echo -e "${DIM}${DOT}${RESET} ${DIM}$1${RESET}"; }
 
+# Function to check if yay is installed
+is_yay_installed() {
+  command -v yay &>/dev/null
+}
+
+# Function to install yay-bin
+install_yay_bin() {
+  log_step "Checking for yay..."
+
+  if is_yay_installed; then
+    log_success "yay is already installed"
+    return 0
+  fi
+
+  log_info "yay not found. Installing yay-bin..."
+
+  # Create temp directory
+  local temp_dir=$(mktemp -d)
+  cd "$temp_dir" || return 1
+
+  # Install dependencies
+  log_info "Installing dependencies..."
+  sudo pacman -S --needed --noconfirm git base-devel
+
+  # Clone yay-bin repository
+  log_info "Cloning yay-bin repository..."
+  git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin || return 1
+
+  # Build and install
+  log_info "Building yay-bin..."
+  if makepkg -si --noconfirm; then
+    log_success "yay-bin installed successfully"
+    cd ~
+    rm -rf "$temp_dir"
+    return 0
+  else
+    log_error "Failed to install yay-bin"
+    cd ~
+    rm -rf "$temp_dir"
+    return 1
+  fi
+}
+
 # Function to analyze packages and return missing count
 analyze_packages() {
   local package_file="$1"
@@ -310,12 +354,6 @@ install_aur_packages() {
   local skipped_count=0
   local failed_count=0
 
-  # Check for yay
-  if ! command -v yay &>/dev/null; then
-    log_error "yay not found. Please install yay first."
-    return 1
-  fi
-
   echo -e "${BRIGHT_WHITE}Installing AUR Packages:${RESET}"
   echo -e "${DIM}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
 
@@ -426,6 +464,21 @@ main() {
   fi
   echo ""
 
+  # Install yay-bin FIRST if we need AUR packages
+  if [[ -f "$aur_file" ]]; then
+    if ! is_yay_installed; then
+      log_step "yay not found. Installing yay-bin first..."
+      install_yay_bin
+      if [[ $? -ne 0 ]]; then
+        log_error "Failed to install yay-bin. AUR packages will be skipped."
+        local skip_aur=true
+      fi
+    else
+      log_success "yay is already installed"
+    fi
+    echo ""
+  fi
+
   # Analyze packages first
   echo -e "${BRIGHT_MAGENTA}Package Analysis Report:${RESET}"
   echo ""
@@ -445,10 +498,12 @@ main() {
 
   # AUR packages analysis
   local aur_missing=0
-  if [[ -f "$aur_file" ]]; then
+  if [[ -f "$aur_file" ]] && [[ -z "$skip_aur" ]]; then
     display_package_analysis "$aur_file" "aur"
     aur_missing=$?
     total_missing=$((total_missing + aur_missing))
+  elif [[ -f "$aur_file" ]] && [[ -n "$skip_aur" ]]; then
+    log_warning "Skipping AUR analysis due to yay-bin installation failure"
   else
     log_warning "AUR package file not found: $aur_file"
   fi
@@ -490,36 +545,9 @@ main() {
   fi
 
   # Install AUR packages (only if missing and yay is available)
-  if [[ -f "$aur_file" ]] && [[ $aur_missing -gt 0 ]]; then
-    # Check for yay
-    if ! command -v yay &>/dev/null; then
-      log_warning "yay not found. Installing yay first..."
-
-      # Install yay dependencies
-      sudo pacman -S --needed --noconfirm git base-devel
-
-      # Install yay from AUR
-      local temp_dir=$(mktemp -d)
-      cd "$temp_dir" || exit 1
-
-      git clone https://aur.archlinux.org/yay.git
-      cd yay || exit 1
-
-      if makepkg -si --noconfirm; then
-        log_success "yay installed successfully"
-      else
-        log_error "Failed to install yay"
-        cd ~
-        rm -rf "$temp_dir"
-        exit 1
-      fi
-
-      cd ~
-      rm -rf "$temp_dir"
-    fi
-
+  if [[ -f "$aur_file" ]] && [[ $aur_missing -gt 0 ]] && [[ -z "$skip_aur" ]]; then
     install_aur_packages "$aur_file"
-  elif [[ -f "$aur_file" ]]; then
+  elif [[ -f "$aur_file" ]] && [[ -z "$skip_aur" ]]; then
     echo -e "${BRIGHT_GREEN}✓ All AUR packages are already installed${RESET}"
     echo ""
   fi
