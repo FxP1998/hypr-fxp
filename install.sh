@@ -40,7 +40,7 @@ sleep 1
 clear
 
 # === Installing Pakages ===
-~/hypr-fxp_dotfiles/helper/intall-pakages.sh
+~/hypr-fxp_dotfiles/helper/install_pre-reqrements.sh
 
 # Sleep 1 Second
 sleep 1
