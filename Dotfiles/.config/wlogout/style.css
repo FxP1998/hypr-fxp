@@ -1,0 +1,75 @@
+/* -----------------------------------------------------
+   WLOGOUT STYLE - FxP Hyprland (Fixed Borders)
+   ----------------------------------------------------- */
+
+/* Import Matugen Colors */
+@import "./colors.css";
+
+* {
+    background-image: none;
+    font-family: "MapleMono NF Mono", monospace;
+}
+
+window {
+    /* Use Matugen background color with 85% opacity */
+    background-color: alpha(@background, 0.85);
+}
+
+/* -----------------------------------------------------
+   BUTTON CONFIGURATION
+   ----------------------------------------------------- */
+button {
+    color: @on_surface;
+    background-color: @surface_container;
+    border: 2px solid @surface_container;
+    border-radius: 20px;
+    
+    /* FIX: Remove default square focus lines and clip background */
+    outline-style: none;
+    background-clip: border-box;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+    
+    /* ANIMATION SETUP */
+    margin: 15px; 
+    transition: margin 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s;
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* -----------------------------------------------------
+   HOVER EFFECT (The "Pop")
+   ----------------------------------------------------- */
+button:hover {
+    background-color: @surface_container_highest;
+    border-color: @primary;
+    color: @primary;
+    
+    /* FIX: Ensure no square outline appears on hover */
+    outline-style: none; 
+
+    /* Margin shrinks -> Button expands */
+    margin: 5px;
+    
+    background-size: 30%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Keyboard Focus */
+button:focus {
+    background-color: @surface_container_highest;
+    border-color: @tertiary;
+    color: @tertiary;
+    margin: 5px;
+    outline-style: none; /* FIX: Remove square focus ring */
+}
+
+/* -----------------------------------------------------
+   ICONS
+   ----------------------------------------------------- */
+#lock { background-image: image(url("/usr/share/wlogout/icons/lock.png")); }
+#logout { background-image: image(url("/usr/share/wlogout/icons/logout.png")); }
+#reboot { background-image: image(url("/usr/share/wlogout/icons/reboot.png")); }
+#shutdown { background-image: image(url("/usr/share/wlogout/icons/shutdown.png")); }

@@ -1,0 +1,22 @@
+# ===== System Info =====
+pfetch
+
+# ===== Starship Prompt =====
+eval "$(starship init bash)"
+
+# ===== My Personal Github Alias =====
+if [ -f ~/.alias/github/git-alias ]; then
+    . ~/.alias/github/git-alias
+fi
+
+# ==== Shared Alias =====
+if [[ -f ~/.alias/shared/personal-alias ]]; then
+    source ~/.alias/shared/personal-alias
+fi
+
+# ===== FZF Integration (Bash) =====
+[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
+[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
+
+# ===== Zoxide (Better CD) =====
+eval "$(zoxide init bash)"

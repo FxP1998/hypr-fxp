@@ -1,0 +1,53 @@
+/* -----------------------------------------------------------------------------
+ * ROFI COLORS TEMPLATE (Matugen + Transparency)
+ * ----------------------------------------------------------------------------- */
+
+* {
+    /* --- STANDARD MATERIAL PALETTE --- */
+    primary: #c0c1ff;
+    on-primary: #282a60;
+    primary-container: #3f4178;
+    on-primary-container: #e1e0ff;
+
+    secondary: #c5c4dd;
+    on-secondary: #2e2f42;
+    secondary-container: #454559;
+    on-secondary-container: #e2e0f9;
+
+    tertiary: #e8b9d4;
+    on-tertiary: #46263b;
+    tertiary-container: #5f3c52;
+    on-tertiary-container: #ffd8ed;
+
+    error: #ffb4ab;
+    on-error: #690005;
+
+    surface: #131318;
+    on-surface: #e4e1e9;
+    on-surface-variant: #c7c5d0;
+
+    outline: #918f9a;
+
+    surface-container: #1f1f25;
+    surface-container-high: #2a292f;
+    surface-container-highest: #35343a;
+
+    /* --- SEMANTIC ALIASES --- */
+
+    /* Main Background (Solid) */
+    background-col: #131318;
+
+    /* Main Background (Transparent) - D9 = 85% , CC = 80%, BF = 75% , A6 = 65% , 99 = 60% and 80 = 50% Opacity */
+    background-alpha-col: #131318CC;
+
+    /* Card/Element Background */
+    background-alt-col: #1f1f25;
+
+    /* Text */
+    foreground-col: #e4e1e9;
+
+    /* Highlights */
+    selected-col: #c0c1ff;
+    active-col: #c5c4dd;
+    urgent-col: #ffb4ab;
+}

@@ -1,0 +1,24 @@
+# --- Dot Manager Logic ---
+# Don't upload the log file (it changes constantly)
+dot-manager.log
+
+# Don't upload the local config (stores your specific machine settings)
+.dot-manager.conf
+
+# --- Temporary & Backup Files ---
+# Ignore the temporary scripts folder you have
+scripts/tmp/
+
+# Ignore backups created by the manager
+.dotfiles-backup/
+
+# --- System & Editor Junk ---
+# Vim/Neovim swap files
+*.swp
+*.swo
+
+# Backup files (tilde at the end)
+*~
+
+# Custom
+#hypr-fxp/.config/hypr/assets/current-wallpaper.png

@@ -1,0 +1,77 @@
+# -----------------------------------------------------------------------------
+#  ALACRITTY CONFIGURATION
+#  Created By: M. H. IMAM
+#  GitHub: https://github.com/FxP1998/
+# -----------------------------------------------------------------------------
+
+[general]
+import = [
+    "~/.config/alacritty/colors.toml"
+]
+
+# --- WINDOW SETTINGS ---
+[window]
+# Padding (Internal spacing)
+padding = { x = 25, y = 25 }
+
+# Decorations (Title bar) - "Full" or "None"
+decorations = "Full"
+
+# Opacity (0.0 to 1.0)
+opacity = 1.0
+blur = false
+
+# Wayland Specifics
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+# --- SCROLLING ---
+[scrolling]
+history = 3000
+multiplier = 3
+
+# --- FONT CONFIGURATION ---
+[font]
+size = 11.5
+
+[font.normal]
+family = "MapleMono NF"
+style = "Regular"
+
+[font.bold]
+family = "MapleMono NF"
+style = "Bold"
+
+[font.italic]
+family = "MapleMono NF"
+style = "Italic"
+
+[font.bold_italic]
+family = "MapleMono NF"
+style = "Bold Italic"
+
+# --- CURSOR ---
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+blink_interval = 1000
+
+# --- BELL ---
+# Plays your custom sound
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+color = "#ffffff"
+command = { program = "paplay", args = ["/home/fxp/.config/alacritty/assets/ding.ogg"] }
+
+# --- KEY BINDINGS ---
+# Alacritty doesn't use standard Copy/Paste by default
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"

@@ -1,0 +1,301 @@
+#!/usr/bin/env bash
+# AUTHOR: M. H. IMAM (FxP1998)
+# GITHUB: https://github.com/FxP1998
+
+# --- DYNAMIC CONFIGURATION ---
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$SCRIPT_DIR" 
+CONFIG_FILE="$SCRIPT_DIR/.dot-manager.conf"
+LOG_FILE="$SCRIPT_DIR/dot-manager.log"
+
+GITHUB_REMOTE="origin"
+BRANCH="main"
+
+# --- ICONS & COLORS ---
+if [[ "$TERM" == "linux" || "$TERM" == "dumb" ]]; then
+    RED='' GREEN='' YELLOW='' BLUE='' NC=''
+    ICON_GIT="[GIT]" ICON_UPLOAD="[ALL]" ICON_PUSH="[>>]" ICON_UNDO="[<<]"
+    ICON_FIX="[FIX]" ICON_REFRESH="[R]" ICON_KEY="[KEY]" ICON_OK="[OK]" 
+    ICON_FAIL="[FAIL]" ICON_DANGER="[!!!]" ICON_REPAIR="[REP]" 
+    ICON_CONFIG="[CFG]" ICON_LOG="[LOG]"
+else
+    RED='\033[0;31m' GREEN='\033[0;32m' YELLOW='\033[1;33m' BLUE='\033[1;34m' NC='\033[0m'
+    ICON_GIT=""       
+    ICON_UPLOAD=""    
+    ICON_PUSH=""
+    ICON_UNDO=""      
+    ICON_FIX=""       
+    ICON_REFRESH=""   
+    ICON_KEY=""       
+    ICON_OK=""        
+    ICON_FAIL=""      
+    ICON_DANGER=""    
+    ICON_REPAIR=""     
+    ICON_CONFIG=""     
+    ICON_LOG=""        
+fi
+
+# --- LOGGING ---
+init_log() {
+    [[ ! -f "$LOG_FILE" ]] && touch "$LOG_FILE" && echo "[$(date)] Log initialized." >> "$LOG_FILE"
+}
+log_msg() {
+    local msg="$1"
+    echo -e "$msg"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $(echo "$msg" | sed 's/\x1b\[[0-9;]*m//g')" >> "$LOG_FILE"
+}
+
+# --- CONFIG ENGINE ---
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then source "$CONFIG_FILE"; fi
+    if [[ -z "$PACKAGE_NAME" ]] || [[ ! -d "$DOTFILES_DIR/$PACKAGE_NAME" ]]; then
+        # Auto-detect folder logic
+        if [[ -d "$DOTFILES_DIR/Dotfiles" ]]; then
+             PACKAGE_NAME="Dotfiles"
+             echo "PACKAGE_NAME=\"$PACKAGE_NAME\"" > "$CONFIG_FILE"
+        else
+             reconfigure_package
+        fi
+    fi
+}
+
+reconfigure_package() {
+    echo -e "${BLUE}:: DOTFILES SETUP WIZARD${NC}"
+    mapfile -t options < <(find . -maxdepth 1 -type d -not -path '*/.*' -not -name 'scripts' -not -name 'Note' -not -name '.' -printf '%P\n')
+    if [ ${#options[@]} -eq 0 ]; then
+        log_msg "${RED}[ERROR] No config subdirectory found!${NC}"; exit 1
+    fi
+    echo -e "\n${BLUE}Available Folders:${NC}"
+    local i=1
+    for opt in "${options[@]}"; do echo -e "   ${GREEN}$i)${NC} $opt"; ((i++)); done
+    read -p "Select number: " selection
+    local idx=$((selection-1))
+    if [[ -n "${options[$idx]}" ]]; then
+        PACKAGE_NAME="${options[$idx]}"
+        echo "PACKAGE_NAME=\"$PACKAGE_NAME\"" > "$CONFIG_FILE"
+        log_msg "${GREEN}${ICON_OK} Linked to: '$PACKAGE_NAME'${NC}"
+    else
+        reconfigure_package
+    fi
+}
+
+# --- GIT FUNCTIONS ---
+check_status() {
+    [[ ! -d ".git" ]] && { log_msg "${RED}Not a git repo!${NC}"; return 1; }
+    git status -s
+}
+
+check_git_identity() {
+    if [[ -z "$(git config user.name)" ]]; then
+        read -p "Enter your Name: " input_name
+        git config --global user.name "$input_name"
+        read -p "Enter your Email: " input_email
+        git config --global user.email "$input_email"
+    fi
+}
+
+push_specific() {
+    # check_status
+    echo -e "\n${BLUE}               PUSH SPECIFIC FILE/FOLDER               ${NC}"
+    echo -e "${YELLOW}Description:${NC} Select exactly which file to Add, Commit & Push."
+    echo -e ""
+    echo -e "${BLUE}--- Changed Files ---${NC}"
+    git status -s
+    echo -e "${BLUE}---------------------${NC}"
+    echo -e ""
+    
+    read -p "Enter path to push (e.g., ~/.config/hypr/hyprland.conf): " file_path
+    
+    if [[ -z "$file_path" ]]; then
+        echo -e "${RED}Error: Path cannot be empty.${NC}"
+        return
+    fi
+    
+    if [[ ! -e "$file_path" ]]; then
+        echo -e "${RED}Error: File/Folder not found: $file_path${NC}"
+        return
+    fi
+    
+    echo -e "\n${YELLOW}:: Adding '$file_path'...${NC}"
+    git add "$file_path"
+    
+    read -p "Commit Message: " msg
+    git commit -m "${msg:-Update $file_path}"
+    
+    echo -e "${BLUE}:: Pushing to GitHub...${NC}"
+    git push origin "$BRANCH" 2>&1 | tee -a "$LOG_FILE"
+    
+    if [ $? -eq 0 ]; then
+        log_msg "${GREEN}${ICON_OK} Specific Push Successful.${NC}"
+    else
+        log_msg "${RED}${ICON_FAIL} Push Failed.${NC}"
+    fi
+}
+
+push_all() {
+    check_status
+    echo -e "\n${BLUE}                  PUSH ALL (AUTO-SYNC)                  ${NC}"
+    echo -e "${YELLOW}Description:${NC} Adds ALL files, Commits, and Pushes automatically."
+    
+    # Check if there are changes first
+    if [ -z "$(git status --porcelain)" ]; then 
+        echo -e "${GREEN}Nothing to commit, working tree clean.${NC}"
+        return
+    fi
+
+    read -p "Are you sure? (y/n): " confirm
+    if [[ "${confirm,,}" == "y" ]]; then
+        git add .
+        read -p "Commit Message: " msg
+        git commit -m "${msg:-Update dotfiles}"
+        git push origin "$BRANCH" 2>&1 | tee -a "$LOG_FILE"
+        log_msg "${GREEN}${ICON_OK} Sync Complete.${NC}"
+    fi
+}
+
+remove_commits() {
+    echo -e "\n${RED}                  REMOVE LAST COMMIT                  ${NC}"
+    echo -e "${YELLOW}Warning: This undoes your last git commit.${NC}"
+    echo "1) Soft Undo (Keep your file changes, just un-commit)"
+    echo "2) Hard Undo (DELETE changes and un-commit - Dangerous)"
+    echo "3) Cancel"
+    
+    read -p "Select Option: " undo_opt
+    case $undo_opt in
+        1) 
+            git reset --soft HEAD~1 2>&1 | tee -a "$LOG_FILE"
+            log_msg "${GREEN}${ICON_OK} Undo Complete (Changes kept).${NC}" 
+            ;;
+        2) 
+            read -p "Type 'DELETE' to confirm losing data: " del_conf
+            if [[ "$del_conf" == "DELETE" ]]; then
+                git reset --hard HEAD~1 2>&1 | tee -a "$LOG_FILE"
+                log_msg "${RED}${ICON_OK} Undo Complete (Changes deleted).${NC}"
+            else
+                echo "Cancelled."
+            fi
+            ;;
+        *) echo "Cancelled." ;;
+    esac
+}
+
+force_push() {
+    echo -e "\n${RED}${ICON_DANGER} FORCE PUSH (Overwrite GitHub)${NC}"
+    read -p "Type 'FORCE' to confirm: " confirm
+    if [[ "$confirm" == "FORCE" ]]; then
+        git add .
+        git commit -m "Force Update"
+        git push origin "$BRANCH" --force 2>&1 | tee -a "$LOG_FILE"
+        log_msg "${GREEN}${ICON_OK} Remote Overwritten.${NC}"
+    fi
+}
+
+# --- SYMLINK DOCTOR ---
+symlink_doctor() {
+    log_msg "\n${BLUE}${ICON_FIX} SYMLINK DOCTOR${NC}"
+    RAW_OUTPUT=$(stow -n -t "$HOME" "$PACKAGE_NAME" 2>&1)
+    CONFLICT_FILES=$(echo "$RAW_OUTPUT" | grep "existing target" | sed 's/.*: //')
+
+    if [[ -z "$CONFLICT_FILES" ]]; then
+        stow -R -t "$HOME" "$PACKAGE_NAME" 2>&1 | tee -a "$LOG_FILE"
+        log_msg "${GREEN}${ICON_OK} Symlinks Updated.${NC}"
+    else
+        log_msg "${RED}${ICON_FAIL} CONFLICTS FOUND!${NC}"
+        echo "$CONFLICT_FILES"
+        echo -e "\n1) [BACKUP] Move conflicts to backup folder & Link"
+        echo "2) [ADOPT]  Overwrite repo with system files"
+        echo "3) Cancel"
+        read -p "Choose: " fix_opt
+        case $fix_opt in
+            1)
+                BACKUP_DIR="$HOME/.dotfiles-backup/conflicts_$(date +%Y%m%d_%H%M%S)"
+                mkdir -p "$BACKUP_DIR"
+                while IFS= read -r file; do
+                    [[ -n "$file" ]] && TARGET="$HOME/$file" && [[ -e "$TARGET" || -L "$TARGET" ]] && mkdir -p "$(dirname "$BACKUP_DIR/$file")" && mv "$TARGET" "$BACKUP_DIR/$file"
+                done <<< "$CONFLICT_FILES"
+                stow -R -t "$HOME" "$PACKAGE_NAME" 2>&1 | tee -a "$LOG_FILE"
+                ;;
+            2) stow --adopt -t "$HOME" "$PACKAGE_NAME"; git reset HEAD; log_msg "${GREEN}Adopted.${NC}" ;;
+            *) echo "Cancelled." ;;
+        esac
+    fi
+}
+
+# --- RESTORED FUNCTIONS ---
+view_logs() {
+    clear
+    echo -e "${BLUE}:: LAST 30 LOG ENTRIES ::${NC}"
+    tail -n 30 "$LOG_FILE"
+    echo -e "${BLUE}-------------------------${NC}"
+    read -p "Press Enter to return..."
+}
+
+repair_git_repo() {
+    log_msg "\n${BLUE}${ICON_REPAIR} REPAIRING GIT REPO${NC}"
+    if [[ -d ".git" ]]; then
+        read -p "Are you sure you want to DELETE .git and re-init? (y/n): " conf
+        if [[ "$conf" != "y" ]]; then return; fi
+        rm -rf .git
+    fi
+    git init
+    git branch -M main
+    check_git_identity
+    read -p "Paste SSH URL (e.g., git@github.com:...): " repo_url
+    [[ -n "$repo_url" ]] && git remote add origin "$repo_url"
+    log_msg "${GREEN}${ICON_OK} Repaired.${NC}"
+}
+
+setup_ssh() {
+    KEY_PATH="$HOME/.ssh/id_ed25519"
+    [[ ! -f "$KEY_PATH" ]] && ssh-keygen -t ed25519 -C "FxP-Hyprland" -f "$KEY_PATH" -N ""
+    cat "$KEY_PATH.pub"
+}
+
+# --- MAIN MENU ---
+init_log
+load_config
+cd "$DOTFILES_DIR"
+
+while true; do
+    clear
+    # PROFESSIONAL HEADER
+    echo -e "${BLUE}================================================================${NC}"
+    echo -e "                   ${ICON_GIT}  FxP DOT-MANAGER v3.2 PRO  "
+    echo -e "${BLUE}================================================================${NC}"
+    echo -e "                      Repo: ${YELLOW}$DOTFILES_DIR${NC}"
+    echo -e "                      Pkg:  ${YELLOW}$PACKAGE_NAME${NC}"
+    echo -e "${BLUE}================================================================${NC}"
+    echo ""
+    echo -e "     1)  Show Status"
+    echo -e "     2)  ${ICON_PUSH}  Push Specific File/Folder"
+    echo -e "     3)  ${ICON_UPLOAD}  Push All (Auto-Sync)"
+    echo -e "     4)  ${ICON_UNDO}  Remove/Undo Last Commit"
+    echo -e "     --------------------------------------------"
+    echo -e "     5)  ${ICON_DANGER}  Force Push (Overwrite)"
+    echo -e "     6)  ${ICON_FIX}  Symlink Doctor"
+    echo -e "     7)  ${ICON_REFRESH}  Quick Refresh (Stow)"
+    echo -e "     8)  ${ICON_KEY}  Setup SSH Keys"
+    echo -e "     9)  ${ICON_CONFIG}  Reconfigure Package"
+    echo -e "     10) ${ICON_LOG}  View Logs"
+    echo -e "     11) ${ICON_REPAIR}  Repair/Init Git Repo"
+    echo -e "     12) Exit"
+    echo ""
+    echo -e "${BLUE}================================================================${NC}"
+    read -p "     Select Option: " opt
+
+    case $opt in
+        1) check_status; read -p "     Press Enter..." ;;
+        2) push_specific; read -p "     Press Enter..." ;;
+        3) push_all; sleep 2 ;;
+        4) remove_commits; read -p "     Press Enter..." ;;
+        5) force_push; sleep 2 ;;
+        6) symlink_doctor; read -p "     Press Enter..." ;;
+        7) echo "Stowing..."; stow -R -t "$HOME" "$PACKAGE_NAME" 2>&1 | tee -a "$LOG_FILE"; sleep 1 ;;
+        8) setup_ssh; read -p "     Press Enter..." ;;
+        9) reconfigure_package ;;
+        10) view_logs ;;
+        11) repair_git_repo; read -p "     Press Enter..." ;;
+        12) exit 0 ;;
+        *) echo "     Invalid option"; sleep 1 ;;
+    esac
+done

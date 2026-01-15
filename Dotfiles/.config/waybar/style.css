@@ -1,0 +1,218 @@
+/* -----------------------------------------------------------------------------
+ * WAYBAR STYLE CONFIGURATION (style.css)
+ * Created By: M. H. IMAM
+ * GitHub: https://github.com/FxP1998/
+ * ----------------------------------------------------------------------------- */
+
+@import "colors.css";
+
+/* --- GLOBAL RESET --- */
+* {
+    border: none;
+    font-family:
+        "Hack", "MapleMono NF", "0xProto Nerd Font", "Font Awesome",
+        "Material Icons", sans-serif;
+    min-width: 6px;
+    padding: 0px;
+    margin: 0;
+}
+
+/* --- THE BAR WINDOW --- */
+window#waybar {
+    background: @background;
+    color: @on_surface;
+    /* No border on the right. */
+    min-width: 0px;
+}
+
+/* --- COMMON MODULE STYLES --- */
+#clock,
+#custom-power,
+#custom-updates,
+#custom-screen-recording,
+#custom-launcher,
+#tray,
+#pulseaudio,
+#backlight,
+#battery,
+#network,
+#bluetooth {
+    font-size: 15px;
+    font-weight: 500;
+    min-width: 40px;
+    padding: 5px 0px;
+
+    /* Card Style for these modules (Optional: remove this line for transparent) */
+    /* background-color: @surface_container; */
+    /* border-radius: 12px; */
+    /* margin: 4px 5px; */
+}
+
+/* --- CLOCK (Big & Bold - Original Style) --- */
+#clock {
+    font-size: x-large;
+    font-weight: bold;
+    padding: 20px 0px 0px 0px;
+    color: @on_surface;
+    background: transparent; /* No card background for clock, cleaner look */
+}
+
+/* --- WORKSPACES (Original Floating Pill Style) --- */
+/* No container background, just the buttons */
+#workspaces {
+    background: transparent;
+    margin: 8;
+    padding: 0;
+}
+
+#workspaces button {
+    /* Original sizing & transition */
+    font-size: 13px;
+    color: transparent;
+    min-width: 7px;
+    margin: 5px 13px;
+    padding: 0px;
+    border-radius: 25px;
+    transition: all 0.4s ease-in-out;
+
+    /* Inactive: Subtle Matugen Gradient */
+    background: linear-gradient(
+        180deg,
+        @surface_container_highest 0%,
+        @surface_container 100%
+    );
+}
+
+#workspaces button.active {
+    /* Active: Primary to Secondary Gradient */
+    background: linear-gradient(180deg, @primary 4%, @secondary 100%);
+    min-height: 75px; /* The "Long Pill" effect */
+}
+
+#workspaces button:hover {
+    /* Hover: Primary to Tertiary Gradient */
+    background: linear-gradient(180deg, @primary 0%, @tertiary 100%);
+}
+
+/* --- SLIDERS (Original Width) --- */
+#backlight-slider slider,
+#pulseaudio-slider slider {
+    min-width: 10px;
+    min-height: 10px;
+    background: @background;
+    border: 5px;
+    border-radius: 25px;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+    min-width: 0px;
+    min-height: 100px;
+    background: linear-gradient(
+        180deg,
+        @surface_container 0%,
+        @surface_container_lowest 100%
+    );
+    border-radius: 25px;
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+    min-width: 8px;
+    background: linear-gradient(180deg, @primary 30%, @background 100%);
+    border-radius: 25px;
+}
+
+/* --- COLORS & STATES --- */
+#backlight,
+#pulseaudio {
+    color: @primary;
+}
+
+#pulseaudio.muted {
+    color: @error;
+}
+
+#battery {
+    color: @primary;
+}
+#battery.critical {
+    color: @error;
+}
+#battery.warning {
+    color: @tertiary;
+}
+#battery.good {
+    color: @secondary;
+}
+#battery.full {
+    color: @primary;
+}
+#battery.charging {
+    color: @primary;
+}
+
+#custom-launcher {
+    padding: 0px 0px 20px 0px;
+    transition: color 0.3s ease-in-out;
+    color: @primary;
+    background: transparent; /* Transparent for cleaner look at bottom */
+}
+
+#custom-separator {
+    padding: 3px 0px 3px 0px;
+    color: @outline;
+    background: transparent;
+}
+
+#custom-power {
+	font-size: 18;
+	color: @error;
+}
+
+#custom-updates {
+    color: @on_surface_variant;
+}
+
+#custom-screen-recording {
+    color: @error;
+}
+
+#tray {
+    color: @on_surface;
+}
+
+/* --- TOOLTIP & CALENDAR --- */
+tooltip {
+    background: @surface_container;
+    border: 1px solid @outline;
+}
+tooltip label {
+    color: @primary;
+}
+
+/* Calendar styling using Matugen colors */
+calendar {
+    background-color: @surface_container;
+    color: @on_surface;
+    border-radius: 12px;
+    padding: 5px;
+}
+calendar > .header {
+    color: @primary;
+    font-weight: bold;
+}
+calendar > .day {
+    color: @on_surface;
+}
+calendar > .day:hover {
+    background-color: @secondary;
+    color: @on_secondary;
+    border-radius: 5px;
+}
+calendar > .today {
+    color: @tertiary;
+    font-weight: bold;
+    border: 1px solid @tertiary;
+    border-radius: 5px;
+}

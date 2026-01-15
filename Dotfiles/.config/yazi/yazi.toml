@@ -1,0 +1,86 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[mgr]
+ratio = [ 2, 3, 3 ]
+sort_by = "alphabetical"
+show_hidden = true
+show_symlink = true
+scrolloff = 5
+title_format = "Yazi: {cwd}"
+
+[preview]
+tab_size = 2
+max_width = 600
+max_height = 900
+image_filter = "triangle"
+image_quality = 80
+ueberzug_scale = 1
+
+[opener]
+# 1. Text Editors
+edit = [ { run = '${EDITOR:-nvim} "$@"', desc = "$EDITOR", block = true, for = "unix" } ]
+nvim = [ { run = 'nvim "$@"', desc = "NeoVim", block = true, for = "unix" } ]
+nano = [ { run = 'nano "$@"', desc = "Nano", block = true, for = "unix" } ]
+
+# 2. GUI Documents
+libreoffice = [ { run = 'libreoffice "$@"', orphan = true, desc = "LibreOffice", for = "unix" } ]
+okular = [ { run = 'okular "$@"', orphan = true, desc = "Okular", for = "unix" } ]
+zathura = [ { run = 'zathura "$@"', orphan = true, desc = "Zathura", for = "unix" } ]
+
+# 3. Media
+eog = [ { run = 'eog "$@"', orphan = true, desc = "Eye of GNOME", for = "unix" } ]
+firefox = [ { run = 'firefox "$@"', orphan = true, desc = "Firefox", for = "unix" } ]
+play = [ { run = 'mpv --force-window "$@"', orphan = true, desc = "MPV", for = "unix" } ]
+vlc = [ { run = 'vlc "$@"', orphan = true, desc = "VLC", for = "unix" } ]
+
+# 4. System & Archives
+open = [ { run = 'xdg-open "$1"', desc = "Open", for = "linux" } ]
+reveal = [ { run = 'xdg-open "$(dirname "$1")"', desc = "Reveal", for = "linux" } ]
+extract = [ { run = 'ya pub extract --list "$@"', desc = "Extract", for = "unix" } ]
+
+[open]
+rules = [
+    # --- FOLDERS ---
+	{ name = "*/", use = [ "edit", "open", "reveal" ] },
+
+    # --- SPECIAL FIXES (Empty files & Code) ---
+	{ mime = "inode/empty", use = [ "edit", "nvim", "reveal" ] },
+    
+    # Explicitly force these extensions to use NeoVim (Robust Fix)
+    { name = "*.lua",  use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.sh",   use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.toml", use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.conf", use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.ini",  use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.css",  use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.js",   use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.py",   use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.rs",   use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.c",    use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.cpp",  use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.md",   use = [ "edit", "nvim", "reveal" ] },
+    { name = "*.txt",  use = [ "edit", "nvim", "reveal" ] },
+
+    # --- IMAGES ---
+	{ mime = "image/*", use = [ "eog", "firefox", "open", "reveal" ] },
+    
+    # --- DOCUMENTS ---
+	{ mime = "application/pdf", use = [ "okular", "zathura", "firefox", "open", "reveal" ] },
+    { name = "*.docx", use = [ "libreoffice", "open", "reveal" ] },
+    { name = "*.doc",  use = [ "libreoffice", "open", "reveal" ] },
+    { name = "*.xlsx", use = [ "libreoffice", "open", "reveal" ] },
+    { name = "*.pptx", use = [ "libreoffice", "open", "reveal" ] },
+    { name = "*.odt",  use = [ "libreoffice", "open", "reveal" ] },
+
+    # --- MEDIA ---
+	{ mime = "audio/*", use = [ "play", "vlc", "firefox", "open", "reveal" ] },
+	{ mime = "video/*", use = [ "play", "vlc", "open", "reveal" ] },
+
+    # --- ARCHIVES ---
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "extract", "reveal" ] },
+    
+    # --- FALLBACKS ---
+	{ mime = "text/*", use = [ "edit", "nvim", "reveal" ] },
+	{ mime = "application/{json,ndjson}", use = [ "edit", "nvim", "reveal" ] },
+	{ name = "*", use = [ "open", "edit", "reveal" ] },
+]

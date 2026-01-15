@@ -1,0 +1,21 @@
+# ===== System Info ====
+pfetch
+
+# ===== Starship Prompt =====
+eval "$(starship init zsh)"
+
+# ==== Shared Alias =====
+if [[ -f ~/.alias/shared/personal-alias ]]; then
+    source ~/.alias/shared/personal-alias
+fi
+
+# ===== Plugins =====
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# ===== FZF Integration (ZSH) =====
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+
+# ===== Zoxide (Better CD) =====
+eval "$(zoxide init zsh)"

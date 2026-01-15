@@ -1,0 +1,53 @@
+/* -----------------------------------------------------------------------------
+ * ROFI COLORS TEMPLATE (Matugen + Transparency)
+ * ----------------------------------------------------------------------------- */
+
+* {
+    /* --- STANDARD MATERIAL PALETTE --- */
+    primary: {{colors.primary.default.hex}};
+    on-primary: {{colors.on_primary.default.hex}};
+    primary-container: {{colors.primary_container.default.hex}};
+    on-primary-container: {{colors.on_primary_container.default.hex}};
+
+    secondary: {{colors.secondary.default.hex}};
+    on-secondary: {{colors.on_secondary.default.hex}};
+    secondary-container: {{colors.secondary_container.default.hex}};
+    on-secondary-container: {{colors.on_secondary_container.default.hex}};
+
+    tertiary: {{colors.tertiary.default.hex}};
+    on-tertiary: {{colors.on_tertiary.default.hex}};
+    tertiary-container: {{colors.tertiary_container.default.hex}};
+    on-tertiary-container: {{colors.on_tertiary_container.default.hex}};
+
+    error: {{colors.error.default.hex}};
+    on-error: {{colors.on_error.default.hex}};
+
+    surface: {{colors.surface.default.hex}};
+    on-surface: {{colors.on_surface.default.hex}};
+    on-surface-variant: {{colors.on_surface_variant.default.hex}};
+
+    outline: {{colors.outline.default.hex}};
+
+    surface-container: {{colors.surface_container.default.hex}};
+    surface-container-high: {{colors.surface_container_high.default.hex}};
+    surface-container-highest: {{colors.surface_container_highest.default.hex}};
+
+    /* --- SEMANTIC ALIASES --- */
+
+    /* Main Background (Solid) */
+    background-col: {{colors.surface.default.hex}};
+
+    /* Main Background (Transparent) - D9 = 85% , CC = 80%, BF = 75% , A6 = 65% , 99 = 60% and 80 = 50% Opacity */
+    background-alpha-col: {{colors.surface.default.hex}}CC;
+
+    /* Card/Element Background */
+    background-alt-col: {{colors.surface_container.default.hex}};
+
+    /* Text */
+    foreground-col: {{colors.on_surface.default.hex}};
+
+    /* Highlights */
+    selected-col: {{colors.primary.default.hex}};
+    active-col: {{colors.secondary.default.hex}};
+    urgent-col: {{colors.error.default.hex}};
+}

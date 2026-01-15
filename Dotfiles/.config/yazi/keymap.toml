@@ -1,0 +1,75 @@
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[manager]
+keymap = [
+    # --- HELP & QUIT ---
+    { on = "<F1>", run = "help", desc = "Help" },
+    { on = "~",    run = "help", desc = "Help" },
+    { on = "<Esc>", run = "escape",              desc = "Cancel" },
+    { on = "q",     run = "quit",                desc = "Quit" },
+    { on = "Q",     run = "quit --no-cwd-file",  desc = "Quit (no cwd)" },
+    { on = "<C-c>", run = "close",               desc = "Close Tab/Quit" },
+
+    # --- NAVIGATION ---
+    { on = "k", run = "arrow -1", desc = "Up" },
+    { on = "j", run = "arrow 1",  desc = "Down" },
+    { on = "h", run = "leave",    desc = "Parent" },
+    { on = "l", run = "open",     desc = "Enter/Open" },
+
+    { on = "<Up>",    run = "arrow -1", desc = "Up" },
+    { on = "<Down>",  run = "arrow 1",  desc = "Down" },
+    { on = "<Left>",  run = "leave",    desc = "Parent" },
+    { on = "<Right>", run = "open",     desc = "Enter/Open" },
+    { on = "<Enter>", run = "open",     desc = "Enter/Open" },
+    { on = "O",       run = "open --interactive", desc = "Open With..." },
+
+    # --- FILE OPS ---
+    { on = "a", run = "create",                   desc = "Create" },
+    { on = "r", run = "rename --cursor=before_ext", desc = "Rename" },
+    { on = "d", run = "remove",                   desc = "Trash" },
+    { on = "D", run = "remove --permanently",     desc = "Delete Forever" },
+    
+    # --- COPY PATHS (Hyprland/Wayland) ---
+    { on = ["c", "c"], run = "shell 'echo -n \"$@\" | wl-copy' --confirm", desc = "Copy Full Path" },
+    { on = ["c", "n"], run = "shell 'basename -a \"$@\" | wl-copy' --confirm", desc = "Copy Name" },
+    { on = ["c", "d"], run = "shell 'dirname \"$@\" | wl-copy' --confirm", desc = "Copy Directory Path" },
+
+    # --- CLIPBOARD (Files) ---
+    { on = "y", run = "yank",        desc = "Copy File" },
+    { on = "x", run = "yank --cut",  desc = "Cut File" },
+    { on = "p", run = "paste",       desc = "Paste" },
+    { on = "P", run = "paste --force", desc = "Paste (Overwrite)" },
+
+    # --- SELECTION ---
+    { on = "<Space>", run = ["toggle", "arrow 1"], desc = "Select" },
+    { on = "<C-a>",   run = "toggle_all --state=on", desc = "Select All" },
+    { on = "v",       run = "visual_mode",           desc = "Visual Mode" },
+
+    # --- TABS (1-5) ---
+    { on = "t", run = "tab_create --current", desc = "New Tab" },
+    { on = "1", run = "tab_switch 0", desc = "Tab 1" },
+    { on = "2", run = "tab_switch 1", desc = "Tab 2" },
+    { on = "3", run = "tab_switch 2", desc = "Tab 3" },
+    { on = "4", run = "tab_switch 3", desc = "Tab 4" },
+    { on = "5", run = "tab_switch 4", desc = "Tab 5" },
+    { on = "[", run = "tab_switch -1 --relative", desc = "Prev Tab" },
+    { on = "]", run = "tab_switch 1 --relative",  desc = "Next Tab" },
+    
+    # --- UTILS ---
+    { on = ".", run = "hidden toggle", desc = "Hidden Files" },
+    { on = "/", run = "find --smart",  desc = "Find" },
+    { on = "s", run = "shell --interactive", desc = "Shell" },
+]
+
+[help]
+keymap = [
+    { on = "<Esc>", run = "escape", desc = "Close" },
+    { on = "q",     run = "escape", desc = "Close" },
+    { on = "<C-c>", run = "close",  desc = "Close" },
+    { on = "k", run = "arrow -1", desc = "Up" },
+    { on = "j", run = "arrow 1",  desc = "Down" },
+    { on = "<Up>",   run = "arrow -1", desc = "Up" },
+    { on = "<Down>", run = "arrow 1",  desc = "Down" },
+    { on = "/", run = "filter", desc = "Search" },
+    { on = "f", run = "filter", desc = "Search" },
+]

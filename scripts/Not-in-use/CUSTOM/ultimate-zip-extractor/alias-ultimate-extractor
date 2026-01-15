@@ -1,0 +1,39 @@
+# ===== The Ultimate Extactor =====
+# Required pakages "unzip unrar p7zip zstd xz gzip bzip2 tar"
+x () {
+    if [[ -f "$1" ]]; then
+        filepath=$(realpath "$1")
+        filename=$(basename -- "$filepath")
+        filedir=$(dirname -- "$filepath")
+        dirname="${filename%.*}"
+
+        # Handle double extensions like .tar.gz, .tar.xz, .tar.bz2, .tar.zst
+        case "$filename" in
+            *.tar.gz|*.tgz)   dirname="${filename%.tar.gz}"; dirname="${dirname%.tgz}" ;;
+            *.tar.bz2|*.tbz2) dirname="${filename%.tar.bz2}"; dirname="${dirname%.tbz2}" ;;
+            *.tar.xz)         dirname="${filename%.tar.xz}" ;;
+            *.tar.zst)        dirname="${filename%.tar.zst}" ;;
+        esac
+
+        outdir="$filedir/$dirname"
+        mkdir -p "$outdir"
+
+        case "$filename" in
+            *.tar.bz2|*.tbz2)   tar xvjf "$filepath" -C "$outdir" ;;
+            *.tar.gz|*.tgz)     tar xvzf "$filepath" -C "$outdir" ;;
+            *.tar.xz)           tar xvJf "$filepath" -C "$outdir" ;;
+            *.tar.zst)          unzstd -c "$filepath" | tar xvf - -C "$outdir" ;;
+            *.tar)              tar xvf "$filepath" -C "$outdir" ;;
+            *.zip)              unzip -d "$outdir" "$filepath" ;;
+            *.rar)              unrar x "$filepath" "$outdir"/ ;;
+            *.7z)               7z x "$filepath" -o"$outdir" ;;
+            *.gz)               gunzip -c "$filepath" > "$outdir/${filename%.gz}" ;;
+            *.bz2)              bunzip2 -c "$filepath" > "$outdir/${filename%.bz2}" ;;
+            *.xz)               unxz -c "$filepath" > "$outdir/${filename%.xz}" ;;
+            *.zst)              unzstd -c "$filepath" > "$outdir/${filename%.zst}" ;;
+            *) echo " Unknown archive format: $1" ;;
+        esac
+    else
+        echo " File does not exist: $1"
+    fi
+}

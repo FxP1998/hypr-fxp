@@ -1,0 +1,126 @@
+/* -----------------------------------------------------------------------------
+ * ROFI WALLPAPER SELECTOR
+ * Location: ~/.config/rofi/wallpapers/wallpaper-select.rasi
+ * ----------------------------------------------------------------------------- */
+
+/* Import global colors from the parent folder */
+@import "~/.config/rofi/colors.rasi"
+
+* {
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+    margin:                      0px;
+    padding:                     0px;
+}
+
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       90%;
+    height:                      450px; /* Tall enough for big previews */
+    
+    enabled:                     true;
+    border:                      2px solid;
+    border-radius:               20px;
+    border-color:                @selected-col;
+    cursor:                      "default";
+    background-color:            @background-alpha-col;
+}
+
+mainbox {
+    enabled:                     true;
+    spacing:                     20px;
+    padding:                     40px;
+    background-color:            transparent;
+    orientation:                 vertical;
+    children:                    [ "inputbar", "listview" ];
+}
+
+/* --- Search Bar --- */
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     15px;
+    margin:                      0px 20% 0px 20%;
+    border-radius:               15px;
+    background-color:            @background-alt-col;
+    text-color:                  @foreground-col;
+    children:                    [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  @selected-col;
+    padding:                     0px 10px 0px 5px;
+    font:                        "MapleMono NF Mono 16";
+    content:                     " ";
+}
+
+entry {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  @foreground-col;
+    cursor:                      text;
+    placeholder:                 "Search Wallpapers...";
+    vertical-align:              0.5;
+}
+
+/* --- The Horizontal Gallery --- */
+listview {
+    enabled:                     true;
+    columns:                     5;       /* Adjust columns to fit your screen */
+    lines:                       1;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     20px;
+    background-color:            transparent;
+    cursor:                      "default";
+    
+    /* Flow items horizontally */
+    flow: horizontal;
+}
+
+/* --- Wallpaper Cards --- */
+element {
+    enabled:                     true;
+    orientation:                 vertical;
+    spacing:                     10px;
+    padding:                     10px;
+    border-radius:               15px;
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+    cursor:                      pointer;
+}
+
+element selected.normal {
+    background-color:            @background-alt-col;
+    border:                      1px solid;
+    border-color:                @selected-col;
+    text-color:                  @selected-col;
+}
+
+/* Large Thumbnail */
+element-icon {
+    size:                        200px; 
+    cursor:                      inherit;
+    background-color:            transparent;
+    horizontal-align:            0.5;
+}
+
+/* Filename Text */
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+}
