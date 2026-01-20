@@ -21,4 +21,7 @@ scripts/tmp/
 *~
 
 # Custom
-#hypr-fxp/.config/hypr/assets/current-wallpaper.png
+Dotfiles/.config/hypr/assets/current-wallpaper.png
+Dotfiles/.config/dconf/
+Dotfiles/.config/mozilla/
+Dotfiles/.config/pulse/

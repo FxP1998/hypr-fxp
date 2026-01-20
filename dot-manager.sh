@@ -21,7 +21,6 @@ MAGENTA='\033[0;35m'
 NC='\033[0m'  # No Color
 
 # --- TTY TEXT ICONS ---
-# Pure ASCII/Text indicators for maximum compatibility
 ICON_GIT="[GIT]"       
 ICON_UPLOAD="[UP]"    
 ICON_PUSH="[PUSH]"
@@ -66,7 +65,6 @@ init_log() {
 }
 log_msg() {
     local msg="$1"
-    # Improved regex to strip ANSI color codes for the log file
     local clean_msg=$(echo "$msg" | sed 's/\x1b\[[0-9;]*m//g')
     echo -e "$msg"
     echo "$(date '+%Y-%m-%d %H:%M:%S') | $clean_msg" >> "$LOG_FILE"
@@ -76,7 +74,6 @@ log_msg() {
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then 
         source "$CONFIG_FILE"
-        # Ensure PACKAGE_NAME is valid
         if [[ ! -d "$DOTFILES_DIR/$PACKAGE_NAME" ]]; then
             echo -e "${YELLOW}${ICON_INFO} Package '$PACKAGE_NAME' not found.${NC}"
             reconfigure_package
@@ -84,7 +81,6 @@ load_config() {
     fi
     
     if [[ -z "$PACKAGE_NAME" ]] || [[ ! -d "$DOTFILES_DIR/$PACKAGE_NAME" ]]; then
-        # Auto-detect folder logic
         if [[ -d "$DOTFILES_DIR/Dotfiles" ]]; then
             PACKAGE_NAME="Dotfiles"
             echo "PACKAGE_NAME=\"$PACKAGE_NAME\"" > "$CONFIG_FILE"
@@ -134,18 +130,16 @@ reconfigure_package() {
 check_status() {
     if [[ ! -d ".git" ]]; then 
         echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
-        echo -e "${YELLOW}Run option 12 to initialize git repository.${NC}"
+        echo -e "${YELLOW}Run option 11 to initialize git repository.${NC}"
         return 1
     fi
     
     echo -e "${BLUE}${ICON_GIT} Repository Status:${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
     
-    # Show current branch
     current_branch=$(git branch --show-current 2>/dev/null || echo "none")
     echo -e "  Branch: ${GREEN}$current_branch${NC}"
     
-    # Show remote
     remote_url=$(git remote get-url "$GITHUB_REMOTE" 2>/dev/null || echo "none")
     echo -e "  Remote: ${CYAN}$remote_url${NC}"
     
@@ -189,7 +183,6 @@ ensure_ssh_url() {
     remote_url=$(git remote get-url "$GITHUB_REMOTE" 2>/dev/null || echo "")
     
     if [[ -n "$remote_url" ]]; then
-        # Convert HTTPS URL to SSH if detected
         if [[ "$remote_url" =~ ^https://github.com/ ]]; then
             echo -e "${YELLOW}${ICON_INFO} Converting HTTPS URL to SSH...${NC}"
             repo_path=$(echo "$remote_url" | sed -E 's|https://github.com/||' | sed 's|\.git$||')
@@ -198,7 +191,7 @@ ensure_ssh_url() {
             log_msg "${GREEN}${ICON_OK} Remote URL updated to: $new_url${NC}"
             return 0
         elif [[ "$remote_url" =~ ^git@github\.com: ]]; then
-            return 0  # Already SSH
+            return 0
         else
             echo -e "${RED}${ICON_FAIL} Unknown remote URL format: $remote_url${NC}"
             return 1
@@ -221,7 +214,6 @@ pull_from_remote() {
     
     echo -e "${BLUE}Pulling latest changes from $BRANCH branch...${NC}"
     
-    # Check if there are local changes
     if [[ -n "$(git status --porcelain)" ]]; then
         echo -e "${YELLOW}${ICON_INFO} You have local changes that might conflict.${NC}"
         echo -e "Options:"
@@ -261,7 +253,7 @@ pull_from_remote() {
     fi
 }
 
-# --- SYNC WITH REMOTE (PULL THEN PUSH) ---
+# --- SYNC WITH REMOTE ---
 sync_with_remote() {
     if [[ ! -d ".git" ]]; then
         echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
@@ -273,14 +265,12 @@ sync_with_remote() {
     
     ensure_ssh_url
     
-    # First pull
     echo -e "${BLUE}Step 1: Pulling latest changes...${NC}"
     if ! pull_from_remote; then
         echo -e "${RED}${ICON_FAIL} Sync aborted due to pull failure.${NC}"
         return 1
     fi
     
-    # Check if there are changes to push
     if [[ -z "$(git status --porcelain)" ]]; then 
         echo -e "${GREEN}${ICON_OK} Already up to date with remote.${NC}"
         return 0
@@ -322,13 +312,11 @@ setup_ssh() {
     echo -e "${CYAN}----------------------------------------------${NC}"
     echo ""
     
-    # Check for existing SSH agent
     if [[ -z "$SSH_AUTH_SOCK" ]]; then
         echo -e "${YELLOW}${ICON_INFO} Starting SSH agent...${NC}"
         eval "$(ssh-agent -s)" > /dev/null 2>&1
     fi
     
-    # Check existing keys
     echo -e "${BLUE}Checking existing SSH keys...${NC}"
     existing_keys=$(ls ~/.ssh/id_*.pub 2>/dev/null)
     
@@ -349,39 +337,31 @@ setup_ssh() {
         
         if [[ "$key_choice" =~ ^[0-9]+$ ]]; then
             if [ "$key_choice" -eq "$i" ]; then
-                # Create new key
                 KEY_FILE=""
             elif [ "$key_choice" -eq $((i+1)) ]; then
                 return
             elif [ "$key_choice" -lt "$i" ]; then
                 KEY_FILE="${key_map[$key_choice]%.pub}"
                 echo -e "${GREEN}${ICON_OK} Using existing key: $KEY_FILE${NC}"
-                
-                # Add to SSH agent if not already
                 ssh-add "$KEY_FILE" 2>/dev/null
-                
-                # Show public key
                 echo -e "\n${BLUE}Public key:${NC}"
                 echo -e "${CYAN}----------------------------------------------${NC}"
                 cat "${KEY_FILE}.pub"
                 echo -e "${CYAN}----------------------------------------------${NC}"
-                
                 echo -e "\n${YELLOW}${ICON_INFO} To add this key to GitHub:${NC}"
                 echo -e "1. Go to ${CYAN}https://github.com/settings/ssh/new${NC}"
                 echo -e "2. Paste the key above"
                 echo -e "3. Click 'Add SSH key'"
-                
                 read -p "Press Enter to continue..."
                 return
             fi
         fi
     fi
     
-    # Create new key
     echo -e "${BLUE}Creating new SSH key...${NC}"
     echo -e "\n${YELLOW}Choose key type:${NC}"
-    echo -e "  ${GREEN}1)${NC} ed25519 ${CYAN}(Recommended - Faster, more secure)${NC}"
-    echo -e "  ${GREEN}2)${NC} rsa-4096 ${CYAN}(Compatible with older systems)${NC}"
+    echo -e "  ${GREEN}1)${NC} ed25519 ${CYAN}(Recommended)${NC}"
+    echo -e "  ${GREEN}2)${NC} rsa-4096 ${CYAN}(Compatible)${NC}"
     
     read -p "Select [1]: " key_type
     key_type=${key_type:-1}
@@ -395,29 +375,12 @@ setup_ssh() {
     
     if [[ "$key_type" == "2" ]]; then
         KEY_FILE="$HOME/.ssh/id_rsa"
-        if [[ -f "$KEY_FILE" ]]; then
-            echo -e "${YELLOW}Key already exists. Overwrite? (y/n):${NC}"
-            read -p "> " overwrite
-            if [[ "${overwrite,,}" != "y" ]]; then
-                echo -e "${YELLOW}Cancelled.${NC}"
-                return
-            fi
-        fi
         ssh-keygen -t rsa -b 4096 -C "${key_email:-$(whoami)@$(hostname)}" -f "$KEY_FILE" -N ""
     else
         KEY_FILE="$HOME/.ssh/id_ed25519"
-        if [[ -f "$KEY_FILE" ]]; then
-            echo -e "${YELLOW}Key already exists. Overwrite? (y/n):${NC}"
-            read -p "> " overwrite
-            if [[ "${overwrite,,}" != "y" ]]; then
-                echo -e "${YELLOW}Cancelled.${NC}"
-                return
-            fi
-        fi
         ssh-keygen -t ed25519 -C "${key_email:-$(whoami)@$(hostname)}" -f "$KEY_FILE" -N ""
     fi
     
-    # Add to SSH agent
     ssh-add "$KEY_FILE" 2>/dev/null
     
     echo -e "\n${GREEN}${ICON_OK} SSH key created successfully!${NC}"
@@ -441,10 +404,8 @@ setup_github_repo() {
     echo -e "${CYAN}----------------------------------------------${NC}"
     echo ""
     
-    # Check if already a git repo
     if [[ -d ".git" ]]; then
         echo -e "${YELLOW}${ICON_INFO} Git repository already exists.${NC}"
-        
         current_remote=$(git remote get-url "$GITHUB_REMOTE" 2>/dev/null || echo "")
         if [[ -n "$current_remote" ]]; then
             echo -e "Current remote: ${CYAN}$current_remote${NC}"
@@ -452,7 +413,6 @@ setup_github_repo() {
             echo -e "  ${GREEN}1)${NC} Keep current remote"
             echo -e "  ${GREEN}2)${NC} Change remote URL"
             echo -e "  ${GREEN}3)${NC} Cancel"
-            
             read -p "Select: " opt
             case $opt in
                 2)
@@ -465,25 +425,18 @@ setup_github_repo() {
                 3) return ;;
             esac
         fi
-        
-        # Ensure SSH URL
         ensure_ssh_url
         return
     fi
     
-    # Initialize git repository
     echo -e "${BLUE}Initializing git repository...${NC}"
     git init
-    
-    # Set git identity
     check_git_identity
     
-    # Choose branch name
     echo -e "\n${BLUE}Choose default branch name:${NC}"
-    echo -e "  ${GREEN}1)${NC} main ${CYAN}(GitHub default)${NC}"
-    echo -e "  ${GREEN}2)${NC} master ${CYAN}(Legacy default)${NC}"
+    echo -e "  ${GREEN}1)${NC} main ${CYAN}(Default)${NC}"
+    echo -e "  ${GREEN}2)${NC} master ${CYAN}(Legacy)${NC}"
     echo -e "  ${GREEN}3)${NC} Custom name"
-    
     read -p "Select [1]: " branch_opt
     branch_opt=${branch_opt:-1}
     
@@ -495,43 +448,27 @@ setup_github_repo() {
             BRANCH="${custom_branch:-main}"
             ;;
     esac
-    
     git branch -M "$BRANCH"
     echo -e "${GREEN}${ICON_OK} Branch set to: $BRANCH${NC}"
     
-    # Add remote
     echo -e "\n${BLUE}GitHub Repository URL${NC}"
     echo -e "${YELLOW}Enter your GitHub repository SSH URL:${NC}"
     echo -e "Format: ${GREEN}git@github.com:USERNAME/REPOSITORY.git${NC}"
-    echo -e "Example: ${CYAN}git@github.com:FxP1998/hypr-fxp.git${NC}"
-    echo -e "\nIf you don't have a repository yet:"
-    echo -e "1. Create at ${CYAN}https://github.com/new${NC}"
-    echo -e "2. DO NOT initialize with README"
-    echo -e "3. Copy the SSH URL"
-    echo ""
-    
     read -p "SSH URL (press Enter to skip): " repo_url
     
     if [[ -n "$repo_url" ]]; then
-        # Validate SSH URL format
         if [[ ! "$repo_url" =~ ^git@github\.com: ]]; then
             echo -e "${RED}${ICON_FAIL} Invalid SSH URL format!${NC}"
-            echo -e "${YELLOW}Must start with: git@github.com:${NC}"
             read -p "Try again? (y/n): " retry
-            if [[ "${retry,,}" == "y" ]]; then
-                setup_github_repo
-                return
-            fi
+            if [[ "${retry,,}" == "y" ]]; then setup_github_repo; return; fi
         else
             git remote add origin "$repo_url"
             echo -e "${GREEN}${ICON_OK} Remote added: $repo_url${NC}"
             
-            # Test connection
             echo -e "\n${BLUE}${ICON_INFO} Testing SSH connection...${NC}"
             if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
                 echo -e "${GREEN}${ICON_OK} SSH connection successful!${NC}"
                 
-                # Check if remote has commits
                 echo -e "\n${BLUE}${ICON_INFO} Checking remote repository...${NC}"
                 if git ls-remote --exit-code origin "$BRANCH" &>/dev/null; then
                     echo -e "${YELLOW}${ICON_INFO} Remote repository has existing commits.${NC}"
@@ -539,15 +476,11 @@ setup_github_repo() {
                     echo -e "  ${GREEN}1)${NC} Pull and merge remote changes"
                     echo -e "  ${GREEN}2)${NC} Force push (overwrite remote)"
                     echo -e "  ${GREEN}3)${NC} Skip for now"
-                    
                     read -p "Select: " remote_opt
                     case $remote_opt in
-                        1)
-                            echo -e "${BLUE}Pulling from remote...${NC}"
-                            git pull origin "$BRANCH" --allow-unrelated-histories
-                            ;;
-                        2)
-                            echo -e "${YELLOW}${ICON_DANGER} This will overwrite remote repository!${NC}"
+                        1) git pull origin "$BRANCH" --allow-unrelated-histories ;;
+                        2) 
+                            echo -e "${YELLOW}${ICON_DANGER} Overwriting remote!${NC}"
                             read -p "Type 'OVERWRITE' to confirm: " confirm
                             if [[ "$confirm" == "OVERWRITE" ]]; then
                                 git add .
@@ -557,38 +490,28 @@ setup_github_repo() {
                             ;;
                     esac
                 else
-                    echo -e "${GREEN}${ICON_OK} Remote repository is empty. Ready for first push.${NC}"
+                    echo -e "${GREEN}${ICON_OK} Remote is empty. Ready for push.${NC}"
                 fi
             else
-                echo -e "${RED}${ICON_FAIL} SSH connection failed!${NC}"
-                echo -e "${YELLOW}Make sure:${NC}"
-                echo -e "1. SSH key is added to GitHub"
-                echo -e "2. You've run: ${GREEN}ssh-add ~/.ssh/id_ed25519${NC}"
+                echo -e "${RED}${ICON_FAIL} SSH connection failed! Check keys.${NC}"
             fi
         fi
     else
         echo -e "${YELLOW}${ICON_INFO} Remote not set. You can add it later.${NC}"
     fi
-    
-    echo -e "\n${GREEN}${ICON_OK} Repository setup complete.${NC}"
     read -p "Press Enter to continue..."
 }
 
 push_specific() {
     if [[ ! -d ".git" ]]; then
         echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
-        echo -e "${YELLOW}Run option 12 to initialize git first.${NC}"
         return
     fi
-    
     ensure_ssh_url
     
     echo -e "${BLUE}${ICON_PUSH} PUSH SPECIFIC FILE${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
-    echo -e "${YELLOW}Select file or folder to push${NC}"
-    echo ""
     
-    # Show changed files
     changes=$(git status -s)
     if [[ -z "$changes" ]]; then
         echo -e "${GREEN}${ICON_OK} No changes detected.${NC}"
@@ -597,23 +520,13 @@ push_specific() {
     
     echo -e "${BLUE}Changed files:${NC}"
     git status -s
-    echo -e "${CYAN}----------------------------------------------${NC}"
     echo ""
     
     echo -e "${BLUE}Enter path to push:${NC}"
-    echo -e "${YELLOW}Examples:${NC}"
-    echo -e "  Single file:  ${CYAN}~/.config/hypr/hyprland.conf${NC}"
-    echo -e "  Folder:       ${CYAN}~/.config/waybar${NC}"
-    echo -e "  Current dir:  ${CYAN}.${NC}"
-    echo ""
+    echo -e "${YELLOW}Examples: ~/.config/hypr/hyprland.conf or .${NC}"
     read -p "Path: " file_path
     
-    if [[ -z "$file_path" ]]; then
-        echo -e "${RED}${ICON_FAIL} Path cannot be empty.${NC}"
-        return
-    fi
-    
-    # Expand tilde to home directory
+    if [[ -z "$file_path" ]]; then echo -e "${RED}${ICON_FAIL} Path cannot be empty.${NC}"; return; fi
     file_path="${file_path/#\~/$HOME}"
     
     if [[ ! -e "$file_path" ]]; then
@@ -625,9 +538,7 @@ push_specific() {
     git add "$file_path"
     
     echo -e "${BLUE}Enter commit message:${NC}"
-    echo -e "${YELLOW}Example: 'Update hyprland config'${NC}"
     read -p "> " msg
-    
     git commit -m "${msg:-Update $file_path}"
     
     echo -e "\n${BLUE}${ICON_INFO} Pushing to GitHub...${NC}"
@@ -635,30 +546,23 @@ push_specific() {
         log_msg "${GREEN}${ICON_OK} Push successful!${NC}"
         echo -e "${GREEN}${ICON_OK} Push successful!${NC}"
     else
-        push_error=$?
-        log_msg "${RED}${ICON_FAIL} Push failed with code $push_error${NC}"
         echo -e "${RED}${ICON_FAIL} Push failed!${NC}"
-        echo -e "${YELLOW}${ICON_INFO} Try:${NC}"
-        echo -e "1. Run option 14 (Pull from GitHub) first"
-        echo -e "2. Check SSH setup (option 8)"
+        echo -e "${YELLOW}${ICON_INFO} Try Option 2 (Pull) or Option 3 (Sync) first.${NC}"
     fi
 }
 
 push_all() {
     if [[ ! -d ".git" ]]; then
         echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
-        echo -e "${YELLOW}Run option 12 to initialize git first.${NC}"
         return
     fi
-    
     ensure_ssh_url
     
     echo -e "${BLUE}${ICON_UPLOAD} PUSH ALL CHANGES${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
     
-    # Check for changes
     if [[ -z "$(git status --porcelain)" ]]; then 
-        echo -e "${GREEN}${ICON_OK} Nothing to commit. Working directory clean.${NC}"
+        echo -e "${GREEN}${ICON_OK} Nothing to commit.${NC}"
         return
     fi
 
@@ -667,306 +571,355 @@ push_all() {
     echo ""
     
     read -p "Are you sure? (y/n): " confirm
-    if [[ "${confirm,,}" != "y" ]]; then
-        echo -e "${YELLOW}Cancelled.${NC}"
-        return
-    fi
+    if [[ "${confirm,,}" != "y" ]]; then echo -e "${YELLOW}Cancelled.${NC}"; return; fi
 
     git add .
-    
     echo -e "${BLUE}Enter commit message:${NC}"
-    echo -e "${YELLOW}Example: 'Update dotfiles'${NC}"
     read -p "> " msg
-    
     git commit -m "${msg:-Update dotfiles}"
     
     echo -e "\n${BLUE}${ICON_INFO} Pushing to GitHub...${NC}"
     if git push origin "$BRANCH" 2>&1; then
         echo -e "${GREEN}${ICON_OK} All changes pushed successfully!${NC}"
     else
-        push_error=$?
         echo -e "${RED}${ICON_FAIL} Push failed!${NC}"
-        echo -e "${YELLOW}${ICON_INFO} Error code: $push_error${NC}"
-        echo -e "${YELLOW}${ICON_INFO} Try:${NC}"
-        echo -e "1. Run option 14 (Pull from GitHub) first"
-        echo -e "2. Run option 15 (Sync with GitHub) instead"
+        echo -e "${YELLOW}${ICON_INFO} Try Option 2 (Pull) or Option 3 (Sync) first.${NC}"
     fi
 }
 
 remove_commits() {
-    if [[ ! -d ".git" ]]; then
-        echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
-        return
-    fi
-    
-    # Check if there are commits
-    if ! git log --oneline -1 &>/dev/null; then
-        echo -e "${YELLOW}${ICON_INFO} No commits found in repository.${NC}"
-        return
-    fi
+    if [[ ! -d ".git" ]]; then echo -e "${RED}${ICON_FAIL} Not a git repo!${NC}"; return; fi
+    if ! git log --oneline -1 &>/dev/null; then echo -e "${YELLOW}${ICON_INFO} No commits found.${NC}"; return; fi
     
     echo -e "${RED}${ICON_UNDO} UNDO LAST COMMIT${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
-    echo -e "${YELLOW}Warning: This will undo your last commit${NC}"
-    echo ""
-    
     echo -e "${BLUE}Last commit:${NC}"
     git log --oneline -1
     echo ""
-    
     echo -e "Choose undo method:"
-    echo -e "  ${GREEN}1)${NC} Soft undo - Keep changes, only remove commit"
-    echo -e "  ${GREEN}2)${NC} Hard undo - Remove commit AND discard changes"
+    echo -e "  ${GREEN}1)${NC} Soft undo - Keep changes"
+    echo -e "  ${GREEN}2)${NC} Hard undo - Delete changes"
     echo -e "  ${GREEN}3)${NC} Cancel"
-    
     read -p "Select: " undo_opt
     
     case $undo_opt in
-        1) 
-            git reset --soft HEAD~1
-            echo -e "${GREEN}${ICON_OK} Soft undo complete. Changes preserved.${NC}"
-            ;;
+        1) git reset --soft HEAD~1; echo -e "${GREEN}${ICON_OK} Soft undo complete.${NC}" ;;
         2) 
             echo -e "${RED}${ICON_DANGER} This will DELETE your changes!${NC}"
             read -p "Type 'DELETE' to confirm: " del_conf
-            if [[ "$del_conf" == "DELETE" ]]; then
-                git reset --hard HEAD~1
-                echo -e "${RED}${ICON_OK} Hard undo complete. Changes deleted.${NC}"
-            else
-                echo -e "${YELLOW}Cancelled.${NC}"
-            fi
-            ;;
-        *) 
-            echo -e "${YELLOW}Cancelled.${NC}"
-            ;;
+            if [[ "$del_conf" == "DELETE" ]]; then git reset --hard HEAD~1; echo -e "${RED}${ICON_OK} Hard undo complete.${NC}"; else echo -e "${YELLOW}Cancelled.${NC}"; fi ;;
+        *) echo -e "${YELLOW}Cancelled.${NC}" ;;
     esac
 }
 
 force_push() {
-    if [[ ! -d ".git" ]]; then
-        echo -e "${RED}${ICON_FAIL} Not a git repository!${NC}"
-        return
-    fi
-    
+    if [[ ! -d ".git" ]]; then echo -e "${RED}${ICON_FAIL} Not a git repo!${NC}"; return; fi
     ensure_ssh_url
-    
     echo -e "${RED}${ICON_DANGER} FORCE PUSH${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
     echo -e "${YELLOW}WARNING: This will overwrite remote history!${NC}"
-    echo -e "${YELLOW}Only use this if you know what you're doing.${NC}"
-    echo ""
-    
-    echo -e "${BLUE}Current remote:${NC}"
-    git remote -v
-    echo ""
-    
     read -p "Type 'FORCE' to confirm: " confirm
-    if [[ "$confirm" != "FORCE" ]]; then
-        echo -e "${YELLOW}Cancelled.${NC}"
-        return
-    fi
+    if [[ "$confirm" != "FORCE" ]]; then echo -e "${YELLOW}Cancelled.${NC}"; return; fi
 
     git add .
     git commit -m "Force push update" || true
     git push origin "$BRANCH" --force
-    
     echo -e "${GREEN}${ICON_OK} Force push complete.${NC}"
 }
 
-# --- SYMLINK DOCTOR ---
+stow_link() {
+    echo -e "${BLUE}${ICON_FIX} STOW LINK${NC}"
+    echo -e "${CYAN}----------------------------------------------${NC}"
+    
+    PACKAGE_PATH="$DOTFILES_DIR/$PACKAGE_NAME"
+    if [[ ! -d "$PACKAGE_PATH" ]]; then 
+        echo -e "${RED}${ICON_FAIL} Package '$PACKAGE_NAME' not found at: $PACKAGE_PATH${NC}"
+        return
+    fi
+    
+    echo -e "${YELLOW}Using GNU Stow to symlink dotfiles...${NC}"
+    
+    # Get the parent directory of the package (where we need to run stow from)
+    STOW_DIR=$(dirname "$PACKAGE_PATH")
+    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
+    
+    echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
+    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
+    echo -e "${BLUE}Target: $HOME${NC}"
+    echo ""
+    
+    # Change to the stow directory
+    cd "$STOW_DIR" || {
+        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
+        return
+    }
+    
+    echo -e "${GREEN}Running: stow -v \"$PACKAGE_BASENAME\"${NC}"
+    echo ""
+    
+    # First, do a dry run to see what will happen
+    echo -e "${YELLOW}Dry run (checking what stow will do):${NC}"
+    stow -n -v "$PACKAGE_BASENAME" 2>&1 | head -20
+    
+    echo ""
+    read -p "Proceed with actual symlinking? (y/n): " confirm
+    
+    if [[ "${confirm,,}" != "y" ]]; then
+        echo -e "${YELLOW}Cancelled.${NC}"
+        cd "$DOTFILES_DIR" || return
+        return
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}Creating symlinks...${NC}"
+    
+    # Run actual stow
+    if stow -v "$PACKAGE_BASENAME" 2>&1; then
+        echo -e "${GREEN}${ICON_OK} Stow completed successfully!${NC}"
+    else
+        echo -e "${YELLOW}${ICON_INFO} Stow completed (may have warnings).${NC}"
+    fi
+    
+    # Show summary
+    echo ""
+    echo -e "${CYAN}================================================${NC}"
+    echo -e "${BLUE}Summary:${NC}"
+    
+    # Count symlinks created
+    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    echo -e "  ${GREEN}•${NC} Symlinks created: $link_count"
+    
+    # Show some examples
+    echo -e "  ${GREEN}•${NC} Example symlinks:"
+    find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | head -5 | while read -r symlink; do
+        rel_path="${symlink#$HOME/}"
+        echo -e "      ${GREEN}✓${NC} $rel_path"
+    done
+    
+    if [[ $link_count -gt 5 ]]; then
+        echo -e "      ${YELLOW}... and $((link_count - 5)) more${NC}"
+    fi
+    
+    # Return to original directory
+    cd "$DOTFILES_DIR" || return
+    
+    read -p "Press Enter to continue..."
+}
+
 symlink_doctor() {
     echo -e "${BLUE}${ICON_FIX} SYMLINK DOCTOR${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
     
-    if [[ ! -d "$PACKAGE_NAME" ]]; then
-        echo -e "${RED}${ICON_FAIL} Package '$PACKAGE_NAME' not found!${NC}"
+    PACKAGE_PATH="$DOTFILES_DIR/$PACKAGE_NAME"
+    if [[ ! -d "$PACKAGE_PATH" ]]; then 
+        echo -e "${RED}${ICON_FAIL} Package '$PACKAGE_NAME' not found at: $PACKAGE_PATH${NC}"
         return
     fi
     
-    echo -e "${BLUE}Checking symlinks for package: $PACKAGE_NAME${NC}"
+    # Get the parent directory of the package
+    STOW_DIR=$(dirname "$PACKAGE_PATH")
+    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
     
-    RAW_OUTPUT=$(stow -n -t "$HOME" "$PACKAGE_NAME" 2>&1)
-    CONFLICT_FILES=$(echo "$RAW_OUTPUT" | grep "existing target" | sed 's/.*: //')
-
-    if [[ -z "$CONFLICT_FILES" ]]; then
-        stow -R -t "$HOME" "$PACKAGE_NAME" 2>&1
-        echo -e "${GREEN}${ICON_OK} All symlinks updated successfully.${NC}"
-    else
-        echo -e "${RED}${ICON_FAIL} Found conflicts:${NC}"
-        echo "$CONFLICT_FILES"
-        echo ""
+    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
+    echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
+    echo -e "${BLUE}Target: $HOME${NC}"
+    echo ""
+    
+    # Change to the stow directory
+    cd "$STOW_DIR" || {
+        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
+        return
+    }
+    
+    echo -e "${YELLOW}Step 1: Checking existing symlinks...${NC}"
+    
+    # Check what symlinks already exist
+    existing_links=$(stow -n -v "$PACKAGE_BASENAME" 2>&1 | grep -E "LINK|symbolic link|existing" || true)
+    
+    if [[ -n "$existing_links" ]]; then
+        conflict_count=$(echo "$existing_links" | grep -c "existing" || true)
         
-        echo -e "${BLUE}Resolution options:${NC}"
-        echo -e "  ${GREEN}1)${NC} Backup conflicts and create symlinks"
-        echo -e "  ${GREEN}2)${NC} Adopt system files into repository"
-        echo -e "  ${GREEN}3)${NC} Cancel"
-        
-        read -p "Select: " fix_opt
-        
-        case $fix_opt in
-            1)
-                BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
-                echo -e "${BLUE}Creating backup in: $BACKUP_DIR${NC}"
-                mkdir -p "$BACKUP_DIR"
-                
-                while IFS= read -r file; do
-                    if [[ -n "$file" ]]; then
-                        TARGET="$HOME/$file"
-                        if [[ -e "$TARGET" || -L "$TARGET" ]]; then
-                            mkdir -p "$(dirname "$BACKUP_DIR/$file")"
-                            mv "$TARGET" "$BACKUP_DIR/$file"
-                            echo -e "  ${GREEN}${ICON_OK}${NC} Backed up: $file"
+        if [[ $conflict_count -gt 0 ]]; then
+            echo -e "${RED}${ICON_FAIL} Found $conflict_count conflict(s):${NC}"
+            echo "$existing_links" | grep "existing" | head -5
+            echo ""
+            
+            echo -e "${BLUE}Conflict resolution options:${NC}"
+            echo -e "  ${GREEN}1)${NC} Adopt existing files into repository"
+            echo -e "  ${GREEN}2)${NC} Backup conflicts and create symlinks"
+            echo -e "  ${GREEN}3)${NC} Cancel"
+            
+            read -p "Select: " conflict_opt
+            
+            case $conflict_opt in
+                1)
+                    echo -e "${YELLOW}Adopting existing files...${NC}"
+                    stow --adopt -v "$PACKAGE_BASENAME" 2>&1 | tail -10
+                    echo -e "${GREEN}${ICON_OK} Files adopted and symlinks created.${NC}"
+                    ;;
+                2)
+                    # Create backup directory
+                    BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
+                    mkdir -p "$BACKUP_DIR"
+                    echo -e "${YELLOW}Backing up conflicts to: $BACKUP_DIR${NC}"
+                    
+                    # Extract conflict files
+                    conflict_files=$(echo "$existing_links" | grep "existing" | sed 's/.*existing target //' | sed 's/\.\.\..*//')
+                    
+                    echo "$conflict_files" | while read -r conflict; do
+                        if [[ -n "$conflict" ]]; then
+                            target_path="$HOME/$conflict"
+                            backup_path="$BACKUP_DIR/$conflict"
+                            
+                            if [[ -e "$target_path" ]] || [[ -L "$target_path" ]]; then
+                                mkdir -p "$(dirname "$backup_path")"
+                                
+                                if [[ -d "$target_path" ]] && [[ ! -L "$target_path" ]]; then
+                                    mv "$target_path" "$backup_path"
+                                    echo -e "  ${GREEN}✓${NC} Backed up directory: $conflict"
+                                elif [[ -L "$target_path" ]]; then
+                                    rm "$target_path"
+                                    echo -e "  ${GREEN}✓${NC} Removed symlink: $conflict"
+                                else
+                                    mv "$target_path" "$backup_path"
+                                    echo -e "  ${GREEN}✓${NC} Backed up file: $conflict"
+                                fi
+                            fi
                         fi
-                    fi
-                done <<< "$CONFLICT_FILES"
-                
-                stow -R -t "$HOME" "$PACKAGE_NAME"
-                echo -e "${GREEN}${ICON_OK} Conflicts backed up and symlinks created.${NC}"
-                ;;
-            2) 
-                stow --adopt -t "$HOME" "$PACKAGE_NAME"
-                echo -e "${GREEN}${ICON_OK} System files adopted into repository.${NC}"
-                ;;
-            *) 
-                echo -e "${YELLOW}Cancelled.${NC}"
-                ;;
-        esac
+                    done
+                    
+                    echo ""
+                    echo -e "${YELLOW}Creating symlinks...${NC}"
+                    stow -v "$PACKAGE_BASENAME" 2>&1 | tail -10
+                    echo -e "${GREEN}${ICON_OK} Symlinks created. Backup: $BACKUP_DIR${NC}"
+                    ;;
+                *)
+                    echo -e "${YELLOW}Cancelled.${NC}"
+                    cd "$DOTFILES_DIR" || return
+                    return
+                    ;;
+            esac
+        else
+            echo -e "${YELLOW}Found existing symlinks. Restowing...${NC}"
+            stow -R -v "$PACKAGE_BASENAME" 2>&1 | tail -10
+            echo -e "${GREEN}${ICON_OK} Symlinks updated.${NC}"
+        fi
+    else
+        echo -e "${GREEN}${ICON_OK} No existing symlinks found.${NC}"
+        echo -e "${YELLOW}Creating symlinks...${NC}"
+        stow -v "$PACKAGE_BASENAME" 2>&1 | tail -10
+        echo -e "${GREEN}${ICON_OK} Symlinks created.${NC}"
     fi
+    
+    # Show summary
+    echo ""
+    echo -e "${CYAN}================================================${NC}"
+    echo -e "${BLUE}Verification:${NC}"
+    
+    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    package_count=$(find "$PACKAGE_PATH" -type f -o -type d | grep -c -v "^$PACKAGE_PATH$")
+    
+    echo -e "  ${GREEN}•${NC} Items in package: $package_count"
+    echo -e "  ${GREEN}•${NC} Symlinks created: $link_count"
+    
+    if [[ $link_count -eq $package_count ]]; then
+        echo -e "  ${GREEN}•${NC} ${GREEN}100% complete!${NC}"
+    elif [[ $link_count -gt 0 ]]; then
+        percentage=$((link_count * 100 / package_count))
+        echo -e "  ${YELLOW}•${NC} ${YELLOW}$percentage% complete ($link_count/$package_count)${NC}"
+    else
+        echo -e "  ${RED}•${NC} ${RED}No symlinks created!${NC}"
+    fi
+    
+    # Return to original directory
+    cd "$DOTFILES_DIR" || return
+    
+    read -p "Press Enter to continue..."
 }
 
-# --- LOG VIEWER ---
 view_logs() {
     clear
     echo -e "${BLUE}${ICON_LOG} DOT-MANAGER LOGS${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
+    if [[ ! -f "$LOG_FILE" ]]; then echo -e "${YELLOW}${ICON_INFO} No log file.${NC}"; read -p "Enter..."; return; fi
     
-    if [[ ! -f "$LOG_FILE" ]]; then
-        echo -e "${YELLOW}${ICON_INFO} No log file found.${NC}"
-        read -p "Press Enter to return..."
-        return
-    fi
-    
-    echo -e "${BLUE}Log file: $LOG_FILE${NC}"
-    echo -e "${BLUE}Last modified: $(date -r "$LOG_FILE" '+%Y-%m-%d %H:%M:%S')${NC}"
-    echo ""
-    
-    # Show last 50 entries
-    log_lines=$(tail -50 "$LOG_FILE")
-    
-    if [[ -z "$log_lines" ]]; then
-        echo -e "${YELLOW}Log file is empty.${NC}"
-    else
-        # Simple display without complex parsing
-        tail -50 "$LOG_FILE" | while IFS= read -r line; do
-            # Basic color coding
-            if echo "$line" | grep -q "ERROR\|FAIL\|fatal\|rejected"; then
-                echo -e "${RED}$line${NC}"
-            elif echo "$line" | grep -q "OK\|SUCCESS\|Complete\|successful"; then
-                echo -e "${GREEN}$line${NC}"
-            elif echo "$line" | grep -q "WARNING\|DANGER\|Warning\|conflict"; then
-                echo -e "${YELLOW}$line${NC}"
-            elif echo "$line" | grep -q "INFO\|COMMAND"; then
-                echo -e "${CYAN}$line${NC}"
-            else
-                echo "$line"
-            fi
-        done
-    fi
+    tail -50 "$LOG_FILE" | while IFS= read -r line; do
+        if echo "$line" | grep -q "ERROR\|FAIL\|fatal\|rejected"; then echo -e "${RED}$line${NC}";
+        elif echo "$line" | grep -q "OK\|SUCCESS\|Complete\|successful"; then echo -e "${GREEN}$line${NC}";
+        elif echo "$line" | grep -q "WARNING\|DANGER\|Warning\|conflict"; then echo -e "${YELLOW}$line${NC}";
+        elif echo "$line" | grep -q "INFO\|COMMAND"; then echo -e "${CYAN}$line${NC}";
+        else echo "$line"; fi
+    done
     
     echo -e "\n${CYAN}----------------------------------------------${NC}"
-    echo -e "${BLUE}Options:${NC}"
     echo -e "  ${GREEN}c${NC} Clear logs   ${GREEN}t${NC} Tail follow   ${GREEN}q${NC} Return"
-    
     read -p "Select: " log_opt
-    
     case $log_opt in
-        c)
-            echo "# Log cleared at $(date)" > "$LOG_FILE"
-            echo -e "${GREEN}${ICON_OK} Logs cleared.${NC}"
-            sleep 1
-            ;;
-        t)
-            echo -e "${BLUE}Following logs (Ctrl+C to stop)...${NC}"
-            tail -f "$LOG_FILE"
-            read -p "Press Enter to return..."
-            ;;
+        c) echo "# Log cleared" > "$LOG_FILE"; echo -e "${GREEN}${ICON_OK} Cleared.${NC}"; sleep 1 ;;
+        t) tail -f "$LOG_FILE"; ;;
     esac
 }
 
-# --- REPAIR GIT REPO ---
 repair_git_repo() {
     echo -e "${BLUE}${ICON_REPAIR} REPAIR GIT REPOSITORY${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
-    echo ""
-    
-    current_dir=$(pwd)
-    echo -e "${BLUE}Current directory:${NC} $current_dir"
-    echo ""
-    
     if [[ -d ".git" ]]; then
-        echo -e "${YELLOW}${ICON_INFO} Git repository already exists here.${NC}"
-        echo ""
-        
-        echo -e "${BLUE}Current status:${NC}"
-        git status --short
-        echo ""
-        
-        echo -e "${RED}${ICON_DANGER} What do you want to do?${NC}"
-        echo -e "  ${GREEN}1)${NC} Reinitialize git (keep files, delete .git)"
+        echo -e "${YELLOW}${ICON_INFO} Repo exists.${NC}"
+        echo -e "  ${GREEN}1)${NC} Reinitialize git (delete history)"
         echo -e "  ${GREEN}2)${NC} Fix remote URL"
         echo -e "  ${GREEN}3)${NC} Cancel"
-        
         read -p "Select: " repair_opt
-        
         case $repair_opt in
-            1)
-                echo -e "${RED}${ICON_DANGER} This will delete the .git folder!${NC}"
-                echo -e "${YELLOW}Your files will be kept, but git history will be lost.${NC}"
-                read -p "Type 'REINIT' to confirm: " confirm
-                
-                if [[ "$confirm" == "REINIT" ]]; then
-                    rm -rf .git
-                    echo -e "${GREEN}${ICON_OK} .git folder removed.${NC}"
-                    setup_github_repo
-                else
-                    echo -e "${YELLOW}Cancelled.${NC}"
-                    return
-                fi
-                ;;
-            2)
-                ensure_ssh_url
-                ;;
-            3)
-                echo -e "${YELLOW}Cancelled.${NC}"
-                return
-                ;;
+            1) rm -rf .git; echo -e "${GREEN}${ICON_OK} Deleted.${NC}"; setup_github_repo ;;
+            2) ensure_ssh_url ;;
+            *) return ;;
         esac
     else
-        echo -e "${YELLOW}${ICON_INFO} No git repository found.${NC}"
-        echo -e "${BLUE}Do you want to initialize a new git repository here?${NC}"
-        read -p "(y/n): " init_choice
-        
-        if [[ "${init_choice,,}" == "y" ]]; then
-            setup_github_repo
-        else
-            echo -e "${YELLOW}Cancelled.${NC}"
-        fi
+        setup_github_repo
     fi
 }
 
-# --- QUICK STOW ---
 quick_stow() {
     echo -e "${BLUE}${ICON_REFRESH} QUICK REFRESH${NC}"
     echo -e "${CYAN}----------------------------------------------${NC}"
     
-    if [[ ! -d "$PACKAGE_NAME" ]]; then
+    PACKAGE_PATH="$DOTFILES_DIR/$PACKAGE_NAME"
+    if [[ ! -d "$PACKAGE_PATH" ]]; then 
         echo -e "${RED}${ICON_FAIL} Package '$PACKAGE_NAME' not found!${NC}"
         return
     fi
     
-    echo -e "${BLUE}Refreshing symlinks for: $PACKAGE_NAME${NC}"
-    stow -R -t "$HOME" "$PACKAGE_NAME"
-    echo -e "${GREEN}${ICON_OK} Symlinks refreshed.${NC}"
+    # Get the parent directory of the package
+    STOW_DIR=$(dirname "$PACKAGE_PATH")
+    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
+    
+    echo -e "${BLUE}Quick refresh using stow...${NC}"
+    echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
+    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
+    echo ""
+    
+    # Change to the stow directory
+    cd "$STOW_DIR" || {
+        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
+        return
+    }
+    
+    echo -e "${YELLOW}Running: stow -R -v \"$PACKAGE_BASENAME\"${NC}"
+    echo ""
+    
+    # Use -R (restow) which removes and recreates symlinks
+    if stow -R -v "$PACKAGE_BASENAME" 2>&1; then
+        echo -e "${GREEN}${ICON_OK} All symlinks refreshed!${NC}"
+    else
+        echo -e "${YELLOW}${ICON_INFO} Stow completed (may have warnings).${NC}"
+    fi
+    
+    # Count results
+    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    echo -e "${BLUE}Total symlinks: $link_count${NC}"
+    
+    # Return to original directory
+    cd "$DOTFILES_DIR" || return
 }
 
 # --- MAIN MENU ---
@@ -979,20 +932,14 @@ while true; do
     clear
     # HEADER
     echo -e "${BLUE}=====================================================${NC}"
-    echo -e "         ${ICON_STAR} DOT-MANAGER v3.6 TTY Edition ${ICON_STAR} "
+    echo -e "         ${ICON_STAR} DOT-MANAGER v3.7 TTY Edition ${ICON_STAR} "
     echo -e "${BLUE}=====================================================${NC}"
     echo ""
     
-    # Get git info for display
     if [[ -d ".git" ]]; then
         current_branch=$(git branch --show-current 2>/dev/null || echo "none")
         remote_url=$(git remote get-url "$GITHUB_REMOTE" 2>/dev/null || echo "Not set")
-        # Truncate long URLs
-        if [[ ${#remote_url} -gt 40 ]]; then
-            remote_display="${remote_url:0:37}..."
-        else
-            remote_display="$remote_url"
-        fi
+        if [[ ${#remote_url} -gt 40 ]]; then remote_display="${remote_url:0:37}..."; else remote_display="$remote_url"; fi
         echo -e "  ${ICON_HOME}     ${CYAN}Repo:${NC}   ${YELLOW}$DOTFILES_DIR${NC}"
         echo -e "  ${ICON_CONFIG}     ${CYAN}Package:${NC} ${YELLOW}$PACKAGE_NAME${NC}"
         echo -e "  ${ICON_GIT}      ${CYAN}Git:${NC}     ${GREEN}$current_branch${NC} @ ${CYAN}$remote_display${NC}"
@@ -1007,53 +954,53 @@ while true; do
     
     echo -e "${GREEN}[GIT OPERATIONS]${NC}"
     echo -e "  ${GREEN}1)${NC} ${ICON_INFO}     Show Status"
-    echo -e "  ${GREEN}2)${NC} ${ICON_PUSH}     Push Specific File"
-    echo -e "  ${GREEN}3)${NC} ${ICON_UPLOAD}       Push All Changes"
-    echo -e "  ${GREEN}4)${NC} ${ICON_UNDO}     Undo Last Commit"
-    echo -e "  ${GREEN}5)${NC} ${ICON_DANGER}     Force Push"
-    echo -e "  ${GREEN}14)${NC} ${ICON_PULL}     Pull from GitHub"
-    echo -e "  ${GREEN}15)${NC} ${ICON_SYNC}     Sync with GitHub"
+    echo -e "  ${GREEN}2)${NC} ${ICON_PULL}     Pull from GitHub"
+    echo -e "  ${GREEN}3)${NC} ${ICON_SYNC}     Sync with GitHub"
+    echo -e "  ${GREEN}4)${NC} ${ICON_PUSH}     Push Specific File"
+    echo -e "  ${GREEN}5)${NC} ${ICON_UPLOAD}       Push All Changes"
+    echo -e "  ${GREEN}6)${NC} ${ICON_UNDO}     Undo Last Commit"
+    echo -e "  ${GREEN}7)${NC} ${ICON_DANGER}     Force Push"
     echo -e ""
     
     echo -e "${CYAN}[DOTFILES MANAGEMENT]${NC}"
-    echo -e "  ${GREEN}6)${NC} ${ICON_FIX}      Symlink Doctor"
-    echo -e "  ${GREEN}7)${NC} ${ICON_REFRESH}   Quick Refresh"
+    echo -e "  ${GREEN}8)${NC} ${ICON_FIX}      Symlink Doctor"
+    echo -e "  ${GREEN}9)${NC} ${ICON_REFRESH}   Quick Refresh"
     echo -e ""
     
     echo -e "${MAGENTA}[SSH & GITHUB SETUP]${NC}"
-    echo -e "  ${GREEN}8)${NC} ${ICON_KEY}      Setup SSH Keys"
-    echo -e "  ${GREEN}9)${NC} ${ICON_GITHUB}   Setup GitHub Repository"
+    echo -e "  ${GREEN}10)${NC} ${ICON_KEY}      Setup SSH Keys"
+    echo -e "  ${GREEN}11)${NC} ${ICON_GITHUB}   Setup GitHub Repository"
     echo -e ""
     
     echo -e "${YELLOW}[CONFIGURATION]${NC}"
-    echo -e "  ${GREEN}10)${NC} ${ICON_CONFIG}     Reconfigure Package"
-    echo -e "  ${GREEN}11)${NC} ${ICON_LOG}      View Logs"
-    echo -e "  ${GREEN}12)${NC} ${ICON_REPAIR}   Repair Git Repository"
-    echo -e "  ${GREEN}13)${NC} ${ICON_FAIL}     Exit"
+    echo -e "  ${GREEN}12)${NC} ${ICON_CONFIG}     Reconfigure Package"
+    echo -e "  ${GREEN}13)${NC} ${ICON_LOG}      View Logs"
+    echo -e "  ${GREEN}14)${NC} ${ICON_REPAIR}   Repair Git Repository"
+    echo -e "  ${GREEN}15)${NC} ${ICON_FAIL}     Exit"
     echo ""
     echo -e "${BLUE}=====================================================${NC}"
     read -p "  Select Option (1-15): " opt
 
     case $opt in
         1) check_status; read -p "  Press Enter..." ;;
-        2) push_specific; read -p "  Press Enter..." ;;
-        3) push_all; read -p "  Press Enter..." ;;
-        4) remove_commits; read -p "  Press Enter..." ;;
-        5) force_push; read -p "  Press Enter..." ;;
-        6) symlink_doctor; read -p "  Press Enter..." ;;
-        7) quick_stow; read -p "  Press Enter..." ;;
-        8) setup_ssh ;;
-        9) setup_github_repo ;;
-        10) reconfigure_package ;;
-        11) view_logs ;;
-        12) repair_git_repo; read -p "  Press Enter..." ;;
-        13) 
+        2) pull_from_remote; read -p "  Press Enter..." ;;
+        3) sync_with_remote; read -p "  Press Enter..." ;;
+        4) push_specific; read -p "  Press Enter..." ;;
+        5) push_all; read -p "  Press Enter..." ;;
+        6) remove_commits; read -p "  Press Enter..." ;;
+        7) force_push; read -p "  Press Enter..." ;;
+        8) symlink_doctor; read -p "  Press Enter..." ;;
+        9) quick_stow; read -p "  Press Enter..." ;;
+        10) setup_ssh ;;
+        11) setup_github_repo ;;
+        12) reconfigure_package ;;
+        13) view_logs ;;
+        14) repair_git_repo; read -p "  Press Enter..." ;;
+        15) 
             echo -e "${GREEN}${ICON_OK} Thank you for using Dot-Manager!${NC}"
             echo "# Session ended at $(date)" >> "$LOG_FILE"
             exit 0 
             ;;
-        14) pull_from_remote; read -p "  Press Enter..." ;;
-        15) sync_with_remote; read -p "  Press Enter..." ;;
         *) 
             echo -e "  ${RED}${ICON_FAIL} Invalid option. Please enter 1-15.${NC}"
             sleep 1
