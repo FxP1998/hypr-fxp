@@ -1,4 +1,0 @@
-2026-01-21 22:00:50.990 [info] Log level: Info
-2026-01-21 22:01:02.495 [info] Log level: Info
-2026-01-21 22:01:05.277 [warning] [GitHubBranchProtectionProvider][updateRepositoryBranchProtection] Failed to update repository branch protection: No GitHub authentication session available.
-2026-01-21 22:02:51.743 [warning] [GitHubSourceControlHistoryItemDetailsProvider][_loadAssignableUsers] Failed to load assignable user(s) for FxP1998/hypr-fxp: Error: No GitHub authentication session available.
