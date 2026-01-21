@@ -5,10 +5,6 @@ dot-manager.log
 # Don't upload the local config (stores your specific machine settings)
 .dot-manager.conf
 
-# --- Temporary & Backup Files ---
-# Ignore the temporary scripts folder you have
-scripts/tmp/
-
 # Ignore backups created by the manager
 .dotfiles-backup/
 
@@ -25,3 +21,4 @@ Dotfiles/.config/hypr/assets/current-wallpaper.png
 Dotfiles/.config/dconf/
 Dotfiles/.config/mozilla/
 Dotfiles/.config/pulse/
+Dotfiles/.config/zed/

@@ -46,7 +46,7 @@ OFFICIAL_PACKAGES=(
     "pipewire-libcamera" "pipewire-session-manager" "base-devel" "git" "imagemagick" "jq" "xorg-xhost" "xorg-server" "xorg" "xorg-xinput"
     "xorg-xrandr" "intel-ucode" "vulkan-radeon" "vulkan-intel" "mesa" "zoxide" "polkit-gnome" "xdg-user-dirs" "xdg-desktop-portal"
     "xdg-desktop-portal-gtk" "xdg-desktop-portal-hyprland" "xdg-desktop-portal-gnome" "gnome-disk-utility" "timeshift" "pacman-contrib"
-    "stow" "wget" "trash-cli" "swww" "mako" "matugen" "nwg-look"
+    "stow" "wget" "trash-cli" "swww" "mako" "matugen" "nwg-look" "htop" "btop"
 )
 
 echo -e "${C_BLUE}${LINE_SEC}${C_RESET}"
@@ -106,6 +106,7 @@ if pacman -Qs jack2 > /dev/null; then
 fi
 
 echo -e "${C_YELL}${IC_INFO} Installing Drivers...${C_RESET}"
+echo -e "${C_YELL}${IC_INFO} Please wait this may take a few minutes, It's depending on your internet speed...${C_RESET}"
 MEDIA_PKGS=(obs-studio vlc vlc-plugin-ffmpeg vlc-plugins-extra vlc-plugins-all mpv intel-media-driver libva-intel-driver pipewire-jack pciutils mesa libva-mesa-driver)
 pacman -S --needed --noconfirm "${MEDIA_PKGS[@]}" &> /dev/null
 
@@ -138,7 +139,7 @@ echo -e "   ${IC_GEAR} STEP 4: DISPLAY MANAGER (SDDM)"
 echo -e "${C_BLUE}${LINE_SEC}${C_RESET}"
 
 echo -e "${C_YELL}${IC_INFO} Installing SDDM Packages...${C_RESET}"
-pacman -Sy --needed --noconfirm sddm qt5-graphicaleffects qt5-quickcontrols2 qt5-svg &> /dev/null
+pacman -Sy --needed --noconfirm sddm qt5-graphicaleffects qt5-quickcontrols2 qt5-svg qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg &> /dev/null
 
 echo -e "${C_YELL}${IC_INFO} Launching Theme Installer (As User)...${C_RESET}"
 run_as "$TARGET_USER" "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
