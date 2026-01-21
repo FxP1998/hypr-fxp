@@ -1,0 +1,10 @@
+2026-01-21 22:00:47.077 [info] ChatSessionStore: Migrating 0 chat sessions from storage service to file system
+2026-01-21 22:00:47.554 [info] Started local extension host with pid 125581.
+2026-01-21 22:00:47.727 [info] Started initializing default profile extensions in extensions installation folder. file:///home/fxp/.vscode-oss/extensions
+2026-01-21 22:00:48.549 [info] Completed initializing default profile extensions in extensions installation folder. file:///home/fxp/.vscode-oss/extensions
+2026-01-21 22:00:51.374 [info] [perf] Render performance baseline is 64ms
+2026-01-21 22:00:59.570 [info] ChatSessionStore: Migrating 0 chat sessions from storage service to file system
+2026-01-21 22:00:59.979 [info] Started local extension host with pid 126145.
+2026-01-21 22:01:03.172 [info] [perf] Render performance baseline is 95ms
+2026-01-21 22:01:10.094 [error] [Extension Host] (node:126145) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `exe --trace-deprecation ...` to show where the warning was created)

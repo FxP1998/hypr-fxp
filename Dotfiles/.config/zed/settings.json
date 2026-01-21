@@ -1,5 +1,19 @@
 {
-  "icon_theme": "Material Icon Theme",
-  "theme": "Matugen Dark",
-  "vim_mode": true
+  "git_panel": {
+    "tree_view": true
+  },
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme"
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "Matugen Dark",
+    "dark": "Matugen Dark"
+  },
+  "vim_mode": false
 }

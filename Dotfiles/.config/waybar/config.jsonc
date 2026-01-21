@@ -190,7 +190,7 @@
   },
 
   "custom/launcher": {
-    "format": "󰵆",
+    "format": "󰘳",
     "on-click": "~/.config/hypr/scripts/rofi/rofi-launcher.sh",
     "tooltip": true,
     "tooltip-format": " Launcher ",

@@ -2,21 +2,21 @@
 -- GITHUB: https://github.com/FxP1998
 
 local colors = {
-    base00 = '#131318', -- BG
-    base01 = '#1b1b21', -- Lighter BG
-    base02 = '#1f1f25', -- Selection
-    base03 = '#c7c5d0', -- Comments
-    base04 = '#918f9a', -- Status Bar FG
-    base05 = '#e4e1e9', -- Text
-    base06 = '#e4e1e9',
-    base07 = '#303036',
+    base00 = '#101418', -- BG
+    base01 = '#181c20', -- Lighter BG
+    base02 = '#1c2024', -- Selection
+    base03 = '#c2c7cf', -- Comments
+    base04 = '#8c9199', -- Status Bar FG
+    base05 = '#e0e2e8', -- Text
+    base06 = '#e0e2e8',
+    base07 = '#2d3135',
     base08 = '#ffb4ab', -- Red
-    base09 = '#e8b9d4', -- Orange/Peach
-    base0A = '#c5c4dd', -- Yellow
-    base0B = '#c0c1ff', -- Green/String
-    base0C = '#e2e0f9', -- Cyan
-    base0D = '#c0c1ff', -- Blue/Function
-    base0E = '#5f3c52', -- Purple
+    base09 = '#d4bee6', -- Orange/Peach
+    base0A = '#b9c8da', -- Yellow
+    base0B = '#9ccbfb', -- Green/String
+    base0C = '#d5e4f7', -- Cyan
+    base0D = '#9ccbfb', -- Blue/Function
+    base0E = '#504061', -- Purple
     base0F = '#93000a', -- Brown
 }
 

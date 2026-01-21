@@ -1,0 +1,17 @@
+configuration {
+    modi:                       "drun,run,filebrowser";
+    show-icons:                 true;
+    display-drun:               " ";
+    display-run:                " ";
+    display-filebrowser:        " ";
+    display-window:             " ";
+    drun-display-format:        "{name}";
+    window-format:              "{w} · {c} · {t}";
+
+    /* Using your system font */
+    font:                       "MapleMono NF Mono 12";
+    icon-theme:                 "Papirus";
+}
+
+/* Import the theme */
+@theme "~/.config/rofi/clipboard-history/clipboard-hostory.rasi"

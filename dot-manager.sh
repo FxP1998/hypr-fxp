@@ -637,44 +637,32 @@ stow_link() {
         return
     fi
     
-    echo -e "${YELLOW}Using GNU Stow to symlink dotfiles...${NC}"
-    
-    # Get the parent directory of the package (where we need to run stow from)
+    # Get the parent directory (where stow should look for packages)
     STOW_DIR=$(dirname "$PACKAGE_PATH")
-    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
     
-    echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
-    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
-    echo -e "${BLUE}Target: $HOME${NC}"
+    echo -e "${YELLOW}Using GNU Stow to symlink dotfiles...${NC}"
+    echo -e "${BLUE}Stow directory (-d): $STOW_DIR${NC}"
+    echo -e "${BLUE}Target directory (-t): $HOME${NC}"
+    echo -e "${BLUE}Package: $PACKAGE_NAME${NC}"
     echo ""
     
-    # Change to the stow directory
-    cd "$STOW_DIR" || {
-        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
-        return
-    }
-    
-    echo -e "${GREEN}Running: stow -v \"$PACKAGE_BASENAME\"${NC}"
-    echo ""
-    
-    # First, do a dry run to see what will happen
+    # First, do a dry run
     echo -e "${YELLOW}Dry run (checking what stow will do):${NC}"
-    stow -n -v "$PACKAGE_BASENAME" 2>&1 | head -20
+    stow -d "$STOW_DIR" -t "$HOME" -n -v "$PACKAGE_NAME" 2>&1 | head -20
     
     echo ""
     read -p "Proceed with actual symlinking? (y/n): " confirm
     
     if [[ "${confirm,,}" != "y" ]]; then
         echo -e "${YELLOW}Cancelled.${NC}"
-        cd "$DOTFILES_DIR" || return
         return
     fi
     
     echo ""
     echo -e "${YELLOW}Creating symlinks...${NC}"
     
-    # Run actual stow
-    if stow -v "$PACKAGE_BASENAME" 2>&1; then
+    # Run actual stow with explicit directories
+    if stow -d "$STOW_DIR" -t "$HOME" -v "$PACKAGE_NAME" 2>&1; then
         echo -e "${GREEN}${ICON_OK} Stow completed successfully!${NC}"
     else
         echo -e "${YELLOW}${ICON_INFO} Stow completed (may have warnings).${NC}"
@@ -686,22 +674,23 @@ stow_link() {
     echo -e "${BLUE}Summary:${NC}"
     
     # Count symlinks created
-    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    link_count=$(find "$HOME" -type l -lname "*$STOW_DIR/$PACKAGE_NAME*" 2>/dev/null | wc -l)
     echo -e "  ${GREEN}•${NC} Symlinks created: $link_count"
     
     # Show some examples
     echo -e "  ${GREEN}•${NC} Example symlinks:"
-    find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | head -5 | while read -r symlink; do
-        rel_path="${symlink#$HOME/}"
-        echo -e "      ${GREEN}✓${NC} $rel_path"
+    find "$HOME" -type l -lname "*$STOW_DIR/$PACKAGE_NAME*" 2>/dev/null | head -5 | while read -r symlink; do
+        if [[ -L "$symlink" ]]; then
+            target=$(readlink -f "$symlink" 2>/dev/null || echo "?")
+            rel_symlink="${symlink#$HOME/}"
+            rel_target="${target#$STOW_DIR/$PACKAGE_NAME/}"
+            echo -e "      ${GREEN}✓${NC} $rel_symlink → $rel_target"
+        fi
     done
     
     if [[ $link_count -gt 5 ]]; then
         echo -e "      ${YELLOW}... and $((link_count - 5)) more${NC}"
     fi
-    
-    # Return to original directory
-    cd "$DOTFILES_DIR" || return
     
     read -p "Press Enter to continue..."
 }
@@ -716,57 +705,54 @@ symlink_doctor() {
         return
     fi
     
-    # Get the parent directory of the package
+    # Get the parent directory
     STOW_DIR=$(dirname "$PACKAGE_PATH")
-    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
     
-    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
+    echo -e "${BLUE}Package: $PACKAGE_NAME${NC}"
     echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
     echo -e "${BLUE}Target: $HOME${NC}"
     echo ""
     
-    # Change to the stow directory
-    cd "$STOW_DIR" || {
-        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
-        return
-    }
-    
     echo -e "${YELLOW}Step 1: Checking existing symlinks...${NC}"
     
-    # Check what symlinks already exist
-    existing_links=$(stow -n -v "$PACKAGE_BASENAME" 2>&1 | grep -E "LINK|symbolic link|existing" || true)
+    # Check what stow will do
+    stow_output=$(stow -d "$STOW_DIR" -t "$HOME" -n -v "$PACKAGE_NAME" 2>&1)
     
-    if [[ -n "$existing_links" ]]; then
-        conflict_count=$(echo "$existing_links" | grep -c "existing" || true)
+    # Check for conflicts
+    conflict_lines=$(echo "$stow_output" | grep -E "existing target|conflict" || true)
+    link_lines=$(echo "$stow_output" | grep -E "LINK|link|would create" || true)
+    
+    if [[ -n "$conflict_lines" ]]; then
+        conflict_count=$(echo "$conflict_lines" | wc -l)
+        echo -e "${RED}${ICON_FAIL} Found $conflict_count conflict(s):${NC}"
+        echo "$conflict_lines" | head -5
+        echo ""
         
-        if [[ $conflict_count -gt 0 ]]; then
-            echo -e "${RED}${ICON_FAIL} Found $conflict_count conflict(s):${NC}"
-            echo "$existing_links" | grep "existing" | head -5
-            echo ""
-            
-            echo -e "${BLUE}Conflict resolution options:${NC}"
-            echo -e "  ${GREEN}1)${NC} Adopt existing files into repository"
-            echo -e "  ${GREEN}2)${NC} Backup conflicts and create symlinks"
-            echo -e "  ${GREEN}3)${NC} Cancel"
-            
-            read -p "Select: " conflict_opt
-            
-            case $conflict_opt in
-                1)
-                    echo -e "${YELLOW}Adopting existing files...${NC}"
-                    stow --adopt -v "$PACKAGE_BASENAME" 2>&1 | tail -10
-                    echo -e "${GREEN}${ICON_OK} Files adopted and symlinks created.${NC}"
-                    ;;
-                2)
-                    # Create backup directory
-                    BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
-                    mkdir -p "$BACKUP_DIR"
-                    echo -e "${YELLOW}Backing up conflicts to: $BACKUP_DIR${NC}"
-                    
-                    # Extract conflict files
-                    conflict_files=$(echo "$existing_links" | grep "existing" | sed 's/.*existing target //' | sed 's/\.\.\..*//')
-                    
-                    echo "$conflict_files" | while read -r conflict; do
+        echo -e "${BLUE}Conflict resolution options:${NC}"
+        echo -e "  ${GREEN}1)${NC} Adopt existing files into repository"
+        echo -e "  ${GREEN}2)${NC} Backup conflicts and create symlinks"
+        echo -e "  ${GREEN}3)${NC} Use restow (remove and recreate)"
+        echo -e "  ${GREEN}4)${NC} Cancel"
+        
+        read -p "Select: " conflict_opt
+        
+        case $conflict_opt in
+            1)
+                echo -e "${YELLOW}Adopting existing files...${NC}"
+                stow -d "$STOW_DIR" -t "$HOME" --adopt -v "$PACKAGE_NAME" 2>&1 | tail -10
+                echo -e "${GREEN}${ICON_OK} Files adopted and symlinks created.${NC}"
+                ;;
+            2)
+                # Create backup directory
+                BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
+                mkdir -p "$BACKUP_DIR"
+                echo -e "${YELLOW}Backing up conflicts to: $BACKUP_DIR${NC}"
+                
+                # Extract conflict files from stow output
+                echo "$conflict_lines" | while read -r line; do
+                    if echo "$line" | grep -q "existing target"; then
+                        # Extract the file path from the stow output
+                        conflict=$(echo "$line" | sed 's/.*existing target //' | sed 's/ *$//')
                         if [[ -n "$conflict" ]]; then
                             target_path="$HOME/$conflict"
                             backup_path="$BACKUP_DIR/$conflict"
@@ -786,53 +772,70 @@ symlink_doctor() {
                                 fi
                             fi
                         fi
-                    done
-                    
-                    echo ""
-                    echo -e "${YELLOW}Creating symlinks...${NC}"
-                    stow -v "$PACKAGE_BASENAME" 2>&1 | tail -10
-                    echo -e "${GREEN}${ICON_OK} Symlinks created. Backup: $BACKUP_DIR${NC}"
-                    ;;
-                *)
-                    echo -e "${YELLOW}Cancelled.${NC}"
-                    cd "$DOTFILES_DIR" || return
-                    return
-                    ;;
-            esac
+                    fi
+                done
+                
+                echo ""
+                echo -e "${YELLOW}Creating symlinks...${NC}"
+                stow -d "$STOW_DIR" -t "$HOME" -v "$PACKAGE_NAME" 2>&1 | tail -10
+                echo -e "${GREEN}${ICON_OK} Symlinks created. Backup: $BACKUP_DIR${NC}"
+                ;;
+            3)
+                echo -e "${YELLOW}Using restow (remove and recreate)...${NC}"
+                stow -d "$STOW_DIR" -t "$HOME" -R -v "$PACKAGE_NAME" 2>&1 | tail -10
+                echo -e "${GREEN}${ICON_OK} Symlinks restowed.${NC}"
+                ;;
+            *)
+                echo -e "${YELLOW}Cancelled.${NC}"
+                return
+                ;;
+        esac
+    elif [[ -n "$link_lines" ]]; then
+        link_count=$(echo "$link_lines" | wc -l)
+        echo -e "${GREEN}${ICON_OK} Would create $link_count symlinks.${NC}"
+        echo ""
+        
+        read -p "Create symlinks? (y/n): " confirm
+        if [[ "${confirm,,}" == "y" ]]; then
+            echo -e "${YELLOW}Creating symlinks...${NC}"
+            stow -d "$STOW_DIR" -t "$HOME" -v "$PACKAGE_NAME" 2>&1 | tail -10
+            echo -e "${GREEN}${ICON_OK} Symlinks created.${NC}"
         else
-            echo -e "${YELLOW}Found existing symlinks. Restowing...${NC}"
-            stow -R -v "$PACKAGE_BASENAME" 2>&1 | tail -10
-            echo -e "${GREEN}${ICON_OK} Symlinks updated.${NC}"
+            echo -e "${YELLOW}Cancelled.${NC}"
         fi
     else
-        echo -e "${GREEN}${ICON_OK} No existing symlinks found.${NC}"
-        echo -e "${YELLOW}Creating symlinks...${NC}"
-        stow -v "$PACKAGE_BASENAME" 2>&1 | tail -10
-        echo -e "${GREEN}${ICON_OK} Symlinks created.${NC}"
+        echo -e "${YELLOW}No action needed - everything appears to be already linked.${NC}"
+        
+        # Verify existing links
+        existing_count=$(find "$HOME" -type l -lname "*$STOW_DIR/$PACKAGE_NAME*" 2>/dev/null | wc -l)
+        if [[ $existing_count -gt 0 ]]; then
+            echo -e "${GREEN}${ICON_OK} Found $existing_count existing symlinks.${NC}"
+        fi
     fi
     
-    # Show summary
+    # Show final verification
     echo ""
     echo -e "${CYAN}================================================${NC}"
-    echo -e "${BLUE}Verification:${NC}"
+    echo -e "${BLUE}Final verification:${NC}"
     
-    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    final_count=$(find "$HOME" -type l -lname "*$STOW_DIR/$PACKAGE_NAME*" 2>/dev/null | wc -l)
     package_count=$(find "$PACKAGE_PATH" -type f -o -type d | grep -c -v "^$PACKAGE_PATH$")
     
     echo -e "  ${GREEN}•${NC} Items in package: $package_count"
-    echo -e "  ${GREEN}•${NC} Symlinks created: $link_count"
+    echo -e "  ${GREEN}•${NC} Symlinks in HOME: $final_count"
     
-    if [[ $link_count -eq $package_count ]]; then
+    if [[ $final_count -eq $package_count ]]; then
         echo -e "  ${GREEN}•${NC} ${GREEN}100% complete!${NC}"
-    elif [[ $link_count -gt 0 ]]; then
-        percentage=$((link_count * 100 / package_count))
-        echo -e "  ${YELLOW}•${NC} ${YELLOW}$percentage% complete ($link_count/$package_count)${NC}"
+    elif [[ $final_count -gt 0 ]]; then
+        percentage=$((final_count * 100 / package_count))
+        echo -e "  ${YELLOW}•${NC} ${YELLOW}$percentage% complete ($final_count/$package_count)${NC}"
+        
+        if [[ $final_count -lt $package_count ]]; then
+            echo -e "  ${YELLOW}•${NC} Some items may be nested inside directories"
+        fi
     else
-        echo -e "  ${RED}•${NC} ${RED}No symlinks created!${NC}"
+        echo -e "  ${RED}•${NC} ${RED}No symlinks found!${NC}"
     fi
-    
-    # Return to original directory
-    cd "$DOTFILES_DIR" || return
     
     read -p "Press Enter to continue..."
 }
@@ -889,37 +892,30 @@ quick_stow() {
         return
     fi
     
-    # Get the parent directory of the package
+    # Get the parent directory
     STOW_DIR=$(dirname "$PACKAGE_PATH")
-    PACKAGE_BASENAME=$(basename "$PACKAGE_PATH")
     
     echo -e "${BLUE}Quick refresh using stow...${NC}"
     echo -e "${BLUE}Stow directory: $STOW_DIR${NC}"
-    echo -e "${BLUE}Package: $PACKAGE_BASENAME${NC}"
+    echo -e "${BLUE}Target: $HOME${NC}"
+    echo -e "${BLUE}Package: $PACKAGE_NAME${NC}"
     echo ""
     
-    # Change to the stow directory
-    cd "$STOW_DIR" || {
-        echo -e "${RED}${ICON_FAIL} Cannot access stow directory: $STOW_DIR${NC}"
-        return
-    }
-    
-    echo -e "${YELLOW}Running: stow -R -v \"$PACKAGE_BASENAME\"${NC}"
+    echo -e "${YELLOW}Running: stow -d \"$STOW_DIR\" -t \"$HOME\" -R -v \"$PACKAGE_NAME\"${NC}"
     echo ""
     
-    # Use -R (restow) which removes and recreates symlinks
-    if stow -R -v "$PACKAGE_BASENAME" 2>&1; then
+    # Use restow (-R) which removes and recreates symlinks
+    if stow -d "$STOW_DIR" -t "$HOME" -R -v "$PACKAGE_NAME" 2>&1; then
         echo -e "${GREEN}${ICON_OK} All symlinks refreshed!${NC}"
     else
         echo -e "${YELLOW}${ICON_INFO} Stow completed (may have warnings).${NC}"
     fi
     
     # Count results
-    link_count=$(find "$HOME" -type l -lname "*$PACKAGE_BASENAME*" 2>/dev/null | wc -l)
+    link_count=$(find "$HOME" -type l -lname "*$STOW_DIR/$PACKAGE_NAME*" 2>/dev/null | wc -l)
     echo -e "${BLUE}Total symlinks: $link_count${NC}"
     
-    # Return to original directory
-    cd "$DOTFILES_DIR" || return
+    read -p "Press Enter to continue..."
 }
 
 # --- MAIN MENU ---

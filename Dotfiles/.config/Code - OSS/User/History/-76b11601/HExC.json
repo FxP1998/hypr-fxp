@@ -1,0 +1,6 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "window.commandCenter": false,
+    "chat.commandCenter.enabled": false,
+    "window.menuBarVisibility": "compact"
+}
