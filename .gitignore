@@ -1,25 +1,275 @@
-# --- Dot Manager Logic ---
-# Don't upload the log file (it changes constantly)
-dot-manager.log
+# ============================================
+# DOTFILES GITIGNORE
+# ============================================
 
-# Don't upload the local config (stores your specific machine settings)
-.dot-manager.conf
-
-# Ignore backups created by the manager
-.dotfiles-backup/
+# --- Core Principle ---
+# Ignore: Machine-specific files, caches, logs, temporary files
+# Include: Configuration templates, scripts, themes
 
 # --- System & Editor Junk ---
-# Vim/Neovim swap files
+# Swap/backup files
 *.swp
 *.swo
-
-# Backup files (tilde at the end)
 *~
+*.bak
+*.backup
+*.old
 
-# Custom
-Dotfiles/.config/hypr/assets/current-wallpaper.png
-Dotfiles/.config/dconf/
+# Temporary files
+.tmp
+*.tmp
+temp/
+
+# --- Dot Manager ---
+dot-manager.log
+.dot-manager.conf
+.dotfiles-backup/
+
+# --- Application Cache & Data ---
+
+# VS Code / Code OSS
+Dotfiles/.config/Code - OSS/CachedData/
+Dotfiles/.config/Code - OSS/Cache/
+Dotfiles/.config/Code - OSS/GPUCache/
+Dotfiles/.config/Code - OSS/DIPS*
+Dotfiles/.config/Code - OSS/Dawn*
+Dotfiles/.config/Code - OSS/Network Persistent State
+Dotfiles/.config/Code - OSS/SharedStorage*
+Dotfiles/.config/Code - OSS/Code Cache/
+Dotfiles/.config/Code - OSS/crashpad_completed_requests
+Dotfiles/.config/Code - OSS/Crash Reports/
+Dotfiles/.config/Code - OSS/logs/
+Dotfiles/.config/Code - OSS/User/globalStorage/
+Dotfiles/.config/Code - OSS/User/workspaceStorage/
+Dotfiles/.config/Code - OSS/User/History/
+Dotfiles/.config/Code - OSS/User/sync/
+Dotfiles/.config/Code - OSS/User/state.vscdb
+Dotfiles/.config/Code - OSS/User/Backups/
+Dotfiles/.config/Code - OSS/settings.json  # Only if you want machine-specific settings
+
+# Web Browsers
+Dotfiles/.config/chromium/
+Dotfiles/.config/google-chrome/
+Dotfiles/.config/BraveSoftware/
+Dotfiles/.config/microsoft-edge/
+Dotfiles/.config/librewolf/
+
+# Firefox/Thunderbird
 Dotfiles/.config/mozilla/
+Dotfiles/.thunderbird/
+
+# Media Players
+Dotfiles/.config/vlc/
+Dotfiles/.config/mpv/watch_later/
+Dotfiles/.config/mpv/state*
+Dotfiles/.config/kew/
+
+# Messaging Apps
+Dotfiles/.config/discord/
+Dotfiles/.config/Slack/
+Dotfiles/.config/Element/
+Dotfiles/.config/telegram-desktop/
+
+# Email Clients
+Dotfiles/.config/evolution/
+Dotfiles/.config/kmail2/
+
+# --- System Configuration (Machine-Specific) ---
+
+# DConf databases (GNOME/GTK settings)
+Dotfiles/.config/dconf/
+
+# PulseAudio/pipewire audio state
 Dotfiles/.config/pulse/
+<<<<<<< Updated upstream
 Dotfiles/.config/zed/
 Dotfiles/.config/Code - OSS/
+=======
+Dotfiles/.config/pipewire/
+
+# Printer configuration
+Dotfiles/.config/cups/
+
+# Network manager connections (may contain passwords)
+Dotfiles/.config/NetworkManager/
+Dotfiles/.config/systemd/
+
+# Bluetooth pairings
+Dotfiles/.config/bluetooth/
+
+# SSH keys (should NEVER be committed)
+Dotfiles/.ssh/
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+known_hosts
+
+# GPG keys
+Dotfiles/.gnupg/
+
+# Password managers
+Dotfiles/.config/KeePass/
+Dotfiles/.config/keepassxc/
+Dotfiles/.password-store/
+
+# --- Application State & Cache ---
+
+# Shell history
+.bash_history
+.zsh_history
+.fish_history
+
+# Terminal state
+.dotfiles/.local/state/
+.dotfiles/.cache/
+
+# Package manager caches
+Dotfiles/.cache/pacman/
+Dotfiles/.cache/yay/
+Dotfiles/.cache/paru/
+
+# Development/build caches
+Dotfiles/.cache/cargo/
+Dotfiles/.cache/npm/
+Dotfiles/.cache/yarn/
+Dotfiles/.cache/pip/
+Dotfiles/.cache/go-build/
+Dotfiles/.cache/maven/
+Dotfiles/.cache/gradle/
+
+# Rust/Cargo
+Dotfiles/.cargo/
+
+# Node.js
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+ENV/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+
+# Go
+bin/
+pkg/
+
+# --- Desktop Environment Specific ---
+
+# Wallpapers (usually large binary files)
+Dotfiles/.config/hypr/assets/current-wallpaper.png
+Dotfiles/.wallpapers/
+Dotfiles/Pictures/Wallpapers/
+
+# Recent documents
+.recently-used.xbel
+Dotfiles/.local/share/recently-used.xbel
+
+# Trash
+.trash/
+.local/share/Trash/
+
+# --- Application-Specific (Keep configs, ignore data) ---
+
+# Zsh (keep .zshrc, ignore compdump)
+.zcompdump*
+.zlogin
+.zlogout
+
+# Fish (keep config.fish, ignore history)
+Dotfiles/.config/fish/fish_variables
+
+# Mako (notification daemon) - keep config, ignore state
+Dotfiles/.config/mako/history
+
+# Waybar (keep config, ignore cache)
+Dotfiles/.config/waybar/.waybar.cache
+
+# Rofi (keep config, ignore cache)
+Dotfiles/.config/rofi/rofi.runtime
+
+# Dunst (notification daemon)
+Dotfiles/.config/dunst/dunstrc  # Keep if template, ignore if machine-specific
+
+# Kitty terminal (keep config, ignore scrollback)
+Dotfiles/.config/kitty/scrollback*
+
+# Alacritty (keep config, ignore IPC sockets)
+alacritty.ipc
+
+# Wezterm (keep config, ignore state)
+Dotfiles/.config/wezterm/wezterm.lua  # Keep
+Dotfiles/.config/wezterm/*.log        # Ignore
+
+# Zed editor (keep themes, ignore cache)
+Dotfiles/.config/zed/db
+Dotfiles/.config/zed/logs
+Dotfiles/.config/zed/state.json
+# BUT KEEP: Dotfiles/.config/zed/themes/ (for custom themes)
+
+# NeoVim (keep init.vim/init.lua, ignore swap/pack/plugin)
+Dotfiles/.config/nvim/swap/
+Dotfiles/.config/nvim/undo/
+Dotfiles/.config/nvim/backup/
+Dotfiles/.config/nvim/view/
+Dotfiles/.config/nvim/lazy-lock.json
+Dotfiles/.config/nvim/plugin/
+
+# Btop (keep config, ignore history)
+Dotfiles/.config/btop/btop.log
+Dotfiles/.config/btop/error.log
+
+# Starship (keep config, ignore cache)
+Dotfiles/.config/starship/cache/
+
+# --- Files That SHOULD Be Committed ---
+# Explicitly keep important configs (uncomment if needed)
+#!Dotfiles/.config/alacritty/alacritty.toml
+#!Dotfiles/.config/hypr/hyprland.conf
+#!Dotfiles/.config/waybar/style.css
+#!Dotfiles/.config/waybar/config
+#!Dotfiles/.bashrc
+#!Dotfiles/.zshrc
+#!Dotfiles/.config/nvim/init.lua
+
+# --- Local Machine Files ---
+# Files that contain machine-specific paths, IPs, or hostnames
+*local*
+*host-specific*
+machine.conf
+local.conf
+secrets.conf
+credentials*
+*password*
+*token*
+*secret*
+
+# --- Large/Binary Files ---
+# Generally avoid binaries in dotfiles
+*.pdf
+*.epub
+*.mobi
+*.mp3
+*.mp4
+*.avi
+*.mkv
+*.iso
+*.img
+*.zip
+*.tar.gz
+*.rar
+*.7z
+>>>>>>> Stashed changes

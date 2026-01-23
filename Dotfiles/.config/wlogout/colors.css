@@ -2,17 +2,17 @@
  * Only includes variables used in style.css
  */
 
-@define-color background #101418;
-@define-color on_surface #e0e2e8;
-@define-color on_surface_variant #c2c7cf;
+@define-color background #0f1416;
+@define-color on_surface #dee3e6;
+@define-color on_surface_variant #bfc8cb;
 
-@define-color primary #9ccbfb;
-@define-color secondary #b9c8da;
-@define-color tertiary #d4bee6;
+@define-color primary #85d1e8;
+@define-color secondary #b2cbd3;
+@define-color tertiary #c0c4eb;
 @define-color error #ffb4ab;
 
-@define-color outline #8c9199;
+@define-color outline #899295;
 
-@define-color surface_container #1c2024;
-@define-color surface_container_highest #323539;
-@define-color surface_container_lowest #0b0e12;
+@define-color surface_container #1b2022;
+@define-color surface_container_highest #303638;
+@define-color surface_container_lowest #090f11;
