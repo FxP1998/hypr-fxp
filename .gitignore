@@ -111,7 +111,7 @@ build/
 bin/
 pkg/
 
-# --- 7. APP-SPECIFIC CACHE ---
+# --- 7. APP-SPECIFIC CACHE & GENERATED COLORS ---
 dotfiles/.config/waybar/.waybar.cache
 dotfiles/.config/rofi/rofi.runtime
 dotfiles/.config/kitty/scrollback*
@@ -119,6 +119,26 @@ dotfiles/.config/zed/db
 dotfiles/.config/zed/logs
 dotfiles/.config/zed/state.json
 dotfiles/.config/nvim/lazy-lock.json
+
+# Matugen Generated Color Files (Ignore dynamic changes)
+dotfiles/.config/alacritty/colors.toml
+dotfiles/.config/btop/themes/matugen.theme
+dotfiles/.config/dunst/dunstrc
+dotfiles/.config/gtk-3.0/colors.css
+dotfiles/.config/gtk-4.0/colors.css
+dotfiles/.config/hypr/modules/04-hypr-colors.conf
+dotfiles/.config/kitty/colors.conf
+dotfiles/.config/nano/matugen.nanorc
+dotfiles/.config/nvim/lua/matugen_theme.lua
+dotfiles/.config/rofi/colors.rasi
+dotfiles/.config/starship.toml
+dotfiles/.config/swayosd/colors.css
+dotfiles/.config/waybar/colors.css
+dotfiles/.config/wlogout/colors.css
+dotfiles/.config/yazi/theme.toml
+dotfiles/.config/zathura/zathurarc
+dotfiles/.config/zed/themes/matugen.json
+dotfiles/.vim/colors/matugen.vim
 
 # --- 8. LARGE BINARIES ---
 *.mp3
