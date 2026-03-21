@@ -1,0 +1,20 @@
+/* -----------------------------------------------------------------------------
+ *  󰣇  ROFI THEME MODULE - Keybindings
+ *  󰀻  File: keybinds.rasi
+ *  󰁔  Description: Optimized single-column layout for shortcut cheatsheet.
+ * ----------------------------------------------------------------------------- */
+
+@import "theme.rasi"
+
+window {
+    width: 800px;
+}
+
+listview {
+    columns: 1;
+    lines: 10;
+}
+
+element-text {
+    font: "MapleMono NF Mono 11";
+}

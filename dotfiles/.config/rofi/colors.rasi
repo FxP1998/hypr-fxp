@@ -1,0 +1,50 @@
+* {
+    /* --- STANDARD MATERIAL PALETTE --- */
+    primary: #ffb3b4;
+    on-primary: #5f131c;
+    primary-container: #7e2930;
+    on-primary-container: #ffdad9;
+
+    secondary: #e6bdbc;
+    on-secondary: #44292a;
+    secondary-container: #5d3f3f;
+    on-secondary-container: #ffdad9;
+
+    tertiary: #e5c18d;
+    on-tertiary: #422c05;
+    tertiary-container: #5b421a;
+    on-tertiary-container: #ffddb0;
+
+    error: #ffb4ab;
+    on-error: #690005;
+    
+    surface: #131313;
+    on-surface: #e2e2e2;
+    on-surface-variant: #c6c6c6;
+
+    outline: #919191;
+    outline-variant: #474747;
+
+    surface-container: #1f1f1f;
+    surface-container-high: #2a2a2a;
+    surface-container-highest: #353535;
+
+    /* --- SEMANTIC ALIASES --- */
+
+    /* Main Background (Solid) */
+    background-col: #131313;
+
+    /* Main Background (Transparent) - 80% Opacity */
+    background-alpha-col: #131313CC;
+
+    /* Card/Element Background */
+    background-alt-col: #1f1f1f;
+
+    /* Text */
+    foreground-col: #e2e2e2;
+
+    /* Highlights */
+    selected-col: #ffb3b4;
+    active-col: #e6bdbc;
+    urgent-col: #ffb4ab;
+}

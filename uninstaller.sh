@@ -1,128 +1,179 @@
 #!/usr/bin/env bash
 # AUTHOR: M. H. IMAM (FxP1998)
-# DESCRIPTION: Smart Uninstaller & Cleaner for FxP-Hyprland
+# DESCRIPTION: Official Smart Uninstaller & System Restorer (Eyecandy & Robust)
 
-# --- VISUAL & COMPATIBILITY ENGINE ---
+# --- Colors & Compatibility Engine ---
+C_BLUE='\033[1;34m'; C_GREEN='\033[1;32m'; C_YELLOW='\033[1;33m'; C_RED='\033[1;31m'; C_RESET='\033[0m'; C_BOLD='\033[1m'
+
 if [[ "$TERM" == "linux" ]]; then
-    C_BLUE='\033[1;34m'; C_GREEN='\033[1;32m'; C_YELL='\033[1;33m'; C_RED='\033[1;31m'; C_RESET='\033[0m'
-    IC_TRASH="[#]"; IC_OK="[OK]"; IC_INFO="->"; LINE_DBL="========================================"
+    # TTY SAFE MODE (Standard ASCII)
+    I_TRASH="[#]"; I_RESTORE="[R]"; I_CLEAN="[*]"; I_WARN="[!]"; I_OK="[OK]"; I_INFO="->"; LINE="----------------------------------------------------"
 else
-    C_BLUE='\033[1;34m'; C_GREEN='\033[1;32m'; C_YELL='\033[1;33m'; C_RED='\033[1;31m'; C_RESET='\033[0m'
-    IC_TRASH="🗑️ "; IC_OK="✔"; IC_INFO="➜"; LINE_DBL="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    # GUI CANDY MODE (Nerd Fonts)
+    I_TRASH="󰩹"; I_RESTORE="󰁯"; I_CLEAN="󰃢"; I_WARN="󰀦"; I_OK="󰄬"; I_INFO="󰁔"; LINE="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi
 
-APP_NAME="FxP-Hyprland"
-BACKUP_DIR_ROOT="$HOME/.dotfiles-backup"
+# --- Configuration ---
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+dotfiles_DIR="$REPO_ROOT/dotfiles"
+BACKUP_ROOT="$HOME/.FxP1998_backups"
 
-# Lists matching your installer
-CONFIGS_TO_REMOVE=("alacritty" "auto-cpufreq" "btop" "FxP-Hyprland" "gtk-3.0" "gtk-4.0" "htop" "hypr" "kitty" "mako" "matugen" "nvim" "rofi" "swayosd" "waybar" "wlogout" "xsettingsd" "yazi" "zed" "starship.toml")
-HOME_FILES_TO_REMOVE=(".alias" ".fonts" ".icons" ".themes" ".gtkrc-2.0" ".vimrc")
+# --- Helper Functions ---
+print_header() {
+    clear
+    echo -e "${C_RED}${C_BOLD}${LINE}${C_RESET}"
+    echo -e "  ${I_TRASH}  ${C_BOLD}FxP1998 HYPRLAND RICE UNINSTALLER${C_RESET}"
+    echo -e "${C_RED}${C_BOLD}${LINE}${C_RESET}\n"
+}
 
-clear
-echo -e "${C_RED}${LINE_DBL}${C_RESET}"
-echo -e "${C_RED}   ${IC_TRASH} UNINSTALLING FxP-HYPRLAND       ${C_RESET}"
-echo -e "${C_RED}${LINE_DBL}${C_RESET}"
-echo -e "${C_YELL}Warning: This will remove configuration files installed by the script.${C_RESET}"
-echo -e "You will be given options to restore backups or keep packages.\n"
+print_step() { echo -e "  ${C_BLUE}${C_BOLD}[${C_RESET}${I_CLEAN}${C_BLUE}${C_BOLD}]${C_RESET} $1"; }
+print_success() { echo -e "  ${C_GREEN}${C_BOLD}[${C_RESET}${I_OK}${C_GREEN}${C_BOLD}]${C_RESET} $1"; }
+print_warning() { echo -e "  ${C_YELLOW}${C_BOLD}[${C_RESET}${I_WARN}${C_YELLOW}${C_BOLD}]${C_RESET} $1"; }
+print_info() { echo -e "      ${I_INFO} $1"; }
 
-read -p "Are you sure you want to proceed? [y/N]: " CONFIRM
-if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
-    echo -e "${C_GREEN}Action cancelled.${C_RESET}"
+# --- Check Environment ---
+# 1. TTY Enforcement (Only run in pure TTY, not emulators)
+if [[ $(tty) == /dev/pts/* ]]; then
+    clear
+    echo -e "${C_RED}${C_BOLD}${LINE}${C_RESET}"
+    echo -e "  ${I_FAIL}  ${C_BOLD}TERMINAL EMULATOR DETECTED${C_RESET}"
+    echo -e "${C_RED}${C_BOLD}${LINE}${C_RESET}\n"
+    echo -e "  ${I_INFO} For a safe and perfect restoration, this script"
+    echo -e "      MUST be run from a pure TTY (Virtual Console)."
+    echo -e "\n  ${C_YELLOW}Please switch to a TTY (Ctrl+Alt+F3) and run again.${C_RESET}"
+    echo -e "\n${C_RED}${C_BOLD}${LINE}${C_RESET}"
+    exit 1
+fi
+
+# --- Execution ---
+print_header
+
+print_warning "This will remove the FxP1998 configurations and attempt to restore your system."
+read -p "    Are you sure you want to proceed? [y/N]: " confirm
+if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo -e "\n  ${I_INFO} Uninstallation cancelled."
     exit 0
 fi
 
-# ==============================================================================
-# PHASE 1: RESTORE BACKUPS
-# ==============================================================================
-echo -e "\n${C_BLUE}${IC_INFO} Checking for backups...${C_RESET}"
-if [ -d "$BACKUP_DIR_ROOT" ]; then
-    LATEST_BACKUP=$(ls -td "$BACKUP_DIR_ROOT"/* | head -1)
+# --- Phase 1: Restore Backups ---
+echo -e "\n${C_BOLD}Phase 1: Configuration Restoration${C_RESET}"
+echo -e "${C_BLUE}${LINE}${C_RESET}"
+
+if [ -d "$BACKUP_ROOT" ]; then
+    LATEST_BACKUP=$(ls -td "$BACKUP_ROOT"/* 2>/dev/null | head -1)
     if [ -n "$LATEST_BACKUP" ]; then
-        echo -e "${C_GREEN}${IC_OK} Found backup at: $LATEST_BACKUP${C_RESET}"
-        read -p "Do you want to RESTORE this backup? (Overwrites current configs) [y/N]: " RESTORE_OPT
-        if [[ "$RESTORE_OPT" =~ ^[Yy]$ ]]; then
-            echo -e "${C_YELL}   Restoring configurations...${C_RESET}"
-            if [ -d "$LATEST_BACKUP/.config" ]; then cp -rf "$LATEST_BACKUP/.config/"* "$HOME/.config/"; fi
-            for file in "${HOME_FILES_TO_REMOVE[@]}"; do
-                if [ -f "$LATEST_BACKUP/$file" ] || [ -d "$LATEST_BACKUP/$file" ]; then cp -rf "$LATEST_BACKUP/$file" "$HOME/"; fi
-            done
-            [ -f "$LATEST_BACKUP/.zshrc" ] && cp "$LATEST_BACKUP/.zshrc" "$HOME/.zshrc"
-            [ -f "$LATEST_BACKUP/.bashrc" ] && cp "$LATEST_BACKUP/.bashrc" "$HOME/.bashrc"
-            echo -e "${C_GREEN}${IC_OK} Backup restored successfully.${C_RESET}"
+        print_success "Found latest backup at: ${C_YELLOW}$(basename "$LATEST_BACKUP")${C_RESET}"
+        read -p "    Restore this backup to your $HOME? [y/N]: " restore_confirm
+        
+        if [[ "$restore_confirm" =~ ^[Yy]$ ]]; then
+            print_step "Surgically restoring original files..."
+            # Restore everything from the backup directory
+            cp -rf "$LATEST_BACKUP"/.?* "$HOME/" 2>/dev/null
+            cp -rf "$LATEST_BACKUP"/* "$HOME/" 2>/dev/null
+            print_success "Restoration complete."
         else
-            echo -e "   Skipping restore."
+            print_warning "Skipping restoration. Proceeding to surgical cleanup."
         fi
-    else
-        echo -e "${C_YELL}   Backup folder exists but looks empty.${C_RESET}"
     fi
 else
-    echo -e "${C_YELL}   No backups found at $BACKUP_DIR_ROOT.${C_RESET}"
+    print_warning "No backups found in $BACKUP_ROOT."
 fi
 
-# ==============================================================================
-# PHASE 2: REMOVE INSTALLED CONFIGS
-# ==============================================================================
-echo -e "\n${C_BLUE}${IC_INFO} Cleaning installed configurations...${C_RESET}"
-for cfg in "${CONFIGS_TO_REMOVE[@]}"; do
-    if [ -e "$HOME/.config/$cfg" ]; then
-        rm -rf "$HOME/.config/$cfg"
-        echo -e "   - Removed: ~/.config/$cfg"
-    fi
-done
-for file in "${HOME_FILES_TO_REMOVE[@]}"; do
-    if [ -e "$HOME/$file" ]; then
-        rm -rf "$HOME/$file"
-        echo -e "   - Removed: ~/$file"
-    fi
-done
+# --- Phase 2: Surgical Cleanup ---
+echo -e "\n${C_BOLD}Phase 2: Removing FxP1998 dotfiles${C_RESET}"
+echo -e "${C_BLUE}${LINE}${C_RESET}"
 
-# ==============================================================================
-# PHASE 3: SANITIZE SHELL FILES (.zshrc / .bashrc)
-# ==============================================================================
-echo -e "\n${C_BLUE}${IC_INFO} Removing injected shell aliases...${C_RESET}"
-sanitize_shell_file() {
-    local file="$1"
-    if [ -f "$file" ]; then
-        grep -v "The Ultimate Extactor" "$file" | grep -v "Yazi CD on Exit" | grep -v "yazi-cwd" > "$file.tmp"
-        mv "$file.tmp" "$file"
-        echo -e "   - Sanitized: $file"
-    fi
-}
-sanitize_shell_file "$HOME/.zshrc"
-sanitize_shell_file "$HOME/.bashrc"
+if [ -d "$dotfiles_DIR" ]; then
+    print_step "Scanning dotfiles for cleanup..."
+    
+    # 1. Clean root dotfiles
+    for item in "$dotfiles_DIR"/{*,.[!.]*}; do
+        [ -e "$item" ] || continue
+        name=$(basename "$item")
+        if [ "$name" != ".config" ] && [ "$name" != ".git" ]; then
+            if [ -e "$HOME/$name" ]; then
+                rm -rf "$HOME/$name"
+                echo -e "      ${C_RED}${I_TRASH}${C_RESET} Removed: ~/$name"
+            fi
+        fi
+    done
 
-# ==============================================================================
-# PHASE 4: SYSTEM SERVICES & PACKAGES
-# ==============================================================================
-echo -e "\n${C_BLUE}${IC_INFO} System Cleanup Options${C_RESET}"
-# 1. Shell Revert
-CURRENT_SHELL=$(basename "$SHELL")
-if [ "$CURRENT_SHELL" == "zsh" ]; then
-    read -p "Do you want to switch default shell back to Bash? [y/N]: " SHELL_OPT
-    if [[ "$SHELL_OPT" =~ ^[Yy]$ ]]; then
+    # 2. Clean .config items
+    if [ -d "$dotfiles_DIR/.config" ]; then
+        for item in "$dotfiles_DIR/.config"/*; do
+            [ -e "$item" ] || continue
+            name=$(basename "$item")
+            if [ -e "$HOME/.config/$name" ]; then
+                rm -rf "$HOME/.config/$name"
+                echo -e "      ${C_RED}${I_TRASH}${C_RESET} Removed: ~/.config/$name"
+            fi
+        done
+    fi
+    print_success "Surgical cleanup finished."
+else
+    print_warning "dotfiles source not found. Manual cleanup may be required."
+fi
+
+# --- Phase 3: Shell & Environment ---
+echo -e "\n${C_BOLD}Phase 3: Shell & Environment Reset${C_RESET}"
+echo -e "${C_BLUE}${LINE}${C_RESET}"
+
+# Reset Shell
+if [ "$SHELL" == "/usr/bin/zsh" ]; then
+    read -p "    Switch default shell back to Bash? [y/N]: " shell_revert
+    if [[ "$shell_revert" =~ ^[Yy]$ ]]; then
         sudo usermod --shell /bin/bash "$USER"
-        echo -e "${C_GREEN}${IC_OK} Shell changed to Bash.${C_RESET}"
+        print_success "Shell reverted to Bash."
     fi
 fi
-# 2. Service Disable
-read -p "Disable 'auto-cpufreq' service? [y/N]: " CPU_OPT
-if [[ "$CPU_OPT" =~ ^[Yy]$ ]]; then
-    sudo systemctl disable --now auto-cpufreq 2>/dev/null
-    echo -e "${C_GREEN}${IC_OK} Service disabled.${C_RESET}"
-fi
-# 3. Package Removal
-echo -e "\n${C_RED}[DANGER ZONE]${C_RESET}"
-read -p "Do you want to uninstall the packages (Hyprland, Waybar, etc.)? [y/N]: " PKG_OPT
-if [[ "$PKG_OPT" =~ ^[Yy]$ ]]; then
-    echo -e "${C_YELL}Removing packages...${C_RESET}"
-    PKGS_TO_REMOVE="hyprland hyprlock hypridle waybar rofi-wayland swayosd wlogout nwg-look mako matugen starship"
-    sudo pacman -Rns --noconfirm $PKGS_TO_REMOVE 2>/dev/null
-    echo -e "${C_GREEN}${IC_OK} Packages removed.${C_RESET}"
-else
-    echo -e "Skipping package removal."
+
+# Cleanup shell files from dynamic injections
+for rc in ".zshrc" ".bashrc"; do
+    if [ -f "$HOME/$rc" ]; then
+        sed -i '/yazi-cwd/d' "$HOME/$rc"
+        echo -e "      ${I_INFO} Sanitized ~/$rc"
+    fi
+done
+
+# --- Phase 4: Services ---
+echo -e "\n${C_BOLD}Phase 4: Service Cleanup${C_RESET}"
+echo -e "${C_BLUE}${LINE}${C_RESET}"
+
+read -p "    Disable 'auto-cpufreq' service? [y/N]: " service_disable
+if [[ "$service_disable" =~ ^[Yy]$ ]]; then
+    sudo systemctl disable --now auto-cpufreq.service &>/dev/null
+    print_success "auto-cpufreq service disabled."
 fi
 
-echo -e "\n${C_GREEN}${LINE_DBL}${C_RESET}"
-echo -e "${C_GREEN}   ${IC_OK} UNINSTALLATION COMPLETE      ${C_RESET}"
-echo -e "${C_GREEN}${LINE_DBL}${C_RESET}"
-echo -e "Please restart your terminal or reboot for all changes to take effect."
+# --- Phase 5: Package Removal (Optional) ---
+echo -e "\n${C_BOLD}Phase 5: Package Removal (Optional)${C_RESET}"
+echo -e "${C_BLUE}${LINE}${C_RESET}"
+
+TRACKER_FILE="$HOME/.config/FxP1998/installed_packages.txt"
+
+if [ -f "$TRACKER_FILE" ]; then
+    PKGS_TO_REMOVE=$(cat "$TRACKER_FILE")
+    print_warning "The following packages were installed by FxP1998 and can be removed:"
+    echo -e "      ${C_YELLOW}${PKGS_TO_REMOVE//$'\n'/ }${C_RESET}"
+    read -p "    Uninstall these tracked packages? [y/N]: " pkg_remove
+
+    if [[ "$pkg_remove" =~ ^[Yy]$ ]]; then
+        print_step "Uninstalling Rice packages..."
+        sudo pacman -Rns --noconfirm $PKGS_TO_REMOVE 2>/dev/null
+        rm -rf "$HOME/.config/FxP1998"
+        print_success "Tracked packages removed."
+    else
+        print_success "Packages kept on system."
+    fi
+else
+    print_warning "No package tracker found. Manual removal is safer."
+    print_info "To prevent accidental deletion of your existing apps (like Firefox),"
+    print_info "I will not attempt automatic uninstallation without a tracking file."
+fi
+
+# --- Final Completion ---
+print_header
+echo -e "  ${C_GREEN}${C_BOLD}${I_OK} UNINSTALLATION COMPLETE!${C_RESET}"
+echo -e "  ${I_INFO} System has been cleaned and backups restored (if selected)."
+echo -e "  ${I_INFO} Please ${C_RED}${C_BOLD}reboot${C_RESET} your system for a clean start."
+echo -e "\n${C_BLUE}${C_BOLD}${LINE}${C_RESET}"

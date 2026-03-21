@@ -1,0 +1,180 @@
+/* -----------------------------------------------------------------------------
+ * ROFI THEME - FxP Spotlight (Official & Eyecandy)
+ * ----------------------------------------------------------------------------- */
+
+@import "colors.rasi"
+
+* {
+    /* Global Properties */
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+    margin:                      0px;
+    padding:                     0px;
+    font:                        "MapleMono NF Mono 12";
+}
+
+/* --- MAIN WINDOW --- */
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       800px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    enabled:                     true;
+    border:                      2px solid;
+    border-radius:               15px;
+    border-color:                @selected-col;
+    cursor:                      "default";
+    background-color:            @background-alpha-col;
+}
+
+/* --- MAIN CONTAINER --- */
+mainbox {
+    enabled:                     true;
+    spacing:                     0px;
+    padding:                     0px;
+    background-color:            transparent;
+    children:                    [ "inputbar", "listview", "message", "mode-switcher" ];
+}
+
+/* --- HELP MESSAGE --- */
+message {
+    enabled:                     true;
+    margin:                      0px 30px 10px 30px;
+    padding:                     0px;
+    background-color:            transparent;
+    text-color:                  @outline-variant;
+}
+
+textbox {
+    padding:                     0px;
+    background-color:            inherit;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    font:                        "MapleMono NF Mono 10";
+}
+
+/* --- INPUT BAR --- */
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      30px 30px 10px 30px;
+    padding:                     15px 25px;
+    border-radius:               12px;
+    background-color:            @background-alt-col;
+    text-color:                  @foreground-col;
+    children:                    [ "prompt", "entry", "textbox-help" ];
+}
+
+textbox-help {
+    expand:                      false;
+    content:                     "󰁔 [Ctrl+Tab] Modes";
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    text-color:                  @outline-variant;
+    font:                        "MapleMono NF Mono 9";
+}
+
+prompt {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  @selected-col;
+    font:                        "MapleMono NF Mono 16";
+}
+
+entry {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  @foreground-col;
+    cursor:                      text;
+    placeholder:                 "Search...";
+    placeholder-color:           inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    font:                        "MapleMono NF Mono 14";
+}
+
+/* --- LIST VIEW --- */
+listview {
+    enabled:                     true;
+    columns:                     2;
+    lines:                       8;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+
+    spacing:                     5px;
+    margin:                      10px 30px 20px 30px;
+    background-color:            transparent;
+    cursor:                      "default";
+}
+
+/* --- ELEMENTS --- */
+element {
+    enabled:                     true;
+    spacing:                     15px;
+    padding:                     10px 15px;
+    border-radius:               10px;
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+    cursor:                      pointer;
+}
+
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+}
+
+element selected.normal {
+    background-color:            @selected-col;
+    text-color:                  @background-col;
+}
+
+element normal.urgent {
+    text-color:                  @urgent-col;
+}
+
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        36px;
+    cursor:                      inherit;
+}
+
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/* --- MODE SWITCHER --- */
+mode-switcher {
+    enabled:                     true;
+    spacing:                     0px;
+    margin:                      0px;
+    padding:                     0px;
+    background-color:            @background-alt-col;
+}
+
+button {
+    padding:                     15px;
+    background-color:            transparent;
+    text-color:                  @foreground-col;
+    cursor:                      pointer;
+}
+
+button selected {
+    background-color:            @selected-col;
+    text-color:                  @background-col;
+}

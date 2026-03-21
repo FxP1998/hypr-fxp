@@ -1,12 +1,9 @@
 <div align="center">
 
 # FxP-Hyprland
-### Hey, I am trying to create a clean and minimal hyprland rice for myself and for my future me ❤️
-### If you are here to use my dotfiles then i will recommend to use them manually because i am not a devloper or any perfect person on scripting or coding so my installer may not work on you so please use it with your own risk
+### A highly polished, automated, and minimal Hyprland environment for Arch Linux. ❤️
 
-#### Backup your configs before using my dotfiles
-
-*Esthetic • Minimal • Powerfull*
+#### *Official Release • Performance Tuned • Fully Automated*
 
 ![WM](https://img.shields.io/badge/WM-Hyprland-2E3440?style=for-the-badge&logo=archlinux&logoColor=1793d1)
 ![Style](https://img.shields.io/badge/Matugen-Colors-ff007c?style=for-the-badge)
@@ -14,15 +11,15 @@
 
 <br/>
 
-<img src="Screenshots/homescreen-4.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
-<img src="Screenshots/homescreen-1.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
-<img src="Screenshots/homescreen-2.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
-<img src="Screenshots/homescreen-3.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
+<img src="assets/screenshots/homescreen-4.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
+<img src="assets/screenshots/homescreen-1.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
+<img src="assets/screenshots/homescreen-2.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
+<img src="assets/screenshots/homescreen-3.png" width="90%" style="border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,.6);">
 
 <br/><br/>
 
-**FxP-Hyprland** aiming to be minimal **Hyprland + Arch Linux** setup focused on  
-performance, automation, and a unified cyberpunk aesthetic.
+**FxP-Hyprland** is a professional-grade **Hyprland + Arch Linux** setup focused on  
+extreme performance, surgical automation, and a unified Material You aesthetic.
 
 [:framed_picture: Gallery](#gallery) • [:page_facing_up: Installation](#installation) • [:sparkles: Features](#features)
 
@@ -37,30 +34,29 @@ performance, automation, and a unified cyberpunk aesthetic.
 ---
 
 <a id="installation"></a>
-## :one: Installation
+## 󰒓 Installation
 
-> ⚠️ **Important**  
-> This setup expects a specific directory layout for automation to work correctly.
+> 󰀦 **System Requirement**  
+> This installer is designed for Arch Linux and requires a pure TTY environment for safety.
 
-### :two: Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/FxP1998/hypr-fxp.git ~/FxP1998
 ```
 
-### :three: Change directory and make the installer executable
+### 2. Enter and Initialize
 
 ```bash
 cd ~/FxP1998 && chmod +x installer.sh
 ```
 
-### :four: Run the Installer
+### 3. Run the Master Installer
 ```bash
 ./installer.sh
 ```
 
-> ⚠️ **Important**  
-> Please carefully follow the installation process.
+> 󰁔 **Post-Install:** Please reboot your system to apply all environment variables and group permissions.
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
@@ -68,113 +64,101 @@ cd ~/FxP1998 && chmod +x installer.sh
 
 <a id="gallery"></a>
 
-## :framed_picture: Gallery
+## 󰸉 Gallery
 
 ---
 
-### :computer: Desktop Experience
+### 󰣇 Desktop Experience
 <p align="center">
-  <img src="Screenshots/homescreen-2.png" width="48%">
-  <img src="Screenshots/homescreen-3.png" width="48%">
+  <img src="assets/screenshots/homescreen-2.png" width="48%">
+  <img src="assets/screenshots/homescreen-3.png" width="48%">
 </p>
 
 ---
 
-### :closed_lock_with_key: Lockscreen & Logout
+### 󰷛 Lockscreen & Logout
 <p align="center">
-  <img src="Screenshots/hyprlock.png" width="48%">
-  <img src="Screenshots/wlogout-1.png" width="48%">
+  <img src="assets/screenshots/hyprlock.png" width="48%">
+  <img src="assets/screenshots/wlogout-1.png" width="48%">
 </p>
 
 ---
 
-### :pushpin: Waybar
+### 󰕮 Waybar Modules
 
 <p align="center" style="white-space: nowrap;">
-  <img src="Screenshots/waybar-1.png" width="10%" alt="Waybar main">
-  <img src="Screenshots/waybar_showcase.png" width="10%" alt="Waybar module">
-  <img src="Screenshots/waybar_showcase_1.png" width="10%" alt="Waybar module">
-  <img src="Screenshots/waybar_showcase_2.png" width="10%" alt="Waybar module">
-</p>
-
-
-
----
-
-### :memo: fixnet (Custom Tool)
-<p align="center">
-  <img src="Screenshots/fixnet-1.png" width="24%">
-  <img src="Screenshots/fixnet-2.png" width="24%">
-  <img src="Screenshots/fixnet-3.png" width="24%">
-  <img src="Screenshots/fixnet-4.png" width="24%">
+  <img src="assets/screenshots/waybar-1.png" width="10%" alt="Waybar main">
+  <img src="assets/screenshots/waybar_showcase.png" width="10%" alt="Waybar module">
+  <img src="assets/screenshots/waybar_showcase_1.png" width="10%" alt="Waybar module">
+  <img src="assets/screenshots/waybar_showcase_2.png" width="10%" alt="Waybar module">
 </p>
 
 ---
 
-### :rocket: Rofi Launchers & Wallpaper Changer
+### 󰒓 Network & Mirror Tuning (fixnet)
 <p align="center">
-  <img src="Screenshots/rofi-launcher-1.png" width="48%">
-  <img src="Screenshots/wallpaper-selector-1.png" width="48%">
+  <img src="assets/screenshots/fixnet-1.png" width="24%">
+  <img src="assets/screenshots/fixnet-2.png" width="24%">
+  <img src="assets/screenshots/fixnet-3.png" width="24%">
+  <img src="assets/screenshots/fixnet-4.png" width="24%">
 </p>
 
 ---
 
-###  :white_square_button: Terminal Workflow
+### 󰀻 Rofi Spotlight UI
 <p align="center">
-  <img src="Screenshots/yazi-kitty-1.png" width="48%">
-  <img src="Screenshots/nvim-vim-1.png" width="48%">
-</p>
-
-<p align="center">
-  <img src="Screenshots/btop-1.png" width="32%">
-  <img src="Screenshots/yazi-kitty-nvim.png" width="32%">
-  <img src="Screenshots/kew-music-player-1.png" width="32%">
+  <img src="assets/screenshots/rofi-launcher-1.png" width="48%">
+  <img src="assets/screenshots/wallpaper-selector-1.png" width="48%">
 </p>
 
 ---
 
-### :open_file_folder: Applications
+### 󱆃 Terminal Workflow
 <p align="center">
-  <img src="Screenshots/thunar-nautilus-alacritty.png" width="48%">
-  <img src="Screenshots/firefox.png" width="48%">
+  <img src="assets/screenshots/yazi-kitty-1.png" width="48%">
+  <img src="assets/screenshots/nvim-vim-1.png" width="48%">
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/btop-1.png" width="32%">
+  <img src="assets/screenshots/yazi-kitty-nvim.png" width="32%">
+  <img src="assets/screenshots/kew-music-player-1.png" width="32%">
 </p>
 
 ---
 
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
-</div>
+### 󰀻 Core Applications
+<p align="center">
+  <img src="assets/screenshots/thunar-nautilus-alacritty.png" width="48%">
+  <img src="assets/screenshots/firefox.png" width="48%">
+</p>
+
+---
 
 <a id="features"></a>
 
+## 󰒓 Core Features
 
-<a id="features"></a>
+> Automated via the **Master Installer** orchestration suite.
 
-## :bookmark: Dependencies & Features
-
-> All dependencies are installed automatically via **Pacman + Yay**
-
-| Category | Packages |
+| Category | Components |
 |--------|----------|
-| **Window Manager** | Hyprland, Hyprlock, Hypridle |
-| **Idle Manager and Lockscreen** | Hypridle, Hyprlock |
-| **Bar & Widgets** | Waybar, Rofi-Wayland, Wlogout, Mako |
-| **Terminal** | Kitty, Alacritty, Starship, Btop |
-| **System Monitor** | Btop, Htop | 
-| **Editors** | Neovim, Vim, Zed |
-| **File Managers** | Thunar, Nautilus, Yazi |
-| **Display Manager and Performance Booster** | SDDM (Astronaut), Auto-CPUFreq |
-| **Audio** | Pipewire, Pipewire-Pulse, Wireplumber, Pavucontrol |
-| **Network and Bluetooth** | NetworkManager, Blueman, **Fixnet (Custom)** |
+| **Window Manager** | Hyprland (Modular Config) |
+| **Security & Auth** | Polkit-Gnome, Hyprlock |
+| **Bar & UI** | Waybar, Rofi (Spotlight), Dunst |
+| **Performance** | Auto-CPUFreq, Reflector Tuning | 
+| Theming | Matugen (Material You), ADW-GTK3 |
+| Virtualization | Libvirt, Virt-Manager, QEMU |
+| Terminals | Kitty, Alacritty, Zsh (Starship) |
+| **Tools** | Yazi, Btop, Fixnet, Screenshot/Recorder |
 
 ---
 
 <div align="center">
 
-## 👨‍💻 Author
+## 󰄬 Maintainer
 
 **M. H. IMAM (FxP1998)**  
-Made with ❤️ for the **Arch Linux** community
+*Building the future of minimalist computing.*
 
 </div>
-
