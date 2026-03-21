@@ -25,6 +25,7 @@ Thumbs.db
 dot-manager.log
 .FxP1998_backups/
 installed_packages.txt
+.fxp_state.conf
 
 # --- 3. DOTFILES EXCLUSIONS (Machine-Specific Data) ---
 
