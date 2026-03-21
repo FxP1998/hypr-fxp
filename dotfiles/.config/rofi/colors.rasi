@@ -1,19 +1,19 @@
 * {
     /* --- STANDARD MATERIAL PALETTE --- */
-    primary: #ffb3b4;
-    on-primary: #5f131c;
-    primary-container: #7e2930;
-    on-primary-container: #ffdad9;
+    primary: #80d997;
+    on-primary: #00391a;
+    primary-container: #005228;
+    on-primary-container: #9cf6b2;
 
-    secondary: #e6bdbc;
-    on-secondary: #44292a;
-    secondary-container: #5d3f3f;
-    on-secondary-container: #ffdad9;
+    secondary: #b7ccb7;
+    on-secondary: #223526;
+    secondary-container: #394b3c;
+    on-secondary-container: #d2e8d3;
 
-    tertiary: #e5c18d;
-    on-tertiary: #422c05;
-    tertiary-container: #5b421a;
-    on-tertiary-container: #ffddb0;
+    tertiary: #a2ced9;
+    on-tertiary: #01363f;
+    tertiary-container: #204d56;
+    on-tertiary-container: #bdeaf5;
 
     error: #ffb4ab;
     on-error: #690005;
@@ -44,7 +44,7 @@
     foreground-col: #e2e2e2;
 
     /* Highlights */
-    selected-col: #ffb3b4;
-    active-col: #e6bdbc;
+    selected-col: #80d997;
+    active-col: #b7ccb7;
     urgent-col: #ffb4ab;
 }

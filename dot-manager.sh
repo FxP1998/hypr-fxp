@@ -12,9 +12,9 @@
 C_BLUE='\033[1;34m'; C_GREEN='\033[1;32m'; C_YELLOW='\033[1;33m'; C_RED='\033[1;31m'; C_RESET='\033[0m'; C_BOLD='\033[1m'
 
 if [[ "$TERM" == "linux" ]]; then
-    I_GIT="[GIT]"; I_OK="[OK]"; I_INFO="->"; I_KEY="[KEY]"; I_SYNC="[SYNC]"; I_LOCK="[SEC]"; LINE="----------------------------------------------------"
+    I_GIT="[GIT]"; I_OK="[OK]"; I_INFO="->"; I_KEY="[KEY]"; I_SYNC="[SYNC]"; I_LOCK="[SEC]"; I_UP="[UP]"; I_FIX="[FIX]"; LINE="----------------------------------------------------"
 else
-    I_GIT="󰊤"; I_OK="󰄬"; I_INFO="󰁔"; I_KEY="󰒓"; I_SYNC="󰓦"; I_LOCK="󰒓"; LINE="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    I_GIT="󰊤"; I_OK="󰄬"; I_INFO="󰁔"; I_KEY="󰒓"; I_SYNC="󰓦"; I_LOCK="󰒓"; I_UP="󰓅"; I_FIX="󰒓"; LINE="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi
 
 # --- Configuration & Security ---
@@ -42,16 +42,24 @@ initialize_security() {
         echo -e "  ${I_INFO} Welcome to FxP1998. Let's configure your local identity."
         echo -e "  ${I_INFO} This data is stored locally and will NEVER be pushed to Git.\n"
 
-        read -p "    Enter your Git Display Name: " git_name
-        read -p "    Enter your Git Email Address: " git_email
-        read -p "    Enter your GitHub Username: " gh_user
+        echo -e "  ${C_YELLOW}Step 1: Git Display Name${C_RESET}"
+        echo -e "      (The name shown on your commits. Found in GitHub Profile Settings)"
+        read -p "    󰁔 Enter Name: " git_name
+        
+        echo -e "\n  ${C_YELLOW}Step 2: Git Email Address${C_RESET}"
+        echo -e "      (The email linked to your GitHub account)"
+        read -p "    󰁔 Enter Email: " git_email
+        
+        echo -e "\n  ${C_YELLOW}Step 3: GitHub Username${C_RESET}"
+        echo -e "      (Your public handle used in profile URLs)"
+        read -p "    󰁔 Enter Username: " gh_user
         
         cat <<EOF > "$STATE_FILE"
 # FxP1998 LOCAL SECURITY STATE
 # DO NOT COMMIT THIS FILE
-FXP_GIT_NAME="$git_name"
-FXP_GIT_EMAIL="$git_email"
-FXP_GH_USER="$gh_user"
+FXP_GIT_NAME="${git_name:-User}"
+FXP_GIT_EMAIL="${git_email:-user@example.com}"
+FXP_GH_USER="${gh_user:-username}"
 EOF
         msg_success "Security state initialized."
         
@@ -218,32 +226,37 @@ repair_repo() {
     sleep 2
 }
 
-# --- MAIN MENU ---
+# --- Execution ---
 cd "$REPO_ROOT" || exit 1
 initialize_security
 
 while true; do
     print_header
-    echo -e "  ${C_YELLOW}1)${C_RESET} ${I_INFO}  Show Repo Status"
-    echo -e "  ${C_YELLOW}2)${C_RESET} ${I_KEY}  Manage SSH Keys"
-    echo -e "  ${C_YELLOW}3)${C_RESET} ${I_GIT}  Surgical Upload (Pick file/folder)"
-    echo -e "  ${C_YELLOW}4)${C_RESET} ${I_GIT}  Global Upload (Push all changes)"
-    echo -e "  ${C_YELLOW}5)${C_RESET}  Force Overwrite Remote (DANGER)"
-    echo -e "  ${C_YELLOW}6)${C_RESET}  Repair Index (Moves/Untracked)"
-    echo -e "  ${C_YELLOW}7)${C_RESET}  Undo Last Commit"
-    echo -e "  ${C_YELLOW}8)${C_RESET}  Reset Security Config"
-    echo -e "  ${C_YELLOW}9)${C_RESET}  Exit\n"
+    echo -e "  ${C_BOLD}${C_BLUE}󰊤  REPOSITORY HEALTH${C_RESET}"
+    echo -e "  ${C_YELLOW}1)${C_RESET} ${I_INFO}  Show Current Status"
+    echo -e "  ${C_YELLOW}2)${C_RESET} ${I_GEAR}  Repair Index (Moves/Renames)"
+    echo -e "  ${C_YELLOW}3)${C_RESET} 󰁯   Undo Last Commit\n"
+
+    echo -e "  ${C_BOLD}${C_BLUE}󰓅  UPLOAD & SYNC${C_RESET}"
+    echo -e "  ${C_YELLOW}4)${C_RESET} ${I_GIT}  Surgical Upload (Specific Path)"
+    echo -e "  ${C_YELLOW}5)${C_RESET} ${I_UP}  Global Upload (Push All)"
+    echo -e "  ${C_YELLOW}6)${C_RESET} ${C_RED}󰆴   Force Overwrite Remote (DANGER)${C_RESET}\n"
+
+    echo -e "  ${C_BOLD}${C_BLUE}󰒓  SECURITY & ACCESS${C_RESET}"
+    echo -e "  ${C_YELLOW}7)${C_RESET} ${I_KEY}  Manage SSH Keys"
+    echo -e "  ${C_YELLOW}8)${C_RESET} ${I_LOCK}  Reset Security Config"
+    echo -e "  ${C_YELLOW}9)${C_RESET} 󰈆   Exit\n"
     
     read -p "  Select Option [1-9]: " opt
 
     case $opt in
         1) print_header; echo -e "  ${C_BOLD}Git Identity:${C_RESET} $FXP_GIT_NAME <$FXP_GIT_EMAIL>"; git status; read -p "  Press Enter..." ;;
-        2) manage_ssh ;;
-        3) push_surgical ;;
-        4) push_all ;;
-        5) force_push ;;
-        6) repair_repo ;;
-        7) git reset --soft HEAD~1 && msg_success "Last commit undone (changes kept)." && sleep 2 ;;
+        2) repair_repo ;;
+        3) git reset --soft HEAD~1 && msg_success "Last commit undone (changes kept)." && sleep 2 ;;
+        4) push_surgical ;;
+        5) push_all ;;
+        6) force_push ;;
+        7) manage_ssh ;;
         8) rm "$STATE_FILE" && msg_warn "Security file removed. Restart script to re-configure." && exit 0 ;;
         9) clear; exit 0 ;;
         *) ;;
