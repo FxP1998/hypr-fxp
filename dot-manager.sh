@@ -130,6 +130,11 @@ push_surgical() {
     fi
 
     fix_remote
+    
+    # Pre-push rebase to avoid rejections
+    msg_info "Aligning with remote state..."
+    git pull origin $(git branch --show-current) --rebase > /dev/null 2>&1
+
     git add "$item_path"
     
     read -p "    Enter commit message: " commit_msg
@@ -139,7 +144,7 @@ push_surgical() {
     if git push origin $(git branch --show-current); then
         msg_success "Surgical push successful!"
     else
-        msg_error "Push failed."
+        msg_error "Push failed. Check for conflicts manually."
     fi
     
     echo -e "\n  Press any key to return..."
@@ -157,6 +162,11 @@ push_all() {
     fi
 
     fix_remote
+
+    # Pre-push rebase to avoid rejections
+    msg_info "Aligning with remote state..."
+    git pull origin $(git branch --show-current) --rebase > /dev/null 2>&1
+
     msg_info "Staging ALL current changes..."
     git add -A
     
@@ -171,7 +181,7 @@ push_all() {
     if git push origin $(git branch --show-current); then
         msg_success "Global upload successful!"
     else
-        msg_error "Push failed."
+        msg_error "Push failed. Check for conflicts manually."
     fi
     
     echo -e "\n  Press any key to return..."
