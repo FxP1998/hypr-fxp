@@ -34,11 +34,29 @@ msg_info() { echo -e "  ${C_BLUE}${I_INFO}${C_RESET} $1"; }
 msg_success() { echo -e "  ${C_GREEN}${I_OK}${C_RESET} $1"; }
 msg_warn() { echo -e "  ${C_YELLOW}${I_INFO}${C_RESET} $1"; }
 
+# --- Pre-Flight Sanity Check ---
+# This ensures a 100% clean state so git pull NEVER fails for end users
+sanitize_repo() {
+    msg_info "Performing Pre-Flight Repository Sanity Check..."
+    cd "$REPO_ROOT" || exit 1
+    
+    # Abort any stuck rebases or merges
+    git rebase --abort > /dev/null 2>&1
+    git merge --abort > /dev/null 2>&1
+    
+    # Aggressively reset all local changes to match the last known commit
+    git reset --hard HEAD > /dev/null 2>&1
+    
+    # Remove any untracked files or directories that might cause conflicts
+    git clean -fd > /dev/null 2>&1
+}
+
 # --- Execution ---
 print_header
 
+sanitize_repo
+
 msg_info "Step 1: Fetching updates from GitHub..."
-cd "$REPO_ROOT" || exit 1
 
 # Capture the current state before pulling
 PRE_UPDATE_HASH=$(git rev-parse HEAD)
