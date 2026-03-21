@@ -6,9 +6,9 @@
 @define-color on_surface #e2e2e2;
 @define-color on_surface_variant #c6c6c6;
 
-@define-color primary #80d997;
-@define-color secondary #b7ccb7;
-@define-color tertiary #a2ced9;
+@define-color primary #bcc2ff;
+@define-color secondary #c4c5dd;
+@define-color tertiary #e6bad6;
 @define-color error #ffb4ab;
 
 @define-color outline #919191;

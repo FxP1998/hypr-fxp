@@ -21,32 +21,32 @@ set statusbar-bg                "#1f1f1f"
 set statusbar-fg                "#e2e2e2"
 
 set inputbar-bg                 "#2a2a2a"
-set inputbar-fg                 "#80d997"
+set inputbar-fg                 "#bcc2ff"
 
-set notification-bg             "#80d997"
-set notification-fg             "#00391a"
+set notification-bg             "#bcc2ff"
+set notification-fg             "#1b2678"
 
 set notification-error-bg       "#ffb4ab"
 set notification-error-fg       "#690005"
 
-set notification-warning-bg     "#a2ced9"
-set notification-warning-fg     "#01363f"
+set notification-warning-bg     "#e6bad6"
+set notification-warning-fg     "#45263d"
 
 # Selection highlight (Standard Hex for compatibility)
-set highlight-color             "#80d997"
-set highlight-active-color      "#b7ccb7"
+set highlight-color             "#bcc2ff"
+set highlight-active-color      "#c4c5dd"
 
 set completion-bg               "#1f1f1f"
 set completion-fg               "#e2e2e2"
 
-set completion-highlight-bg     "#80d997"
-set completion-highlight-fg     "#00391a"
+set completion-highlight-bg     "#bcc2ff"
+set completion-highlight-fg     "#1b2678"
 
 set index-bg                    "#131313"
 set index-fg                    "#e2e2e2"
 
-set index-active-bg             "#80d997"
-set index-active-fg             "#00391a"
+set index-active-bg             "#bcc2ff"
+set index-active-fg             "#1b2678"
 
 set render-loading-bg           "#131313"
 set render-loading-fg           "#e2e2e2"

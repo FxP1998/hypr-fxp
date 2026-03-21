@@ -11,12 +11,12 @@ local colors = {
     base06 = '#e2e2e2',
     base07 = '#303030',
     base08 = '#ffb4ab', -- Red
-    base09 = '#a2ced9', -- Orange/Peach
-    base0A = '#b7ccb7', -- Yellow
-    base0B = '#80d997', -- Green/String
-    base0C = '#d2e8d3', -- Cyan
-    base0D = '#80d997', -- Blue/Function
-    base0E = '#204d56', -- Purple
+    base09 = '#e6bad6', -- Orange/Peach
+    base0A = '#c4c5dd', -- Yellow
+    base0B = '#bcc2ff', -- Green/String
+    base0C = '#e0e0f9', -- Cyan
+    base0D = '#bcc2ff', -- Blue/Function
+    base0E = '#5e3c54', -- Purple
     base0F = '#93000a', -- Brown
 }
 

@@ -16,22 +16,22 @@ theme[main_bg]=""
 theme[main_fg]="#e2e2e2"
 
 # Title color for boxes
-theme[title]="#80d997"
+theme[title]="#bcc2ff"
 
 # Highlight color for keyboard shortcuts
-theme[hi_fg]="#b7ccb7"
+theme[hi_fg]="#c4c5dd"
 
 # Background color of selected item in processes box
-theme[selected_bg]="#80d997"
+theme[selected_bg]="#bcc2ff"
 
 # Foreground color of selected item in processes box
-theme[selected_fg]="#00391a"
+theme[selected_fg]="#1b2678"
 
 # Color of inactive/disabled text
 theme[inactive_fg]="#c6c6c6"
 
 # Misc colors for processes box including mini cpu graphs, details memory graph and details status text
-theme[proc_misc]="#a2ced9"
+theme[proc_misc]="#e6bad6"
 
 # Cpu box outline color
 theme[cpu_box]="#919191"
@@ -49,29 +49,29 @@ theme[proc_box]="#919191"
 theme[div_line]="#474747"
 
 # Temperature graph colors
-theme[temp_start]="#b7ccb7"
-theme[temp_mid]="#80d997"
+theme[temp_start]="#c4c5dd"
+theme[temp_mid]="#bcc2ff"
 theme[temp_end]="#ffb4ab"
 
 # CPU graph colors
-theme[cpu_start]="#b7ccb7"
-theme[cpu_mid]="#80d997"
+theme[cpu_start]="#c4c5dd"
+theme[cpu_mid]="#bcc2ff"
 theme[cpu_end]="#ffb4ab"
 
 # Mem/Disk free meter
-theme[free_start]="#b7ccb7"
+theme[free_start]="#c4c5dd"
 theme[free_mid]=""
-theme[free_end]="#394b3c"
+theme[free_end]="#444559"
 
 # Mem/Disk cached meter
-theme[cached_start]="#a2ced9"
+theme[cached_start]="#e6bad6"
 theme[cached_mid]=""
-theme[cached_end]="#204d56"
+theme[cached_end]="#5e3c54"
 
 # Mem/Disk available meter
-theme[available_start]="#80d997"
+theme[available_start]="#bcc2ff"
 theme[available_mid]=""
-theme[available_end]="#005228"
+theme[available_end]="#343f90"
 
 # Mem/Disk used meter
 theme[used_start]="#ffb4ab"
@@ -79,11 +79,11 @@ theme[used_mid]=""
 theme[used_end]="#93000a"
 
 # Download graph colors
-theme[download_start]="#b7ccb7"
-theme[download_mid]="#80d997"
-theme[download_end]="#a2ced9"
+theme[download_start]="#c4c5dd"
+theme[download_mid]="#bcc2ff"
+theme[download_end]="#e6bad6"
 
 # Upload graph colors
-theme[upload_start]="#b7ccb7"
-theme[upload_mid]="#80d997"
-theme[upload_end]="#a2ced9"
+theme[upload_start]="#c4c5dd"
+theme[upload_mid]="#bcc2ff"
+theme[upload_end]="#e6bad6"

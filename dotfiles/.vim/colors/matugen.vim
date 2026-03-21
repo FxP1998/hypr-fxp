@@ -9,9 +9,9 @@ let g:colors_name = "matugen"
 hi Normal       guifg=#e2e2e2 guibg=NONE ctermbg=NONE
 hi LineNr       guifg=#474747 guibg=NONE
 hi SignColumn   guibg=NONE
-hi CursorLineNr guifg=#80d997     guibg=NONE gui=bold
+hi CursorLineNr guifg=#bcc2ff     guibg=NONE gui=bold
 hi CursorLine   guibg=#1f1f1f
-hi Visual       guifg=#9cf6b2 guibg=#005228
+hi Visual       guifg=#dfe0ff guibg=#343f90
 hi VertSplit    guifg=#474747 guibg=NONE gui=NONE
 hi EndOfBuffer  guifg=#131313      guibg=NONE
 
@@ -25,46 +25,46 @@ hi StatusLineNC guifg=#474747 guibg=NONE ctermbg=NONE gui=NONE
 " Pmenu: The Box Background
 hi Pmenu        guifg=#e2e2e2 guibg=#1f1f1f
 " PmenuSel: Selected Item
-hi PmenuSel     guifg=#00391a guibg=#80d997 gui=bold
+hi PmenuSel     guifg=#1b2678 guibg=#bcc2ff gui=bold
 
 " --- GLOWING TEXT PALETTE ---
-hi User1 guifg=#80d997 guibg=NONE ctermbg=NONE gui=bold
-hi User2 guifg=#b7ccb7 guibg=NONE ctermbg=NONE gui=bold
+hi User1 guifg=#bcc2ff guibg=NONE ctermbg=NONE gui=bold
+hi User2 guifg=#c4c5dd guibg=NONE ctermbg=NONE gui=bold
 hi User3 guifg=#ffb4ab guibg=NONE ctermbg=NONE gui=bold
-hi User4 guifg=#a2ced9 guibg=NONE ctermbg=NONE gui=bold
+hi User4 guifg=#e6bad6 guibg=NONE ctermbg=NONE gui=bold
 
 " --- SYNTAX HIGHLIGHTING ---
 hi Comment      guifg=#919191 gui=italic
-hi Constant     guifg=#a2ced9
-hi String       guifg=#80d997
-hi Identifier   guifg=#b7ccb7
-hi Function     guifg=#80d997
-hi Statement    guifg=#a2ced9 gui=bold
-hi Type         guifg=#a2ced9
-hi Special      guifg=#80d997
+hi Constant     guifg=#e6bad6
+hi String       guifg=#bcc2ff
+hi Identifier   guifg=#c4c5dd
+hi Function     guifg=#bcc2ff
+hi Statement    guifg=#e6bad6 gui=bold
+hi Type         guifg=#e6bad6
+hi Special      guifg=#bcc2ff
 
 " ==========================================================
 "  RICE ADDITIONS (NERDTree, Startify, FZF)
 " ==========================================================
 
 " --- NERDTree Sidebar ---
-hi NERDTreeDir      guifg=#80d997 gui=bold
-hi NERDTreeOpenable guifg=#a2ced9
-hi NERDTreeClosable guifg=#a2ced9
+hi NERDTreeDir      guifg=#bcc2ff gui=bold
+hi NERDTreeOpenable guifg=#e6bad6
+hi NERDTreeClosable guifg=#e6bad6
 hi NERDTreeFile     guifg=#e2e2e2
-hi NERDTreeExecFile guifg=#b7ccb7 gui=bold
+hi NERDTreeExecFile guifg=#c4c5dd gui=bold
 hi NERDTreeUp       guifg=#919191
-hi NERDTreeCWD      guifg=#a2ced9 gui=bold
+hi NERDTreeCWD      guifg=#e6bad6 gui=bold
 
 " --- Startify Dashboard (FxP1998 Header) ---
-hi StartifyHeader   guifg=#80d997 gui=bold
+hi StartifyHeader   guifg=#bcc2ff gui=bold
 hi StartifyFile     guifg=#e2e2e2
 hi StartifyPath     guifg=#919191
 hi StartifySlash    guifg=#474747
 hi StartifyBracket  guifg=#474747
-hi StartifyNumber   guifg=#b7ccb7
-hi StartifySection  guifg=#a2ced9 gui=bold
+hi StartifyNumber   guifg=#c4c5dd
+hi StartifySection  guifg=#e6bad6 gui=bold
 
 " --- FZF & Search ---
-hi Search       guifg=#00391a guibg=#80d997
-hi IncSearch    guifg=#223526 guibg=#b7ccb7
+hi Search       guifg=#1b2678 guibg=#bcc2ff
+hi IncSearch    guifg=#2d2f42 guibg=#c4c5dd

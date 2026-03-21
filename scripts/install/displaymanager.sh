@@ -46,7 +46,7 @@ install_sddm_astronaut() {
         sudo pacman -S --needed --noconfirm sddm
     fi
 
-    disable_active_dms()
+    disable_active_dms
     
     print_step "Executing Astronaut Theme installer..."
     # Running as NORMAL user (installer blocks root)
