@@ -17,6 +17,7 @@ fi
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 dotfiles_DIR="$REPO_ROOT/dotfiles"
 BACKUP_ROOT="$HOME/.FxP1998_backups"
+PERM_BACKUP="$BACKUP_ROOT/PERMANENT_BACKUP"
 
 # --- Helper Functions ---
 print_header() {
@@ -32,7 +33,6 @@ print_warning() { echo -e "  ${C_YELLOW}${C_BOLD}[${C_RESET}${I_WARN}${C_YELLOW}
 print_info() { echo -e "      ${I_INFO} $1"; }
 
 # --- Check Environment ---
-# 1. TTY Enforcement (Only run in pure TTY, not emulators)
 if [[ $(tty) == /dev/pts/* ]]; then
     clear
     echo -e "${C_RED}${C_BOLD}${LINE}${C_RESET}"
@@ -59,24 +59,34 @@ fi
 echo -e "\n${C_BOLD}Phase 1: Configuration Restoration${C_RESET}"
 echo -e "${C_BLUE}${LINE}${C_RESET}"
 
-if [ -d "$BACKUP_ROOT" ]; then
-    LATEST_BACKUP=$(ls -td "$BACKUP_ROOT"/* 2>/dev/null | head -1)
-    if [ -n "$LATEST_BACKUP" ]; then
-        print_success "Found latest backup at: ${C_YELLOW}$(basename "$LATEST_BACKUP")${C_RESET}"
-        read -p "    Restore this backup to your $HOME? [y/N]: " restore_confirm
-        
-        if [[ "$restore_confirm" =~ ^[Yy]$ ]]; then
-            print_step "Surgically restoring original files..."
-            # Restore everything from the backup directory
-            cp -rf "$LATEST_BACKUP"/.?* "$HOME/" 2>/dev/null
-            cp -rf "$LATEST_BACKUP"/* "$HOME/" 2>/dev/null
-            print_success "Restoration complete."
-        else
-            print_warning "Skipping restoration. Proceeding to surgical cleanup."
-        fi
+# Priority: PERMANENT_BACKUP -> Latest Timestamped
+RESTORATION_SOURCE=""
+if [ -d "$PERM_BACKUP" ]; then
+    RESTORATION_SOURCE="$PERM_BACKUP"
+    print_success "Found INITIAL PERMANENT BACKUP."
+else
+    LATEST=$(ls -td "$BACKUP_ROOT"/20* 2>/dev/null | head -1)
+    if [ -n "$LATEST" ]; then
+        RESTORATION_SOURCE="$LATEST"
+        print_success "Found latest timestamped backup."
+    fi
+fi
+
+if [ -n "$RESTORATION_SOURCE" ]; then
+    echo -e "      Source: ${C_YELLOW}$(basename "$RESTORATION_SOURCE")${C_RESET}"
+    read -p "    Restore this backup to your $HOME? [y/N]: " restore_confirm
+    
+    if [[ "$restore_confirm" =~ ^[Yy]$ ]]; then
+        print_step "Surgically restoring original files..."
+        # Use cp -a to preserve permissions and recursive folders
+        cp -af "$RESTORATION_SOURCE"/.?* "$HOME/" 2>/dev/null
+        cp -af "$RESTORATION_SOURCE"/* "$HOME/" 2>/dev/null
+        print_success "Restoration complete."
+    else
+        print_warning "Skipping restoration. Proceeding to surgical cleanup."
     fi
 else
-    print_warning "No backups found in $BACKUP_ROOT."
+    print_warning "No usable backups found in $BACKUP_ROOT."
 fi
 
 # --- Phase 2: Surgical Cleanup ---
@@ -90,10 +100,15 @@ if [ -d "$dotfiles_DIR" ]; then
     for item in "$dotfiles_DIR"/{*,.[!.]*}; do
         [ -e "$item" ] || continue
         name=$(basename "$item")
-        if [ "$name" != ".config" ] && [ "$name" != ".git" ]; then
-            if [ -e "$HOME/$name" ]; then
+        if [[ "$name" != ".config" && "$name" != ".git" ]]; then
+            if [ -e "$HOME/$name" ] && [ ! -L "$HOME/$name" ]; then
+                # If it's a real file we just installed, remove it
                 rm -rf "$HOME/$name"
                 echo -e "      ${C_RED}${I_TRASH}${C_RESET} Removed: ~/$name"
+            elif [ -L "$HOME/$name" ]; then
+                # If it's a symlink, remove the link
+                rm "$HOME/$name"
+                echo -e "      ${C_RED}${I_TRASH}${C_RESET} Unlinked: ~/$name"
             fi
         fi
     done
@@ -110,8 +125,6 @@ if [ -d "$dotfiles_DIR" ]; then
         done
     fi
     print_success "Surgical cleanup finished."
-else
-    print_warning "dotfiles source not found. Manual cleanup may be required."
 fi
 
 # --- Phase 3: Shell & Environment ---
@@ -135,7 +148,7 @@ for rc in ".zshrc" ".bashrc"; do
     fi
 done
 
-# --- Phase 4: Services ---
+# --- Phase 4: Service Cleanup ---
 echo -e "\n${C_BOLD}Phase 4: Service Cleanup${C_RESET}"
 echo -e "${C_BLUE}${LINE}${C_RESET}"
 
@@ -152,23 +165,30 @@ echo -e "${C_BLUE}${LINE}${C_RESET}"
 TRACKER_FILE="$HOME/.config/FxP1998/installed_packages.txt"
 
 if [ -f "$TRACKER_FILE" ]; then
-    PKGS_TO_REMOVE=$(cat "$TRACKER_FILE")
-    print_warning "The following packages were installed by FxP1998 and can be removed:"
-    echo -e "      ${C_YELLOW}${PKGS_TO_REMOVE//$'\n'/ }${C_RESET}"
+    # Read packages into a space-separated string for pacman
+    PKGS_TO_REMOVE=$(cat "$TRACKER_FILE" | tr '\n' ' ')
+    print_warning "The following packages were installed by FxP1998 and will be removed:"
+    echo -e "      ${C_YELLOW}$PKGS_TO_REMOVE${C_RESET}\n"
+    
     read -p "    Uninstall these tracked packages? [y/N]: " pkg_remove
 
     if [[ "$pkg_remove" =~ ^[Yy]$ ]]; then
         print_step "Uninstalling Rice packages..."
-        sudo pacman -Rns --noconfirm $PKGS_TO_REMOVE 2>/dev/null
-        rm -rf "$HOME/.config/FxP1998"
-        print_success "Tracked packages removed."
+        # Use sudo and REMOVE --noconfirm so the user can see the progress
+        # and we remove the silence (2>/dev/null) to debug failures
+        sudo pacman -Rns $PKGS_TO_REMOVE
+        
+        if [ $? -eq 0 ]; then
+            rm -rf "$HOME/.config/FxP1998"
+            print_success "Tracked packages removed."
+        else
+            print_error "Pacman failed to remove some packages."
+        fi
     else
         print_success "Packages kept on system."
     fi
 else
-    print_warning "No package tracker found. Manual removal is safer."
-    print_info "To prevent accidental deletion of your existing apps (like Firefox),"
-    print_info "I will not attempt automatic uninstallation without a tracking file."
+    print_warning "No package tracker found. Automatic removal skipped for safety."
 fi
 
 # --- Final Completion ---
