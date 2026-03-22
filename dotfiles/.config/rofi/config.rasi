@@ -10,7 +10,7 @@ configuration {
 
     /* Using your system font */
     font:                       "MapleMono NF Mono 12";
-    icon-theme:                 "Papirus";
+    icon-theme:                 "BeautySolar";
 }
 
 /* Set help message */
