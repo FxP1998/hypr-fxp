@@ -10,8 +10,7 @@
 * {
     border: none;
     font-family:
-        "Hack", "MapleMono NF", "0xProto Nerd Font", "Font Awesome",
-        "Material Icons", sans-serif;
+        "JetBrainsMonoNerdFontMono", "MapleMono NF", "Font Awesome", sans-serif;
     min-width: 6px;
     padding: 0px;
     margin: 0;
@@ -37,15 +36,10 @@ window#waybar {
 #battery,
 #network,
 #bluetooth {
-    font-size: 15px;
+    font-size: 19px;
     font-weight: 500;
     min-width: 40px;
-    padding: 5px 0px;
-
-    /* Card Style for these modules (Optional: remove this line for transparent) */
-    /* background-color: @surface_container; */
-    /* border-radius: 12px; */
-    /* margin: 4px 5px; */
+    padding: 1px 0px;
 }
 
 /* --- CLOCK (Big & Bold - Original Style) --- */
@@ -54,11 +48,10 @@ window#waybar {
     font-weight: bold;
     padding: 20px 0px 0px 0px;
     color: @on_surface;
-    background: transparent; /* No card background for clock, cleaner look */
+    background: transparent; 
 }
 
 /* --- WORKSPACES (Original Floating Pill Style) --- */
-/* No container background, just the buttons */
 #workspaces {
     background: transparent;
     margin: 8;
@@ -66,7 +59,6 @@ window#waybar {
 }
 
 #workspaces button {
-    /* Original sizing & transition */
     font-size: 13px;
     color: transparent;
     min-width: 7px;
@@ -166,7 +158,7 @@ window#waybar {
 }
 
 #custom-power {
-	font-size: 18;
+	font-size: 25;
 	color: @error;
 }
 

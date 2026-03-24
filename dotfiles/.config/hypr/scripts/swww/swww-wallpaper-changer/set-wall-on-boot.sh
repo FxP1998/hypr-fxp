@@ -20,7 +20,7 @@ else
 fi
 
 # --- Configuration ---
-WALLPAPER_DIR="$HOME/.config/hypr/wallpapers"
+WALLPAPER_DIR="$HOME/.config/hypr/default-wallpaper/"
 
 # --- Logic ---
 echo -e "${C_BLUE}${I_WALL}  Picking random wallpaper...${C_RESET}"

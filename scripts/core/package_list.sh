@@ -16,7 +16,7 @@ CORE_PACK=(
 	polkit-gnome auto-cpufreq udiskie slurp ripgrep unrar unzip wget 7zip reflector \
 	bat less jq brightnessctl pamixer btop htop chafa cliphist wl-clipboard eza fd eog fzf amberol kew geany \
 	pciutils nvidia-utils libva-vdpau-driver libva-mesa-driver \
-	ffmpeg ffmpegthumbnailer gnome-calculator gnome-calendar \
+	ffmpeg ffmpegthumbnailer gnome-calculator gnome-calendar spotify spotify-adblock spotify-tray-wayland-bin \
 	grim gum gnome-disk-utility gvfs gvfs-mtp gvfs-afc gvfs-google \
 	qemu-full virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libvirt ovmf \
 	ntfs-3g fuse2 os-prober efibootmgr grub firefox python-pywalfox adw-gtk-theme-git \
