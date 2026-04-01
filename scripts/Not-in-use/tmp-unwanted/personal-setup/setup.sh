@@ -53,7 +53,7 @@ OFFICIAL_PACKAGES=(
     # SYSTEM CORE
     "base-devel" "git" "wget" "curl" "vim" "neovim" "nano"
     "btop" "htop" "fastfetch" "onefetch" "fzf" "ripgrep" "fd" "jq" "eza" "bat" "zoxide"
-    "wl-clipboard" "xclip" "cliphist" "brightnessctl" "playerctl" "pamixer" "swww" "nwg-look"
+    "wl-clipboard" "xclip" "cliphist" "brightnessctl" "playerctl" "pamixer" "awww" "nwg-look"
 
     # ARCHIVE TOOLS
     "unzip" "unrar" "p7zip" "tar" "gzip" "bzip2" "xz" "zstd" "lz4" "cpio"

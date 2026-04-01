@@ -16,8 +16,8 @@ if [ -z "$WALLPAPER" ]; then
 fi
 
 # 1. Start Daemon if needed
-if ! pgrep -x "swww-daemon" > /dev/null; then
-    swww-daemon &
+if ! pgrep -x "awww-daemon" > /dev/null; then
+    awww-daemon &
     sleep 0.5
 fi
 
@@ -25,15 +25,26 @@ fi
 mkdir -p "$HOME/.config/hypr/assets"
 cp "$WALLPAPER" "$HOME/.config/hypr/assets/current-wallpaper.png"
 
-# 3. Apply Wallpaper (swww)
-swww img "$WALLPAPER" \
+# 3. Apply Wallpaper (awww)
+awww img "$WALLPAPER" \
     --transition-type "grow" \
     --transition-duration "4" \
     --transition-fps "60"
 
 # 4. Generate Colors (Matugen)
 if command -v matugen &>/dev/null; then
-    matugen -c "$HOME/.config/matugen/config.toml" image "$WALLPAPER" --source-color-index 0 --type scheme-rainbow
+    # Detect brightness (0.0 to 1.0) and convert to 0-100 integer for easier Bash comparison
+    BRIGHTNESS=$(magick "$WALLPAPER" -colorspace Gray -format "%[fx:int(mean*100)]" info:)
+
+    # 50 threshold (0.5 * 100)
+    if [ "$BRIGHTNESS" -gt 75 ]; then
+        MODE="light"
+    else
+        MODE="dark"
+    fi
+
+    echo ":: Selected Mode: $MODE (Brightness: $BRIGHTNESS)"
+    matugen -c "$HOME/.config/matugen/config.toml" image "$WALLPAPER" --mode "$MODE" --source-color-index 0 --type scheme-rainbow
 fi
 
 # 5. Reload Hyprland

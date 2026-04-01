@@ -18,16 +18,22 @@
 
 /* --- THE BAR WINDOW --- */
 window#waybar {
-    background: @background;
+    background: @surface_container;
     color: @on_surface;
     /* No border on the right. */
     min-width: 0px;
 }
 
 /* --- COMMON MODULE STYLES --- */
+#custome-updates {
+    font-size: 17px;
+}
+
+#custome-power {
+    font-size: 20px;
+}
+
 #clock,
-#custom-power,
-#custom-updates,
 #custom-screen-recording,
 #custom-launcher,
 #tray,
@@ -40,6 +46,7 @@ window#waybar {
     font-weight: 500;
     min-width: 40px;
     padding: 1px 0px;
+    color: @on_surface;
 }
 
 /* --- CLOCK (Big & Bold - Original Style) --- */

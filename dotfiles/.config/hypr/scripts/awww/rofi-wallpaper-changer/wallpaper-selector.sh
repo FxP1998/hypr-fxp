@@ -10,7 +10,7 @@ WALLPAPER_DIR="$HOME/.config/hypr/wallpapers"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # 2. Path to the Theme (Located in your Rofi config)
-ROFI_THEME="$HOME/.config/hypr/scripts/swww/rofi-wallpaper-changer/wallpaper-select.rasi"
+ROFI_THEME="$HOME/.config/hypr/scripts/awww/rofi-wallpaper-changer/wallpaper-select.rasi"
 
 # 3. Path to the Apply Script (Located next to this script)
 APPLY_SCRIPT="$SCRIPT_DIR/apply-theme.sh"

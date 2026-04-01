@@ -20,15 +20,15 @@ else
 fi
 
 # --- Configuration ---
-WALLPAPER_DIR="$HOME/.config/hypr/default-wallpaper/"
+WALLPAPER_DIR="$HOME/.config/hypr/wallpapers/default-wallpaper/"
 
 # --- Logic ---
 echo -e "${C_BLUE}${I_WALL}  Picking random wallpaper...${C_RESET}"
 
 # 1. Start Daemon if needed
-if ! pgrep -x "swww-daemon" > /dev/null; then
-    echo -e "      ${I_INFO} Starting swww-daemon..."
-    swww-daemon &
+if ! pgrep -x "awww-daemon" > /dev/null; then
+    echo -e "      ${I_INFO} Starting awww-daemon..."
+    awww-daemon &
     sleep 0.5
 fi
 
@@ -48,12 +48,21 @@ mkdir -p "$HOME/.config/hypr/assets"
 cp "$RANDOM_WALLPAPER" "$HOME/.config/hypr/assets/current-wallpaper.png"
 
 # 4. Apply Wallpaper
-swww img "$RANDOM_WALLPAPER" --transition-type none
+awww img "$RANDOM_WALLPAPER" --transition-type none
 
 # 5. Apply Colors (Matugen)
 if command -v matugen &>/dev/null; then
-    echo -e "      ${I_WORK} Regenerating Material You palette..."
-    matugen -c "$HOME/.config/matugen/config.toml" image "$RANDOM_WALLPAPER" --source-color-index 0 --type scheme-rainbow > /dev/null 2>&1
+    echo -e "      ${I_WORK} Detecting brightness and regenerating palette..."
+    
+    BRIGHTNESS=$(magick "$RANDOM_WALLPAPER" -colorspace Gray -format "%[fx:int(mean*100)]" info:)
+    
+    if [ "$BRIGHTNESS" -gt 75 ]; then
+        MODE="light"
+    else
+        MODE="dark"
+    fi
+
+    matugen -c "$HOME/.config/matugen/config.toml" image "$RANDOM_WALLPAPER" --mode "$MODE" --source-color-index 0 --type scheme-rainbow > /dev/null 2>&1
 fi
 
 echo -e "  ${C_GREEN}${I_OK} Done! Enjoy your new look.${C_RESET}"

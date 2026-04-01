@@ -14,7 +14,7 @@ else
 fi
 
 # --- Services Configuration ---
-SYSTEM_SERVICES=("NetworkManager" "bluetooth")
+SYSTEM_SERVICES=("NetworkManager" "bluetooth" "swayosd-libinput-backend")
 USER_SERVICES=("pipewire" "pipewire-pulse" "wireplumber")
 
 # --- Helper Functions ---

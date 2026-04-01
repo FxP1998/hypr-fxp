@@ -46,7 +46,7 @@ OFFICIAL_PACKAGES=(
     "pipewire-libcamera" "pipewire-session-manager" "base-devel" "git" "imagemagick" "jq" "xorg-xhost" "xorg-server" "xorg" "xorg-xinput"
     "xorg-xrandr" "intel-ucode" "vulkan-radeon" "vulkan-intel" "mesa" "zoxide" "polkit-gnome" "xdg-user-dirs" "xdg-desktop-portal"
     "xdg-desktop-portal-gtk" "xdg-desktop-portal-hyprland" "xdg-desktop-portal-gnome" "gnome-disk-utility" "timeshift" "pacman-contrib"
-    "stow" "wget" "trash-cli" "swww" "mako" "matugen" "nwg-look" "htop" "btop"
+    "stow" "wget" "trash-cli" "awww" "mako" "matugen" "nwg-look" "htop" "btop"
 )
 
 echo -e "${C_BLUE}${LINE_SEC}${C_RESET}"

@@ -4,7 +4,7 @@
 CORE_PACK=(
 	hyprland hypridle hyprlock \
 	kitty alacritty pfetch starship pacman-contrib \
-	waybar rofi-wayland dunst libnotify libreoffice-fresh meld matugen swww nwg-look imagemagick obs-studio swayosd \
+	waybar rofi-wayland dunst libnotify libreoffice-fresh meld matugen awww nwg-look imagemagick obs-studio swayosd \
 	git base-devel vim vim-plug neovim nano stow \
 	nautilus thunar yazi yt-dlp wf-recorder timeshift trash-cli tree wlogout zed zoxide \
 	bluez bluez-utils blueman networkmanager network-manager-applet \
@@ -17,7 +17,7 @@ CORE_PACK=(
 	bat less jq brightnessctl pamixer btop htop chafa cliphist wl-clipboard eza fd eog fzf amberol kew geany \
 	pciutils nvidia-utils libva-vdpau-driver libva-mesa-driver \
 	ffmpeg ffmpegthumbnailer gnome-calculator gnome-calendar spotify spotify-adblock spotify-tray-wayland-bin \
-	grim gum gnome-disk-utility gvfs gvfs-mtp gvfs-afc gvfs-google \
+	grim gum gnome-disk-utility gvfs gvfs-mtp gvfs-afc gvfs-google bc \
 	qemu-full virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libvirt ovmf \
 	ntfs-3g fuse2 os-prober efibootmgr grub firefox python-pywalfox adw-gtk-theme-git \
 	sddm qt5-quickcontrols2 qt5-graphicaleffects qt6-virtualkeyboard qt6-multimedia-ffmpeg \
